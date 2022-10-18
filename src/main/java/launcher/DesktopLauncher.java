@@ -1,34 +1,21 @@
 package launcher;
 
+import com.formdev.flatlaf.FlatDarculaLaf;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLJPanel;
 import com.jogamp.opengl.util.FPSAnimator;
 import core.graphics.awt.GraphicSettings;
 import core.graphics.Scene;
-
-import javax.swing.*;
-import java.awt.*;
+import core.gui.Window;
 
 public class DesktopLauncher
 {
-    public static final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-    public static final int WIDTH = d.width / 2;
-    public static final int HEIGHT = d.height / 2;
-    public static final String TITLE = "Dark Matter Simulation";
-
-    private final JFrame frame;
+    private Window window;
     private GLJPanel glPanel;
 
     public DesktopLauncher()
     {
-        frame = new JFrame();
-        frame.setTitle(TITLE);
-        frame.setSize(WIDTH, HEIGHT);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(true);
-        frame.setLayout(new BorderLayout());
-
         initGL();
         initGUI();
     }
@@ -44,18 +31,20 @@ public class DesktopLauncher
 
     private void initGUI()
     {
-        frame.add(glPanel);
+        window = new Window();
+        window.add(glPanel);
     }
 
     public void launch()
     {
-        frame.setVisible(true);
+        window.setVisible(true);
         FPSAnimator animator = new FPSAnimator(glPanel, GraphicSettings.FPS);
         animator.start();
     }
 
     public static void main(String[] args)
     {
+        FlatDarculaLaf.setup();
         DesktopLauncher launcher = new DesktopLauncher();
         launcher.launch();
     }

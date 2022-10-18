@@ -39,6 +39,16 @@ public class GLShader
         }
     }
 
+    public String[] getVertexShader()
+    {
+        return vertexShader;
+    }
+
+    public String[] getFragmentShader()
+    {
+        return fragmentShader;
+    }
+
     public void initShader()
     {
         int vertex = gl.glCreateShader(GL2.GL_VERTEX_SHADER);

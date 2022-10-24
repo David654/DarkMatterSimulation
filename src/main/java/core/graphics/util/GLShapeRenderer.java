@@ -33,11 +33,24 @@ public class GLShapeRenderer
 
     public void drawCircle(float x, float y, float radius)
     {
-        gl.glBegin(GL2.GL_LINES);
-        for(int i = 0; i < 100; i++)
+        int parts = 256;
+        gl.glBegin(GL2.GL_LINE_LOOP);
+        for(int i = 0; i < parts; i++)
         {
-            float theta = (float) (2f * Math.PI * i / 100);
-            gl.glVertex2f(x + (float) Math.cos(theta) * radius, (float) (y + Math.sin(theta) * radius));
+            double angle = 2 * Math.PI * i / parts;
+            gl.glVertex2d(x + Math.cos(angle) * radius,y + Math.sin(angle) * radius);
+        }
+        gl.glEnd();
+    }
+
+    public void fillCircle(float x, float y, float radius)
+    {
+        int parts = 256;
+        gl.glBegin(GL2.GL_POLYGON);
+        for(int i = 0; i < parts; i++)
+        {
+            double angle = 2 * Math.PI * i / parts;
+            gl.glVertex2d(x + Math.cos(angle) * radius,y + Math.sin(angle) * radius);
         }
         gl.glEnd();
     }

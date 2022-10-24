@@ -1,4 +1,4 @@
-package core.simulation.components.physics;
+package core.simulation.physics;
 
 import com.jogamp.opengl.GL2;
 import core.graphics.awt.color.GLColor;
@@ -13,14 +13,18 @@ public class Body
     private BigDecimal mass;
     private Vector2 velocity;
     private GLColor color;
+    private String name;
+    private boolean isVisible;
 
-    public Body(Vector2 position, float radius, BigDecimal mass, Vector2 velocity, GLColor color)
+    public Body(Vector2 position, float radius, BigDecimal mass, Vector2 velocity, GLColor color, String name)
     {
         this.position = position;
         this.radius = radius;
         this.mass = mass;
         this.velocity = velocity;
         this.color = color;
+        this.name = name;
+        isVisible = true;
     }
 
     public Vector2 getPosition()
@@ -71,6 +75,26 @@ public class Body
     public void setColor(GLColor color)
     {
         this.color = color;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public boolean isVisible()
+    {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible)
+    {
+        isVisible = visible;
     }
 
     public void update()

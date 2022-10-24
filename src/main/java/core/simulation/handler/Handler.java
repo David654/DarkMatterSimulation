@@ -1,14 +1,19 @@
-package core.simulation.components.handler;
+package core.simulation.handler;
 
 import java.util.ArrayList;
 
 public abstract class Handler<T>
 {
-    private final ArrayList<T> list;
+    protected final ArrayList<T> list;
 
     public Handler()
     {
         list = new ArrayList<>();
+    }
+
+    public int getSize()
+    {
+        return list.size();
     }
 
     public void add(T t)

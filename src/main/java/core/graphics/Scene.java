@@ -4,36 +4,46 @@ import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.util.texture.Texture;
-import com.jogamp.opengl.util.texture.TextureIO;
 import core.graphics.awt.shader.GLShader;
-import core.graphics.geom.Circle;
-import core.graphics.geom.Rectangle;
-import launcher.DesktopLauncher;
+import core.graphics.util.GLShapeRenderer;
+import core.gui.core.Window;
+import core.simulation.components.Simulation;
 
-import java.io.File;
-import java.io.IOException;
+import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 
 public class Scene implements GLEventListener
 {
-    private Rectangle rect;
-    private Circle circle;
+    private GLShapeRenderer glShapeRenderer;
     private GLShader shader;
     private Texture texture;
+
+    private final Simulation simulation;
+
+    public Scene(Simulation simulation)
+    {
+        this.simulation = simulation;
+    }
 
     public void init(GLAutoDrawable glAutoDrawable)
     {
         GL2 gl = glAutoDrawable.getGL().getGL2();
         gl.glClearColor(0, 0, 0, 1);
-        rect = new Rectangle(0, 0, 0.5f, 0.2f);
-        circle = new Circle(-0.5f, 0.2f, 0.3f);
-        try {
+
+        gl.glMatrixMode(GL_PROJECTION);
+        gl.glLoadIdentity();
+
+        float aspect = (float) Window.WIDTH * 3 / 4 / Window.HEIGHT;
+        gl.glOrtho(-aspect, aspect, -1.0f, 1.0f, -1.0f, 1.0f);
+
+        glShapeRenderer = new GLShapeRenderer(gl);
+        /*try {
             texture = TextureIO.newTexture(new File("src\\main\\resources\\img 1.png"), true);
             texture.enable(gl);
             texture.bind(gl);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        shader = new GLShader(gl, "src\\main\\java\\core\\graphics\\awt\\shader\\vertex.glsl", "src\\main\\java\\core\\graphics\\awt\\shader\\fragment.glsl");
+        shader = new GLShader(gl, "src\\main\\java\\core\\graphics\\awt\\shader\\vertex.glsl", "src\\main\\java\\core\\graphics\\awt\\shader\\fragment.glsl");**/
 
     }
 
@@ -42,21 +52,11 @@ public class Scene implements GLEventListener
         GL2 gl = glAutoDrawable.getGL().getGL2();
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
 
-        //gl.glColor3f(1, 0, 0);
-        //rect.fill(gl);
+        glShapeRenderer.fillCircle(-0.5f, 0.2f, 0.3f);
+        glShapeRenderer.drawRect(0, 0, 0.5f, 0.2f);
 
-        //gl.glColor3f(0, 1, 0);
-        //circle.draw(gl);
-
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glColor3f(1, 0, 0);
-        gl.glVertex2f(-0.5f, 0.5f);
-        gl.glVertex2f(0.5f, 0.5f);
-        gl.glVertex2f(0.5f, -0.5f);
-        gl.glVertex2f(-0.5f, -0.5f);
-        gl.glEnd();
-
-        texture.disable(gl);
+        simulation.update();
+        simulation.render(gl);
     }
 
     public void dispose(GLAutoDrawable glAutoDrawable)

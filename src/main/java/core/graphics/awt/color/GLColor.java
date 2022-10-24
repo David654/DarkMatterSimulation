@@ -70,6 +70,7 @@ public final class GLColor
 
     public String toString()
     {
-        return "GLColor: red = " + red + ", green = " + green + ", blue = " + blue;
+        return (int) red * 255 + ", " + (int) green * 255 + ", " + (int) blue * 255;
+        //return "GLColor: red = " + red + ", green = " + green + ", blue = " + blue;
     }
 }

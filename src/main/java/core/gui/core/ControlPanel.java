@@ -1,5 +1,6 @@
 package core.gui.core;
 
+import com.jogamp.opengl.GL2;
 import core.graphics.awt.color.GLColor;
 import core.gui.listelements.ListElement;
 import core.gui.listelements.Table;
@@ -11,7 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.math.BigDecimal;
 
-public class ControlPanel extends JPanel implements GUIElement
+public class ControlPanel extends JPanel implements GUIComponent
 {
     private final int width;
     private final int height;
@@ -21,7 +22,7 @@ public class ControlPanel extends JPanel implements GUIElement
     private JTextField massField;
     private JTextField velocityXField;
     private JTextField velocityYField;
-    private JTextField colorField;
+    private JLabel selectedColorLabel;
     private JButton addButton;
     private JButton removeButton;
     private JButton applyButton;
@@ -34,10 +35,10 @@ public class ControlPanel extends JPanel implements GUIElement
         this.setPreferredSize(new Dimension(width, height));
         this.setLayout(new BorderLayout());
 
-        initGUI();
+        createAndShowGUI();
     }
 
-    public void initGUI()
+    public void createAndShowGUI()
     {
         table = new Table(simulation);
 
@@ -51,6 +52,8 @@ public class ControlPanel extends JPanel implements GUIElement
         this.add(table, BorderLayout.NORTH);
 
         initParametersPanel();
+
+        table.requestFocus();
     }
 
     private void initParametersPanel()
@@ -141,21 +144,43 @@ public class ControlPanel extends JPanel implements GUIElement
         gbc.gridwidth = 1;
         gbc.gridx = 0;
         gbc.gridy = 4;
-        gbc.insets = new Insets(0, 10, 0, 0);
+        gbc.insets = new Insets(5, 10, 0, 0);
         gbc.weightx = 1;
         gbc.weighty = 1;
         parameters.add(colorLabel, gbc);
 
-        colorField = new JTextField();
+        selectedColorLabel = new JLabel(simulation.getBodyHandler().get(table.getSelectedIndex()).getColor().toColorString());
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.NORTH;
-        gbc.gridwidth = 3;
+        gbc.gridwidth = 1;
         gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.insets = new Insets(5, 10, 0, 0);
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+        parameters.add(selectedColorLabel, gbc);
+
+        JButton selectColorButton = new JButton("Select");
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.gridwidth = 1;
+        gbc.gridx = 2;
         gbc.gridy = 4;
         gbc.insets = new Insets(5, 0, 0, 10);
         gbc.weightx = 1;
         gbc.weighty = 1;
-        parameters.add(colorField, gbc);
+        parameters.add(selectColorButton, gbc);
+
+        selectColorButton.addActionListener(e ->
+        {
+            Color color = ColorChooser.showDialog(this, "Color Chooser", GLColor.toColor(simulation.getBodyHandler().get(table.getSelectedIndex()).getColor()));
+            if(color != null)
+            {
+                Body body = simulation.getBodyHandler().get(table.getSelectedIndex());
+                body.setColor(GLColor.toGLColor(color));
+                selectedColorLabel.setText(body.getColor().toColorString());
+            }
+        });
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -190,7 +215,7 @@ public class ControlPanel extends JPanel implements GUIElement
                 massField.setText(body.getMass().toEngineeringString());
                 velocityXField.setText(String.valueOf(body.getVelocity().getX()));
                 velocityYField.setText(String.valueOf(body.getVelocity().getY()));
-                colorField.setText(body.getColor().toString());
+                selectedColorLabel.setText(body.getColor().toColorString());
                 table.setListElementClicked(false);
             }
         });

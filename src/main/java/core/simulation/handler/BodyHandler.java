@@ -10,7 +10,10 @@ public class BodyHandler extends Handler<Body>
         for(int i = 0; i < list.size(); i++)
         {
             Body body = list.get(i);
-            body.update();
+            if(body.isVisible())
+            {
+                body.update();
+            }
         }
     }
 

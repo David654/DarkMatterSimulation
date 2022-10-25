@@ -11,7 +11,7 @@ import core.simulation.components.Simulation;
 import javax.swing.*;
 import java.awt.*;
 
-public class Window extends JFrame implements GUIElement
+public class Window extends JFrame implements GUIComponent
 {
     public static final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
     public static final int WIDTH = d.width / 2;
@@ -33,7 +33,7 @@ public class Window extends JFrame implements GUIElement
         simulation = new Simulation();
 
         initGL();
-        initGUI();
+        createAndShowGUI();
     }
 
     private void initGL()
@@ -45,7 +45,7 @@ public class Window extends JFrame implements GUIElement
         glPanel.addGLEventListener(new Scene(simulation));
     }
 
-    public void initGUI()
+    public void createAndShowGUI()
     {
         glPanel.setPreferredSize(new Dimension(Window.WIDTH * 3 / 4, Window.HEIGHT));
         this.add(glPanel, BorderLayout.CENTER);

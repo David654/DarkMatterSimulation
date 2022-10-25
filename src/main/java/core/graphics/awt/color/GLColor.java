@@ -1,5 +1,6 @@
 package core.graphics.awt.color;
 
+import java.awt.*;
 import java.util.Objects;
 
 public final class GLColor
@@ -63,6 +64,16 @@ public final class GLColor
         return Float.compare(glColor.red, red) == 0 && Float.compare(glColor.green, green) == 0 && Float.compare(glColor.blue, blue) == 0;
     }
 
+    public static GLColor toGLColor(Color color)
+    {
+        return new GLColor(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
+    }
+
+    public static Color toColor(GLColor color)
+    {
+        return new Color((int) (color.getRed() * 255), (int) (color.getGreen() * 255), (int) (color.getBlue() * 255));
+    }
+
     public int hashCode()
     {
         return Objects.hash(red, green, blue);
@@ -72,5 +83,11 @@ public final class GLColor
     {
         return (int) red * 255 + ", " + (int) green * 255 + ", " + (int) blue * 255;
         //return "GLColor: red = " + red + ", green = " + green + ", blue = " + blue;
+    }
+
+    public String toColorString()
+    {
+        Color color = toColor(this);
+        return "rgb(" + color.getRed() + ", " + color.getGreen() + ", " + color.getBlue() + ")";
     }
 }

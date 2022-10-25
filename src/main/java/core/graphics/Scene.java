@@ -52,7 +52,9 @@ public class Scene implements GLEventListener
         GL2 gl = glAutoDrawable.getGL().getGL2();
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
 
+        gl.glColor3f(0, 1, 0);
         glShapeRenderer.fillCircle(-0.5f, 0.2f, 0.3f);
+        gl.glColor3f(1, 0, 0);
         glShapeRenderer.drawRect(0, 0, 0.5f, 0.2f);
 
         simulation.update();

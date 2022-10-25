@@ -1,13 +1,13 @@
 package core.gui.listelements;
 
-import core.gui.core.GUIElement;
+import core.gui.core.GUIComponent;
 import core.simulation.components.Simulation;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Table extends JPanel implements GUIElement
+public class Table extends JPanel implements GUIComponent
 {
     private final Simulation simulation;
     private JPanel table;
@@ -20,7 +20,7 @@ public class Table extends JPanel implements GUIElement
     {
         this.simulation = simulation;
         listElements = new ArrayList<>();
-        initGUI();
+        createAndShowGUI();
     }
 
     public void addListElement(ListElement element)
@@ -103,7 +103,7 @@ public class Table extends JPanel implements GUIElement
         isListElementClicked = listElementClicked;
     }
 
-    public void initGUI()
+    public void createAndShowGUI()
     {
         table = new JPanel();
         table.setLayout(new GridBagLayout());

@@ -1,12 +1,12 @@
 package core.gui.listelements;
 
-import core.gui.core.GUIElement;
+import core.gui.core.GUIComponent;
 import core.simulation.physics.Body;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ListElement extends JButton implements GUIElement
+public class ListElement extends JButton implements GUIComponent
 {
     private Body body;
 
@@ -16,7 +16,7 @@ public class ListElement extends JButton implements GUIElement
     public ListElement(Body body)
     {
         this.body = body;
-        initGUI();
+        createAndShowGUI();
     }
 
     public Body getBody()
@@ -41,7 +41,7 @@ public class ListElement extends JButton implements GUIElement
         this.repaint();
     }
 
-    public void initGUI()
+    public void createAndShowGUI()
     {
         this.setLayout(new BorderLayout());
 

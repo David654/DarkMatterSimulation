@@ -1,52 +1,51 @@
 package core.math.vector;
 
 import core.math.matrix.Matrix3;
-import core.math.util.MathUtils;
 
 public class Vector3 implements Vector<Vector3>
 {
-    private float x;
-    private float y;
-    private float z;
+    private double x;
+    private double y;
+    private double z;
 
     public Vector3()
     {
         this(0, 0, 0);
     }
 
-    public Vector3(float x, float y, float z)
+    public Vector3(double x, double y, double z)
     {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public float getX()
+    public double getX()
     {
         return x;
     }
 
-    public void setX(float x)
+    public void setX(double x)
     {
         this.x = x;
     }
 
-    public float getY()
+    public double getY()
     {
         return y;
     }
 
-    public void setY(float y)
+    public void setY(double y)
     {
         this.y = y;
     }
 
-    public float getZ()
+    public double getZ()
     {
         return z;
     }
 
-    public void setZ(float z)
+    public void setZ(double z)
     {
         this.z = z;
     }
@@ -89,12 +88,12 @@ public class Vector3 implements Vector<Vector3>
 
     public Vector3 abs()
     {
-        return new Vector3(MathUtils.abs(x), MathUtils.abs(y), MathUtils.abs(z));
+        return new Vector3(Math.abs(x), Math.abs(y), Math.abs(z));
     }
 
-    public float length()
+    public double length()
     {
-        return MathUtils.sqrt(MathUtils.pow(x, 2) + MathUtils.pow(y, 2) + MathUtils.pow(z, 2));
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
     }
 
     public Vector3 add(Vector3 vector)
@@ -112,7 +111,7 @@ public class Vector3 implements Vector<Vector3>
         return new Vector3(x * vector.x, y * vector.y, z * vector.z);
     }
 
-    public Vector3 multiply(float scalar)
+    public Vector3 multiply(double scalar)
     {
         return new Vector3(x * scalar, y * scalar, z * scalar);
     }
@@ -122,24 +121,24 @@ public class Vector3 implements Vector<Vector3>
         return new Vector3(x / vector.x, y / vector.y, z / vector.z);
     }
 
-    public Vector3 divide(float scalar)
+    public Vector3 divide(double scalar)
     {
         return new Vector3(x / scalar, y / scalar, z / scalar);
     }
 
     public Vector3 max(Vector3 vector)
     {
-        return new Vector3(MathUtils.max(x, vector.x), MathUtils.max(y, vector.y), MathUtils.max(z, vector.z));
+        return new Vector3(Math.max(x, vector.x), Math.max(y, vector.y), Math.max(z, vector.z));
     }
 
     public Vector3 min(Vector3 vector)
     {
-        return new Vector3(MathUtils.min(x, vector.x), MathUtils.min(y, vector.y), MathUtils.min(z, vector.z));
+        return new Vector3(Math.min(x, vector.x), Math.min(y, vector.y), Math.min(z, vector.z));
     }
 
-    public float distance(Vector3 vector)
+    public double distance(Vector3 vector)
     {
-        return (float) MathUtils.sqrt(MathUtils.pow(x - vector.x, 2) + MathUtils.pow(y - vector.y, 2) + MathUtils.pow(z - vector.z, 2));
+        return (double) Math.sqrt(Math.pow(x - vector.x, 2) + Math.pow(y - vector.y, 2) + Math.pow(z - vector.z, 2));
     }
 
     public Vector3 clamp(Vector3 min, Vector3 max)
@@ -152,7 +151,7 @@ public class Vector3 implements Vector<Vector3>
         return new Vector3(x / length(), y / length(), z / length());
     }
 
-    public float dot(Vector3 vector)
+    public double dot(Vector3 vector)
     {
         return x * vector.x + y * vector.y + z * vector.z;
     }
@@ -172,7 +171,7 @@ public class Vector3 implements Vector<Vector3>
         return this.multiply(-1);
     }
 
-    public Vector3 lerp(Vector3 vector, float amount)
+    public Vector3 lerp(Vector3 vector, double amount)
     {
         return vector.subtract(this).multiply(amount).add(this);
     }

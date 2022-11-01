@@ -29,26 +29,19 @@ public class ListElement extends JButton implements GUIComponent
         this.body = body;
     }
 
-    public boolean isVisible()
-    {
-        return body.isVisible();
-    }
-
-    public void setVisible(boolean visible)
-    {
-        body.setVisible(true);
-        visibilityButton.addActionListener(e -> visibilityButton.setSelected(isVisible()));
-        this.repaint();
-    }
-
     public void createAndShowGUI()
     {
         this.setLayout(new BorderLayout());
 
         textLabel = new JLabel(body.getName());
         visibilityButton = new JCheckBox();
-        visibilityButton.setSelected(isVisible());
+        visibilityButton.setSelected(body.isVisible());
         visibilityButton.setFocusable(false);
+        visibilityButton.setToolTipText("Visibility");
+        visibilityButton.addItemListener(l ->
+        {
+            body.setVisible(!body.isVisible());
+        });
 
         this.add(textLabel, BorderLayout.CENTER);
         this.add(visibilityButton, BorderLayout.EAST);

@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 public class ColorChooser extends JDialog implements GUIComponent
 {
@@ -54,7 +55,8 @@ public class ColorChooser extends JDialog implements GUIComponent
     public void createAndShowGUI()
     {
         colorWheelPanel = new ColorWheelPanel(width / 2, height);
-        int[] pos = getPos(colorWheelPanel.getColorWheel(), currColor);
+
+
         wheelCursorX = height / 2 - cursorSize / 2;
         wheelCursorY = height / 2 - cursorSize / 2;
         sliderCursorX = 0;
@@ -66,9 +68,43 @@ public class ColorChooser extends JDialog implements GUIComponent
         this.add(colorSliderPanel);
         createColorControlPanelGUI();
 
+        setCursorPosition(currColor);
+
         this.pack();
 
         selectButton.requestFocus();
+    }
+
+    private void setCursorPosition(Color originalColor)
+    {
+        int maxValue = Math.max(Math.max(originalColor.getRed(), originalColor.getGreen()), originalColor.getBlue());
+        int red = 255 - (maxValue - originalColor.getRed());
+        int green = 255 - (maxValue - originalColor.getGreen());
+        int blue = 255 - (maxValue - originalColor.getBlue());
+
+        /*for(int x = 0; x < colorWheelPanel.getColorWheel().getWidth(); x++)
+        {
+            for(int y = 0; y < colorWheelPanel.getColorWheel().getHeight(); y++)
+            {
+                BufferedImage colorSlider = colorSliderPanel.createColorSlider(new Color(colorWheelPanel.getColorWheel().getRGB(x, y)));
+                for(int k = 0; k < colorSlider.getHeight(); k++)
+                {
+                    Color c = new Color(colorSlider.getRGB(0, k));
+                    if(c.equals(originalColor))
+                    {
+                        System.out.println("x: " + x + ", y:" + y + ", k: "+ k);
+                        break;
+                    }
+                }
+            }
+        }**/
+
+
+        Color color = new Color(red, green, blue);
+        System.out.println(color);
+
+        int[] pos = getPos(colorWheelPanel.getColorWheel(), color);
+        System.out.println(Arrays.toString(pos));
     }
 
     private void createColorControlPanelGUI()
@@ -302,11 +338,11 @@ public class ColorChooser extends JDialog implements GUIComponent
             int h = height;
             int cx = w / 2;
             int cy = h / 2;
-            float[] dist = {0.F, 1.0F};
+            float[] dist = {0F, 1F};
 
             g2d.setColor(this.getBackground());
             g2d.fillRect(0, 0, w, h);
-            for(int angle = 0; angle < 360; ++angle)
+            for(int angle = 0; angle < 360; angle++)
             {
                 Color color = hsvToRgb(angle, 1.0, 1.0);
                 Color[] colors = {Color.WHITE, color};
@@ -402,13 +438,13 @@ public class ColorChooser extends JDialog implements GUIComponent
             this.addMouseListener(this);
             this.addMouseMotionListener(this);
 
-            colorSlider = createColorSlider();
+            colorSlider = createColorSlider(currColor);
 
             Timer timer = new Timer(1, e -> this.repaint());
             timer.start();
         }
 
-        private BufferedImage createColorSlider()
+        private BufferedImage createColorSlider(Color color)
         {
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics2D g2d = (Graphics2D) image.getGraphics();
@@ -418,7 +454,7 @@ public class ColorChooser extends JDialog implements GUIComponent
 
             g2d.setColor(this.getBackground());
             g2d.fillRect(0, 0, w, h);
-            GradientPaint paint = new GradientPaint(0, 0, currColor, 0, h, Color.BLACK);
+            GradientPaint paint = new GradientPaint(0, 0, color, 0, h, Color.BLACK);
             g2d.setPaint(paint);
             g2d.fillRect(0, margin, w, h - 2 * margin);
 
@@ -434,7 +470,7 @@ public class ColorChooser extends JDialog implements GUIComponent
         {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            colorSlider = createColorSlider();
+            colorSlider = createColorSlider(currColor);
             g2d.drawImage(colorSlider, 0, 0, null);
             g2d.setColor(this.getBackground());
             g2d.drawRect(0, sliderCursorY, width, cursorSize / 4);

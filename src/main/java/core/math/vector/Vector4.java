@@ -1,21 +1,20 @@
 package core.math.vector;
 
 import core.math.matrix.Matrix3;
-import core.math.util.MathUtils;
 
 public class Vector4 implements Vector<Vector4>
 {
-    private float x;
-    private float y;
-    private float z;
-    private float w;
+    private double x;
+    private double y;
+    private double z;
+    private double w;
 
     public Vector4()
     {
         this(0, 0, 0, 0);
     }
 
-    public Vector4(float x, float y, float z, float w)
+    public Vector4(double x, double y, double z, double w)
     {
         this.x = x;
         this.y = y;
@@ -23,42 +22,42 @@ public class Vector4 implements Vector<Vector4>
         this.w = w;
     }
 
-    public float getX()
+    public double getX()
     {
         return x;
     }
 
-    public void setX(float x)
+    public void setX(double x)
     {
         this.x = x;
     }
 
-    public float getY()
+    public double getY()
     {
         return y;
     }
 
-    public void setY(float y)
+    public void setY(double y)
     {
         this.y = y;
     }
 
-    public float getZ()
+    public double getZ()
     {
         return z;
     }
 
-    public void setZ(float z)
+    public void setZ(double z)
     {
         this.z = z;
     }
 
-    public float getW()
+    public double getW()
     {
         return w;
     }
 
-    public void setW(float w)
+    public void setW(double w)
     {
         this.w = w;
     }
@@ -106,12 +105,12 @@ public class Vector4 implements Vector<Vector4>
 
     public Vector4 abs()
     {
-        return new Vector4(MathUtils.abs(x), MathUtils.abs(y), MathUtils.abs(z), MathUtils.abs(w));
+        return new Vector4(Math.abs(x), Math.abs(y), Math.abs(z), Math.abs(w));
     }
 
-    public float length()
+    public double length()
     {
-        return MathUtils.sqrt(MathUtils.pow(x, 2) + MathUtils.pow(y, 2) + MathUtils.pow(z, 2));
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2));
     }
 
     public Vector4 add(Vector4 vector)
@@ -129,7 +128,7 @@ public class Vector4 implements Vector<Vector4>
         return new Vector4(x * vector.x, y * vector.y, z * vector.z, w * vector.w);
     }
 
-    public Vector4 multiply(float scalar)
+    public Vector4 multiply(double scalar)
     {
         return new Vector4(x * scalar, y * scalar, z * scalar, w * scalar);
     }
@@ -139,24 +138,24 @@ public class Vector4 implements Vector<Vector4>
         return new Vector4(x / vector.x, y / vector.y, z / vector.z, w / vector.w);
     }
 
-    public Vector4 divide(float scalar)
+    public Vector4 divide(double scalar)
     {
         return new Vector4(x / scalar, y / scalar, z / scalar, w / scalar);
     }
 
     public Vector4 max(Vector4 vector)
     {
-        return new Vector4(MathUtils.max(x, vector.x), MathUtils.max(y, vector.y), MathUtils.max(z, vector.z), MathUtils.max(w, vector.w));
+        return new Vector4(Math.max(x, vector.x), Math.max(y, vector.y), Math.max(z, vector.z), Math.max(w, vector.w));
     }
 
     public Vector4 min(Vector4 vector)
     {
-        return new Vector4(MathUtils.min(x, vector.x), MathUtils.min(y, vector.y), MathUtils.min(z, vector.z), MathUtils.min(w, vector.w));
+        return new Vector4(Math.min(x, vector.x), Math.min(y, vector.y), Math.min(z, vector.z), Math.min(w, vector.w));
     }
 
-    public float distance(Vector4 vector)
+    public double distance(Vector4 vector)
     {
-        return (float) MathUtils.sqrt(MathUtils.pow(x - vector.x, 2) + MathUtils.pow(y - vector.y, 2) + MathUtils.pow(z - vector.z, 2));
+        return (double) Math.sqrt(Math.pow(x - vector.x, 2) + Math.pow(y - vector.y, 2) + Math.pow(z - vector.z, 2));
     }
 
     public Vector4 clamp(Vector4 min, Vector4 max)
@@ -169,7 +168,7 @@ public class Vector4 implements Vector<Vector4>
         return new Vector4(x / length(), y / length(), z / length(), w / length());
     }
 
-    public float dot(Vector4 vector)
+    public double dot(Vector4 vector)
     {
         return x * vector.x + y * vector.y + z * vector.z;
     }
@@ -189,7 +188,7 @@ public class Vector4 implements Vector<Vector4>
         return this.multiply(-1);
     }
 
-    public Vector4 lerp(Vector4 vector, float amount)
+    public Vector4 lerp(Vector4 vector, double amount)
     {
         return vector.subtract(this).multiply(amount).add(this);
     }

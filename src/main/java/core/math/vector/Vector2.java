@@ -1,39 +1,37 @@
 package core.math.vector;
 
-import core.math.util.MathUtils;
-
 public class Vector2 implements Vector<Vector2>
 {
-    private float x;
-    private float y;
+    private double x;
+    private double y;
 
     public Vector2()
     {
         this(0, 0);
     }
 
-    public Vector2(float x, float y)
+    public Vector2(double x, double y)
     {
         this.x = x;
         this.y = y;
     }
 
-    public float getX()
+    public double getX()
     {
         return x;
     }
 
-    public void setX(float x)
+    public void setX(double x)
     {
         this.x = x;
     }
 
-    public float getY()
+    public double getY()
     {
         return y;
     }
 
-    public void setY(float y)
+    public void setY(double y)
     {
         this.y = y;
     }
@@ -71,12 +69,12 @@ public class Vector2 implements Vector<Vector2>
 
     public Vector2 abs()
     {
-        return new Vector2(MathUtils.abs(x), MathUtils.abs(y));
+        return new Vector2(Math.abs(x), Math.abs(y));
     }
 
-    public float length()
+    public double length()
     {
-        return MathUtils.sqrt(MathUtils.pow(x, 2) + MathUtils.pow(y, 2));
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     }
 
     public Vector2 add(Vector2 vector)
@@ -94,7 +92,7 @@ public class Vector2 implements Vector<Vector2>
         return new Vector2(x * vector.x, y * vector.y);
     }
 
-    public Vector2 multiply(float scalar)
+    public Vector2 multiply(double scalar)
     {
         return new Vector2(x * scalar, y * scalar);
     }
@@ -104,24 +102,24 @@ public class Vector2 implements Vector<Vector2>
         return new Vector2(x / vector.x, y / vector.y);
     }
 
-    public Vector2 divide(float scalar)
+    public Vector2 divide(double scalar)
     {
         return new Vector2(x / scalar, y / scalar);
     }
 
     public Vector2 max(Vector2 vector)
     {
-        return new Vector2(MathUtils.max(x, vector.x), MathUtils.max(y, vector.y));
+        return new Vector2(Math.max(x, vector.x), Math.max(y, vector.y));
     }
 
     public Vector2 min(Vector2 vector)
     {
-        return new Vector2(MathUtils.min(x, vector.x), MathUtils.min(y, vector.y));
+        return new Vector2(Math.min(x, vector.x), Math.min(y, vector.y));
     }
 
-    public float distance(Vector2 vector)
+    public double distance(Vector2 vector)
     {
-        return MathUtils.sqrt(MathUtils.pow(x - vector.x, 2) + MathUtils.pow(y - vector.y, 2));
+        return Math.sqrt(Math.pow(x - vector.x, 2) + Math.pow(y - vector.y, 2));
     }
 
     public Vector2 clamp(Vector2 min, Vector2 max)
@@ -134,7 +132,7 @@ public class Vector2 implements Vector<Vector2>
         return new Vector2(x / length(), y / length());
     }
 
-    public float dot(Vector2 vector)
+    public double dot(Vector2 vector)
     {
         return x * vector.x + y * vector.y;
     }
@@ -154,7 +152,7 @@ public class Vector2 implements Vector<Vector2>
         return this.multiply(-1);
     }
 
-    public Vector2 lerp(Vector2 vector, float amount)
+    public Vector2 lerp(Vector2 vector, double amount)
     {
         return vector.subtract(this).multiply(amount).add(this);
     }

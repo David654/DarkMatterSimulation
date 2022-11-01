@@ -6,20 +6,20 @@ public interface Vector<Vector>
     int hashCode();
     boolean equals(Object object);
 
-    float length();
-    float distance(Vector vector);
+    double length();
+    double distance(Vector vector);
     Vector max(Vector vector);
     Vector min(Vector vector);
     Vector abs();
     Vector clamp(Vector min, Vector max);
-    Vector lerp(Vector vector, float amount);
+    Vector lerp(Vector vector, double amount);
     Vector add(Vector vector);
     Vector subtract(Vector vector);
     Vector multiply(Vector vector);
-    Vector multiply(float scalar);
+    Vector multiply(double scalar);
     Vector divide(Vector vector);
-    Vector divide(float scalar);
-    float dot(Vector vector);
+    Vector divide(double scalar);
+    double dot(Vector vector);
     Vector cross(Vector vector);
     Vector reflect(Vector normal);
     Vector normalize();

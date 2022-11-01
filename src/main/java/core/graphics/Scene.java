@@ -50,14 +50,8 @@ public class Scene implements GLEventListener
     public void display(GLAutoDrawable glAutoDrawable)
     {
         GL2 gl = glAutoDrawable.getGL().getGL2();
-        gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
+        gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 
-        gl.glColor3f(0, 1, 0);
-        glShapeRenderer.fillCircle(-0.5f, 0.2f, 0.3f);
-        gl.glColor3f(1, 0, 0);
-        glShapeRenderer.drawRect(0, 0, 0.5f, 0.2f);
-
-        simulation.update();
         simulation.render(gl);
     }
 
@@ -68,6 +62,12 @@ public class Scene implements GLEventListener
 
     public void reshape(GLAutoDrawable glAutoDrawable, int x, int y, int width, int height)
     {
+        GL2 gl = glAutoDrawable.getGL().getGL2();
 
+        gl.glMatrixMode(GL_PROJECTION);
+        gl.glLoadIdentity();
+
+        float aspect = (float) width / height;
+        gl.glOrtho(-aspect, aspect, -1.0f, 1.0f, -1.0f, 1.0f);
     }
 }

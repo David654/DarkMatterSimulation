@@ -198,7 +198,7 @@ public class Body
 
         orbit.render(gl);
 
-        int width = Window.WIDTH / 2;
+        int width = Window.SCENE_WIDTH;
         int height = Window.HEIGHT;
 
         textRenderer.beginRendering(width, height);
@@ -206,7 +206,10 @@ public class Body
         textRenderer.setSmoothing(true);
 
         Vector2 center = getCenter().multiply(1 / Constants.AU * simulation.getScale() * 2);
-        textRenderer.draw(name, (int) (width / 2 + center.getX() * width / 2), (int) (height / 2 + center.getY() * height / 2 + height * radius / 1.39286e9 * simulation.getScale() / 1.5));
+        //textRenderer.draw(name, (int) (width / 2 + center.getX() * width / 2), (int) (height / 2 + center.getY() * height / 2 + height * radius / 1.39286e9 * simulation.getScale() / 1.5));
+        textRenderer.draw(name, (int) (width / 2 + width / 2 * pos.getX()), (int) (height / 2 + height / 2 * pos.getY()));
         textRenderer.endRendering();
+
+        System.out.println(Window.WIDTH + ", " + Window.SCENE_WIDTH);
     }
 }

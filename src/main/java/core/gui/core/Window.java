@@ -19,6 +19,7 @@ public class Window extends JFrame implements GUIComponent, ComponentListener
     public static final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
     public static int WIDTH = d.width / 2;
     public static int HEIGHT = d.height / 2;
+    public static int SCENE_WIDTH = WIDTH * 3 / 4;
     public static final String TITLE = "Dark Matter Simulation";
 
     private GLJPanel glPanel;
@@ -55,7 +56,7 @@ public class Window extends JFrame implements GUIComponent, ComponentListener
     {
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
-        glPanel.setPreferredSize(new Dimension(Window.WIDTH * 3 / 4, Window.HEIGHT));
+        glPanel.setPreferredSize(new Dimension(SCENE_WIDTH, Window.HEIGHT));
         glPanel.addMouseListener(mouseInput);
         glPanel.addMouseMotionListener(mouseInput);
         glPanel.addMouseWheelListener(mouseInput);
@@ -64,9 +65,23 @@ public class Window extends JFrame implements GUIComponent, ComponentListener
 
         splitPane.setLeftComponent(glPanel);
         splitPane.setRightComponent(controlPanel);
-        splitPane.setResizeWeight(0.75);
+        splitPane.addComponentListener(new ComponentListener()
+        {
+            public void componentResized(ComponentEvent e)
+            {
+                if(e.getComponent().equals(glPanel))
+                {
+                    SCENE_WIDTH = e.getComponent().getWidth();
+                }
+            }
+
+            public void componentMoved(ComponentEvent e) {}
+            public void componentShown(ComponentEvent e) {}
+            public void componentHidden(ComponentEvent e) {}
+        });
 
         this.add(splitPane, BorderLayout.CENTER);
+        this.pack();
     }
 
     public void launch()
@@ -78,8 +93,9 @@ public class Window extends JFrame implements GUIComponent, ComponentListener
 
     public void componentResized(ComponentEvent e)
     {
-        Window.WIDTH = e.getComponent().getWidth();
-        Window.HEIGHT = e.getComponent().getHeight();
+        WIDTH = e.getComponent().getWidth();
+        HEIGHT = e.getComponent().getHeight();
+        SCENE_WIDTH = WIDTH * 3 / 4;
     }
 
     public void componentMoved(ComponentEvent e)

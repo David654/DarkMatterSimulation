@@ -3,7 +3,7 @@ package core.simulation.physics;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.util.awt.TextRenderer;
 import core.graphics.awt.color.GLColor;
-import core.graphics.util.GLShapeRenderer;
+import core.graphics.util.ShapeRenderer;
 import core.gui.core.Window;
 import core.math.vector.Vector2;
 import core.simulation.components.Simulation;
@@ -190,7 +190,7 @@ public class Body
     public void render(GL2 gl)
     {
         Vector2 pos = new Vector2(position.getX() / Constants.AU * simulation.getScale() * 2, position.getY() / Constants.AU * simulation.getScale() * 2);
-        GLShapeRenderer shapeRenderer = new GLShapeRenderer(gl);
+        ShapeRenderer shapeRenderer = new ShapeRenderer(gl);
 
         GLColor glColor = GLColor.toGLColor(color);
         gl.glColor3f(glColor.getRed(), glColor.getGreen(), glColor.getBlue());
@@ -210,6 +210,6 @@ public class Body
         textRenderer.draw(name, (int) (width / 2 + width / 2 * pos.getX()), (int) (height / 2 + height / 2 * pos.getY()));
         textRenderer.endRendering();
 
-        System.out.println(Window.WIDTH + ", " + Window.SCENE_WIDTH);
+        //System.out.println(Window.WIDTH + ", " + Window.SCENE_WIDTH);
     }
 }

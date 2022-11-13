@@ -2,11 +2,11 @@ package core.graphics.util;
 
 import com.jogamp.opengl.GL2;
 
-public class GLShapeRenderer
+public class ShapeRenderer
 {
     private final GL2 gl;
 
-    public GLShapeRenderer(GL2 gl)
+    public ShapeRenderer(GL2 gl)
     {
         this.gl = gl;
     }

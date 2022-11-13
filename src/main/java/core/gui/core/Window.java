@@ -43,11 +43,38 @@ public class Window extends JFrame implements GUIComponent, ComponentListener
         createAndShowGUI();
     }
 
+    public int getWidth()
+    {
+        return WIDTH;
+    }
+
+    public void setWidth(int width)
+    {
+        WIDTH = width;
+    }
+
+    public int getHeight()
+    {
+        return HEIGHT;
+    }
+
+    public void setHeight(int height)
+    {
+        HEIGHT = height;
+    }
+
     private void initGL()
     {
         GLProfile.initSingleton();
         GLProfile glProfile = GLProfile.get(GLProfile.GL2);
         GLCapabilities glCapabilities = new GLCapabilities(glProfile);
+
+        if(GraphicSettings.useMSAA)
+        {
+            glCapabilities.setNumSamples(GraphicSettings.samples);
+            glCapabilities.setSampleBuffers(true);
+        }
+
         glPanel = new GLJPanel(glCapabilities);
         glPanel.addGLEventListener(new Scene(simulation));
     }

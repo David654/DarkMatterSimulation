@@ -1,7 +1,7 @@
 package core.gui.listelements;
 
 import core.gui.core.GUIComponent;
-import core.simulation.physics.Body;
+import core.simulation.physics.body.Body;
 
 import javax.swing.*;
 import java.awt.*;

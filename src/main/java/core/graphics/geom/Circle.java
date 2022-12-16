@@ -1,6 +1,6 @@
 package core.graphics.geom;
 
-import com.jogamp.opengl.GL2;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Circle implements Drawable
 {
@@ -46,27 +46,17 @@ public class Circle implements Drawable
         this.radius = radius;
     }
 
-    public void draw(GL2 gl)
+    public void draw(ShapeRenderer shapeRenderer)
     {
-        gl.glBegin(GL2.GL_LINES);
-        for(int i = 0; i < numSegments; i++)
-        {
-            float theta = (float) (2f * Math.PI * i / numSegments);
-            gl.glVertex2f(x + (float) Math.cos(theta) * radius, (float) (y + Math.sin(theta) * radius));
-            gl.glVertex2f(x + (float) Math.cos(theta + 0.1) * radius, (float) (y + Math.sin(theta + 0.1) * radius));
-        }
-        gl.glEnd();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.circle(x, y, radius);
+        shapeRenderer.end();
     }
 
-    public void fill(GL2 gl)
+    public void fill(ShapeRenderer shapeRenderer)
     {
-        float angleIncrement = (float) (2 * Math.PI / numSegments);
-        gl.glBegin(GL2.GL_POLYGON);
-        for(int i = 0; i < numSegments; i++)
-        {
-            float theta = i * angleIncrement;
-            gl.glVertex2f(x + (float) Math.cos(theta) * radius, y + (float) Math.sin(theta) * radius);
-        }
-        gl.glEnd();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.circle(x, y, radius);
+        shapeRenderer.end();
     }
 }

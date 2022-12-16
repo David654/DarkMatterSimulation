@@ -34,7 +34,7 @@ public class ColorChooser extends JDialog implements GUIComponent
 
     private static boolean isSelectButtonPressed = false;
 
-    private ColorChooser(JComponent component, String title, Color initialColor)
+    private ColorChooser(Component component, String title, Color initialColor)
     {
         this.currColor = initialColor;
 
@@ -228,7 +228,7 @@ public class ColorChooser extends JDialog implements GUIComponent
         this.add(panel);
     }
 
-    public static Color showDialog(JComponent component, String title, Color initialColor)
+    public static Color showDialog(Component component, String title, Color initialColor)
     {
         new ColorChooser(component, title, initialColor);
 

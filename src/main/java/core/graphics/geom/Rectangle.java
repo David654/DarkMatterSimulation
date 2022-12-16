@@ -1,6 +1,6 @@
 package core.graphics.geom;
 
-import com.jogamp.opengl.GL2;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Rectangle implements Drawable
 {
@@ -57,37 +57,17 @@ public class Rectangle implements Drawable
         this.height = height;
     }
 
-    public void draw(GL2 gl)
+    public void draw(ShapeRenderer shapeRenderer)
     {
-        gl.glBegin(GL2.GL_LINES);
-        gl.glVertex2f(x, y);
-        gl.glVertex2f(x + width, y);
-        gl.glEnd();
-
-        gl.glBegin(GL2.GL_LINES);
-        gl.glVertex2f(x + width, y);
-        gl.glVertex2f(x + width, y + height);
-        gl.glEnd();
-
-        gl.glBegin(GL2.GL_LINES);
-        gl.glVertex2f(x + width, y + height);
-        gl.glVertex2f(x, y + height);
-        gl.glEnd();
-
-        gl.glBegin(GL2.GL_LINES);
-        gl.glVertex2f(x, y + height);
-        gl.glVertex2f(x, y);
-        gl.glEnd();
-
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.rect(x, y, width, height);
+        shapeRenderer.end();
     }
 
-    public void fill(GL2 gl)
+    public void fill(ShapeRenderer shapeRenderer)
     {
-        gl.glBegin(GL2.GL_QUADS);
-        gl.glVertex2f(x, y);
-        gl.glVertex2f(x + width, y);
-        gl.glVertex2f(x + width, y + height);
-        gl.glVertex2f(x, y + height);
-        gl.glEnd();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.rect(x, y, width, height);
+        shapeRenderer.end();
     }
 }

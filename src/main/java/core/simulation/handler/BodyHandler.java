@@ -1,9 +1,9 @@
 package core.simulation.handler;
 
-import com.jogamp.opengl.GL2;
-import core.math.vector.Vector2;
-import core.simulation.physics.Body;
-import core.simulation.physics.Constants;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import core.math.vector.Vector3;
+import core.simulation.physics.body.Body;
+import core.simulation.physics.PhysicsConstants;
 
 public class BodyHandler extends Handler<Body>
 {
@@ -12,8 +12,8 @@ public class BodyHandler extends Handler<Body>
         for(int i = 0; i < list.size(); i++)
         {
             Body body = list.get(i);
-            Vector2 position = body.getPosition();
-            body.setPosition(new Vector2(position.getX() + x * Constants.AU, position.getY() + y * Constants.AU));
+            Vector3 position = body.getPosition();
+            body.setPosition(new Vector3(position.getX() + x * PhysicsConstants.AU, position.getY() + y * PhysicsConstants.AU, position.getZ()));
 
             body.getOrbit().translate(x, y);
         }
@@ -37,14 +37,14 @@ public class BodyHandler extends Handler<Body>
         }
     }
 
-    public void render(GL2 gl)
+    public void render(ShapeRenderer shapeRenderer)
     {
         for(int i = 0; i < list.size(); i++)
         {
             Body body = list.get(i);
             if(body.isVisible())
             {
-                body.render(gl);
+                body.render(shapeRenderer);
             }
         }
     }

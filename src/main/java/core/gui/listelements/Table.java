@@ -1,7 +1,7 @@
 package core.gui.listelements;
 
 import core.gui.core.GUIComponent;
-import core.simulation.components.Simulation;
+import core.simulation.core.Simulation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -111,6 +111,7 @@ public class Table extends JPanel implements GUIComponent
         this.setLayout(new BorderLayout());
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+        scrollPane.setBorder(null);
         this.add(scrollPane, BorderLayout.CENTER);
 
         bodiesTotalLabel = new JLabel("Total: " + simulation.getBodyHandler().getSize());

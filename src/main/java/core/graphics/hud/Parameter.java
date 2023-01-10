@@ -13,6 +13,11 @@ public class Parameter
         this.units = units;
     }
 
+    public Parameter(String title, String value)
+    {
+        this(title, value, "");
+    }
+
     public String getTitle()
     {
         return title;

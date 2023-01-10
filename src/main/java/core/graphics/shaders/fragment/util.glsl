@@ -25,23 +25,23 @@ void rotateSphere(inout vec3 p, float f)
     pR(p.xz, f);
 }
 
-void rotateX(inout vec3 v, float theta)
+vec3 rotateX(in vec3 v, float theta)
 {
     float sin = sin(theta);
     float cos = cos(theta);
-    v *= mat3(1, 0, 0, 0, cos, -sin, 0, sin, cos);
+    return v *= mat3(1, 0, 0, 0, cos, -sin, 0, sin, cos);
 }
 
-void rotateY(inout vec3 v, float theta)
+vec3 rotateY(in vec3 v, float theta)
 {
     float sin = sin(theta);
     float cos = cos(theta);
-    v *= mat3(cos, 0, sin, 0, 1, 0, -sin, 0, cos);
+    return v *= mat3(cos, 0, sin, 0, 1, 0, -sin, 0, cos);
 }
 
-void rotateZ(inout vec3 v, float theta)
+vec3 rotateZ(in vec3 v, float theta)
 {
     float sin = sin(theta);
     float cos = cos(theta);
-    v *= mat3(cos, -sin, 0, sin, cos, 0, 0, 0, 1);
+    return v *= mat3(cos, -sin, 0, sin, cos, 0, 0, 0, 1);
 }

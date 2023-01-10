@@ -2,7 +2,7 @@ package core.math.vector;
 
 import core.math.matrix.Matrix3;
 
-public class Vector4 implements Vector<Vector4>
+public class Vector4 implements IVector<Vector4>
 {
     private double x;
     private double y;

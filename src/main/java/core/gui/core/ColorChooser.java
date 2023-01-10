@@ -3,9 +3,7 @@ package core.gui.core;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
@@ -303,6 +301,22 @@ public class ColorChooser extends JDialog implements GUIComponent
             }
         }
         return new int[] {-1, -1};
+    }
+
+    public void componentResized(ComponentEvent e) {
+
+    }
+
+    public void componentMoved(ComponentEvent e) {
+
+    }
+
+    public void componentShown(ComponentEvent e) {
+
+    }
+
+    public void componentHidden(ComponentEvent e) {
+
     }
 
     private class ColorWheelPanel extends JPanel implements MouseListener, MouseMotionListener

@@ -67,6 +67,11 @@ public class HUD
         parameters.add(parameter);
     }
 
+    public void addBlank()
+    {
+        parameters.add(new Parameter("", "", ""));
+    }
+
     public void setParameter(Parameter parameter)
     {
         for(int i = 0; i < parameters.size(); i++)

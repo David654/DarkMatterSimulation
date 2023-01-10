@@ -1,15 +1,16 @@
 package core.gui.core;
 
-import core.graphics.textures.TextureManager;
+import core.util.TextureUtils;
 import core.gui.listelements.ListElement;
 import core.gui.listelements.Table;
 import core.math.vector.Vector3;
 import core.simulation.core.Simulation;
-import core.simulation.physics.body.Body;
+import core.simulation.physics.celestialobjects.CelestialObject;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
 
 public class SimulationMenu extends JFrame implements GUIComponent
 {
@@ -51,10 +52,10 @@ public class SimulationMenu extends JFrame implements GUIComponent
 
         table = new Table(simulation);
 
-        for(int i = 0; i < simulation.getBodyHandler().getSize(); i++)
+        for(int i = 0; i < simulation.getStarSystem().getBodyHandler().getSize(); i++)
         {
-            Body body = simulation.getBodyHandler().get(i);
-            table.addListElement(new ListElement(body));
+            CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(i);
+            table.addListElement(new ListElement(celestialObject));
         }
 
         table.setPreferredSize(new Dimension(width / 2, height));
@@ -177,7 +178,7 @@ public class SimulationMenu extends JFrame implements GUIComponent
         gbc.weightx = 1;
         parameters.add(colorLabel, gbc);
 
-        selectedColorLabel = new JLabel(simulation.getBodyHandler().get(table.getSelectedIndex()).getColorString());
+        selectedColorLabel = new JLabel(simulation.getStarSystem().getBodyHandler().get(table.getSelectedIndex()).getColorString());
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.gridwidth = 1;
         gbc.gridx = 1;
@@ -197,12 +198,12 @@ public class SimulationMenu extends JFrame implements GUIComponent
 
         selectColorButton.addActionListener(e ->
         {
-            Color color = ColorChooser.showDialog(this, "Color Chooser", simulation.getBodyHandler().get(table.getSelectedIndex()).getColor());
+            Color color = ColorChooser.showDialog(this, "Color Chooser", simulation.getStarSystem().getBodyHandler().get(table.getSelectedIndex()).getColor());
             if(color != null)
             {
-                Body body = simulation.getBodyHandler().get(table.getSelectedIndex());
-                body.setColor(color);
-                selectedColorLabel.setText(body.getColorString());
+                CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(table.getSelectedIndex());
+                celestialObject.setColor(color);
+                selectedColorLabel.setText(celestialObject.getColorString());
             }
         });
 
@@ -248,13 +249,13 @@ public class SimulationMenu extends JFrame implements GUIComponent
         {
             if(table.isListElementClicked())
             {
-                Body body = simulation.getBodyHandler().get(table.getSelectedIndex());
-                nameField.setText(body.getName());
-                massField.setText(String.valueOf((body.getMass())));
-                velocityXField.setText(String.valueOf(body.getVelocity().getX()));
-                velocityYField.setText(String.valueOf(body.getVelocity().getY()));
-                velocityZField.setText(String.valueOf(body.getVelocity().getZ()));
-                selectedColorLabel.setText(body.getColorString());
+                CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(table.getSelectedIndex());
+                nameField.setText(celestialObject.getName());
+                massField.setText(String.valueOf((celestialObject.getMass())));
+                velocityXField.setText(String.valueOf(celestialObject.getVelocity().getX()));
+                velocityYField.setText(String.valueOf(celestialObject.getVelocity().getY()));
+                velocityZField.setText(String.valueOf(celestialObject.getVelocity().getZ()));
+                selectedColorLabel.setText(celestialObject.getColorString());
                 table.setListElementClicked(false);
             }
         });
@@ -279,23 +280,23 @@ public class SimulationMenu extends JFrame implements GUIComponent
 
     private void add()
     {
-        Body body = new Body(new Vector3(0, 0, 0), 10, 1e24, new Vector3(10f * 1000, 0, 0), 0, 0, "New Body", simulation);
-        body.setColor(Color.GRAY);
-        body.setTexture(TextureManager.DEFAULT_PLANET_TEXTURE_PATH);
-        simulation.getBodyHandler().add(body);
-        table.addListElement(new ListElement(body));
-        table.setSelectedIndex(simulation.getBodyHandler().getSize() - 1);
+        CelestialObject celestialObject = new CelestialObject(new Vector3(0, 0, 0), new Vector3(5000), 1e24, new Vector3(10f * 1000, 0, 0), 0, 0, 0, "New Body");
+        celestialObject.setColor(Color.GRAY);
+        celestialObject.setTexture(TextureUtils.DEFAULT_PLANET_TEXTURE_PATH);
+        simulation.getStarSystem().getBodyHandler().add(celestialObject);
+        table.addListElement(new ListElement(celestialObject));
+        table.setSelectedIndex(simulation.getStarSystem().getBodyHandler().getSize() - 1);
         removeButton.setEnabled(true);
     }
 
     private void remove()
     {
-        if(simulation.getBodyHandler().getSize() > 1)
+        if(simulation.getStarSystem().getBodyHandler().getSize() > 1)
         {
-            simulation.getBodyHandler().remove(simulation.getBodyHandler().get(table.getSelectedIndex()));
+            simulation.getStarSystem().getBodyHandler().remove(simulation.getStarSystem().getBodyHandler().get(table.getSelectedIndex()));
             table.removeListElement(table.getSelectedIndex());
         }
-        removeButton.setEnabled(simulation.getBodyHandler().getSize() > 1);
+        removeButton.setEnabled(simulation.getStarSystem().getBodyHandler().getSize() > 1);
     }
 
     private void reset()
@@ -311,23 +312,23 @@ public class SimulationMenu extends JFrame implements GUIComponent
 
     private void apply()
     {
-        Body body = simulation.getBodyHandler().get(table.getSelectedIndex());
-        body.setName(nameField.getText());
+        CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(table.getSelectedIndex());
+        celestialObject.setName(nameField.getText());
         if(parseDouble(massField))
         {
-            body.setMass(Double.parseDouble(massField.getText()));
+            celestialObject.setMass(Double.parseDouble(massField.getText()));
         }
 
         if(parseDouble(velocityXField))
         {
-            Vector3 velocity = body.getVelocity();
-            body.setVelocity(new Vector3(Double.parseDouble(velocityXField.getText()), velocity.getY(), velocity.getZ()));
+            Vector3 velocity = celestialObject.getVelocity();
+            celestialObject.setVelocity(new Vector3(Double.parseDouble(velocityXField.getText()), velocity.getY(), velocity.getZ()));
         }
 
         if(parseDouble(velocityYField))
         {
-            Vector3 velocity = body.getVelocity();
-            body.setVelocity(new Vector3(velocity.getX(), Double.parseDouble(velocityYField.getText()), velocity.getZ()));
+            Vector3 velocity = celestialObject.getVelocity();
+            celestialObject.setVelocity(new Vector3(velocity.getX(), Double.parseDouble(velocityYField.getText()), velocity.getZ()));
         }
     }
 
@@ -349,6 +350,23 @@ public class SimulationMenu extends JFrame implements GUIComponent
     public static void main(String[] args)
     {
         JFrame frame = new JFrame();
+
+    }
+
+    public void componentResized(ComponentEvent e) {
+
+    }
+
+    public void componentMoved(ComponentEvent e) {
+
+    }
+
+    public void componentShown(ComponentEvent e) {
+
+    }
+
+    public void componentHidden(ComponentEvent e)
+    {
 
     }
 }

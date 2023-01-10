@@ -1,8 +1,6 @@
 package core.math.vector;
 
-import core.math.matrix.Matrix3;
-
-public class Vector3 implements Vector<Vector3>
+public class Vector3 implements IVector<Vector3>
 {
     private double x;
     private double y;
@@ -11,6 +9,13 @@ public class Vector3 implements Vector<Vector3>
     public Vector3()
     {
         this(0, 0, 0);
+    }
+
+    public Vector3(double a)
+    {
+        this.x = a;
+        this.y = a;
+        this.z = a;
     }
 
     public Vector3(double x, double y, double z)
@@ -174,23 +179,5 @@ public class Vector3 implements Vector<Vector3>
     public Vector3 lerp(Vector3 vector, double amount)
     {
         return vector.subtract(this).multiply(amount).add(this);
-    }
-
-    public Vector3 multiply(Matrix3 matrix)
-    {
-        Vector3 vector = new Vector3();
-
-        vector.setX(vector.x + x * matrix.get(0, 0));
-        vector.setX(vector.x + y * matrix.get(0, 1));
-        vector.setX(vector.x + z * matrix.get(0, 2));
-
-        vector.setY(vector.y + x * matrix.get(1, 0));
-        vector.setY(vector.y + y * matrix.get(1, 1));
-        vector.setY(vector.y + z * matrix.get(1, 2));
-
-        vector.setZ(vector.z + x * matrix.get(2, 0));
-        vector.setZ(vector.z + y * matrix.get(2, 1));
-        vector.setZ(vector.z + z * matrix.get(2, 2));
-        return vector;
     }
 }

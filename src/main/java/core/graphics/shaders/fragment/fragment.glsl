@@ -8,17 +8,24 @@ mat3 getCam(vec3 ro, vec3 lookAt)
     return mat3(camR, camU, camF);
 }
 
-void mouseControl(inout vec3 ro)
+vec3 mouseControl(in vec3 ro)
 {
     vec2 m = uMousePos / uResolution - 0.5;
-    pR(ro.yz, m.y * PI * 0.5 - 0.5); // x axis
-    pR(ro.xz, m.x * 2 * PI); // y axis
+    vec3 p = uPositions[uSelectedBodyIndex];
+    mat3 translate = mat3(1, 0, -p.x, 0, 1, -p.y, 0, 0, -p.z);
+    //ro *= translate;
+    ro = rotateX(ro - p, m.y * PI * 0.5 - 0.5) + p;
+    ro = rotateY(ro - p, m.x * 2 * PI) + p;
+    //ro *= inverse(translate);
+    return ro;
+    //pR(ro.yz, ); // x axis
+    //pR(ro.xz, ); // y axis
 }
 
 vec3 getSky(in vec3 rd)
 {
-    rotateX(rd, 3 * PI / 2);
-    rotateZ(rd, 3 * PI / 2);
+    rd = rotateX(rd, 3 * PI / 2);
+    rd = rotateZ(rd, 3 * PI / 2);
 
     vec2 skyUV = vec2(atan(rd.x, rd.y), asin(rd.z) * 2.0) / PI * 0.5 + 0.5;
     return texture(uBackgroundTexture, skyUV).rgb;
@@ -27,43 +34,68 @@ vec3 getSky(in vec3 rd)
 vec3 render(in vec2 uv)
 {
     vec3 ro = uPos;
-    mouseControl(ro);
-    vec3 lookAt = vec3(0, 0, 0);
+    ro = mouseControl(ro);
+
+    vec3 lookAt = uPositions[0];
     vec3 rd = getCam(ro, lookAt) * normalize(vec3(uv, uFov));
 
+    vec3 lightPos[BODY_NUM_LIMIT];
+
+    int lightCount = 0;
+
+    for(int i = 0; i < uBodyNum; i++)
+    {
+        if(uIDs[i] == 1)
+        {
+            lightPos[lightCount] = -uPositions[i];
+            lightCount++;
+        }
+    }
+
+    vec4 object = rayMarch(ro, rd);
     vec3 col;
-    vec3 lightPos = vec3(0, 0, 0);
-    vec2 object = rayMarch(ro, rd);
-    vec3 background = vec3(0.53, 0.81, 0.92);
-    float sun = clamp(dot(lightPos, rd), 0.0, 1.0);
 
     if(object.x < uMaxDist)
     {
+        //rd = getCam(ro, lookAt) * normalize(vec3(uv, uFov));
         vec3 p = ro + object.x * rd;
-        col += getLight(p, rd, object.y, lightPos, getSky(rd));
 
-        if(object.y == 0)
-        {
-            vec3 planetPos = p + uPositions[0];
-            pR(planetPos.xz, -uRotationSpeeds[0] * uTime);
+        col = getLight(p, rd, object.y, lightPos, getSky(rd));
+
+        //vec4 antialiasing = getAntialiasing(p, ro, rd, lightPos, col, getSky(rd));
+        //col = mix(col, antialiasing.xyz / (0.001 + antialiasing.w), antialiasing.w);
+
+        //if(object.y == 0)
+        //{
+            //vec3 planetPos = p + uPositions[0];
+            //pR(planetPos.xz, -uRotationSpeeds[0] * uTime);
 
             //col += 1.0 - exp(-col);
-        }
+       // }
 
-        if(object.y == -1)
-        {
+        //if(object.y == -1)
+        //{
             //float tmp = density / float(sampleCount);
-        }
+        //}
     }
     else
     {
         col = getSky(rd);
-        vec2 pos = uv + normalize(lightPos).xy;
+        //vec2 pos = uv + normalize(lightPos).xy;
 
         //float d = abs(fSphere(uPositions[0], uRadiuses[0] * 2));
         //vec3 sun = vec3(1, 0.5, 0) * (1.0 - 0.1 * smoothstep(0.2, 0.5, 0.5));
         //col += 0.8 * sun * exp(-4.0 * d) * vec3(1.1, 1.0, 0.8);
         //col += 0.2 * sun * exp(-2.0 * d);
+    }
+
+    if(object.w >= 0)
+    {
+        vec3 glowColor = uColors[int(object.w)];
+        float glowValue = 0.6; // smaller - bigger
+        float glowSize = 0.7; // smaller - bigger
+        float glow = pow(object.z + glowValue, -glowSize);
+        col += glow * glowColor;
     }
 
     return col;

@@ -1,8 +1,13 @@
 #version 460
 
 const float PI = 3.1415926;
+const float E = 2.7182818;
 const float EPSILON = 0.0001;
-const int MAX_BODY_NUM = 10;
+const float G = 6.6743 * pow(10.0, -11);
+const float LIGHT_SPEED = 299792458.0;
+const float AU = 149597870700.0;
+const int BODY_NUM_LIMIT = 50;
+const int LIGHT_SOURCES_NUM = 1;
 
 uniform vec2 uResolution;
 uniform vec3 uCameraPos;
@@ -12,21 +17,33 @@ uniform float uFov;
 uniform vec2 uMousePos;
 uniform float uTime;
 uniform vec3 uPos;
+uniform mat4 uView;
+uniform vec3 uOffset;
+uniform int uSelectedBodyIndex;
 
-uniform vec3 uPositions[MAX_BODY_NUM];
-uniform float uRadiuses[MAX_BODY_NUM];
-uniform float uRotationSpeeds[MAX_BODY_NUM];
-uniform float uAxisInclinations[MAX_BODY_NUM];
-uniform sampler2D uTextures[MAX_BODY_NUM];
-uniform int uRings[MAX_BODY_NUM];
-uniform vec2 uRingRadiuses[MAX_BODY_NUM];
+uniform int uBodyNum;
+uniform int uLightSourcesNum;
+uniform float uIDs[BODY_NUM_LIMIT];
+uniform vec3 uPositions[BODY_NUM_LIMIT];
+uniform vec3 uDimensions[BODY_NUM_LIMIT];
+uniform float uMasses[BODY_NUM_LIMIT];
+uniform float uRotationSpeeds[BODY_NUM_LIMIT];
+uniform float uAxisInclinations[BODY_NUM_LIMIT];
+uniform vec3 uColors[BODY_NUM_LIMIT];
 
-uniform vec3 uDarkMatterPositions[MAX_BODY_NUM];
-uniform float uDarkMatterRadiuses1[MAX_BODY_NUM];
-uniform float uDarkMatterRadiuses2[MAX_BODY_NUM];
-uniform float uDarkMatterDensities[MAX_BODY_NUM];
+uniform sampler2D uTextures[BODY_NUM_LIMIT];
+uniform float uBump[BODY_NUM_LIMIT];
+uniform sampler2D uBumpTextures[BODY_NUM_LIMIT];
 
-uniform sampler2D uRingTextures[MAX_BODY_NUM];
+uniform int uRings[BODY_NUM_LIMIT];
+uniform vec2 uRingRadiuses[BODY_NUM_LIMIT];
+uniform sampler2D uRingTextures[BODY_NUM_LIMIT];
+
+uniform vec3 uDarkMatterPositions[BODY_NUM_LIMIT];
+uniform float uDarkMatterRadiuses1[BODY_NUM_LIMIT];
+uniform float uDarkMatterRadiuses2[BODY_NUM_LIMIT];
+uniform float uDarkMatterDensities[BODY_NUM_LIMIT];
+
 uniform sampler2D uBackgroundTexture;
 
 uniform int uEnableLighting;

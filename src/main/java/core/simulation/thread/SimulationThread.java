@@ -2,7 +2,7 @@ package core.simulation.thread;
 
 import core.simulation.core.Simulation;
 import core.simulation.physics.PhysicsConstants;
-import core.simulation.physics.body.Body;
+import core.simulation.physics.celestialobjects.CelestialObject;
 
 public class SimulationThread implements Runnable
 {
@@ -40,16 +40,22 @@ public class SimulationThread implements Runnable
         }
     }
 
-    private void update()
+    private synchronized void update(double time)
     {
         for(int i = start; i < end; i++)
         {
-            Body body = simulation.getBodyHandler().get(i);
-            body.update();
+            CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(i);
+            celestialObject.update(time);
+        }
+
+        for(int i = start; i < end; i++)
+        {
+            CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(i);
+            celestialObject.updatePosition();
         }
     }
 
-    public void run()
+    public synchronized void run()
     {
         long lastTime = System.nanoTime();
         double amountOfTicks = PhysicsConstants.TICK_RATE;
@@ -67,7 +73,7 @@ public class SimulationThread implements Runnable
             {
                 if(!simulation.isPaused())
                 {
-                    update();
+                    update(PhysicsConstants.TIME_STEP.apply(PhysicsConstants.DAYS));
                 }
                 delta--;
             }

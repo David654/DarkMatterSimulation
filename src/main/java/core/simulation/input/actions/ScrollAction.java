@@ -36,8 +36,9 @@ public class ScrollAction implements InputAction
 
     public void perform()
     {
-        InputSettings.MOUSE_SENSITIVITY_X -= amountX / 100f;
-        InputSettings.MOUSE_SENSITIVITY_Y -= amountY / 100f;
-        scene.setZoom(Math.min(scene.getZoom() - amountY, -0.8f));
+        //InputSettings.MOUSE_SENSITIVITY_X -= amountX / 400;
+      //  InputSettings.MOUSE_SENSITIVITY_Y -= amountY / 400;
+        scene.setZoom(scene.getZoom() - amountY);
+        //scene.setZoom(scene.getZoom() - amountY);
     }
 }

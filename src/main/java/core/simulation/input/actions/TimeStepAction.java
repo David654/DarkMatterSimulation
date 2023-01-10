@@ -4,7 +4,7 @@ import core.simulation.physics.PhysicsConstants;
 
 public class TimeStepAction implements InputAction
 {
-    private double days;
+    private double days = PhysicsConstants.DAYS;
 
     public double getDays()
     {

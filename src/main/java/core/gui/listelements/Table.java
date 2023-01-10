@@ -5,6 +5,8 @@ import core.simulation.core.Simulation;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.HierarchyEvent;
 import java.util.ArrayList;
 
 public class Table extends JPanel implements GUIComponent
@@ -32,7 +34,7 @@ public class Table extends JPanel implements GUIComponent
             selectedIndex = listElements.indexOf(element);
             isListElementClicked = true;
         });
-        bodiesTotalLabel.setText("Total: " + simulation.getBodyHandler().getSize());
+        bodiesTotalLabel.setText("Total: " + simulation.getStarSystem().getBodyHandler().getSize());
 
         table.removeAll();
         for(int i = 0; i < listElements.size(); i++)
@@ -57,7 +59,7 @@ public class Table extends JPanel implements GUIComponent
         ListElement element = listElements.get(index);
         GridBagConstraints gbc = new GridBagConstraints();
         listElements.remove(element);
-        bodiesTotalLabel.setText("Total: " + simulation.getBodyHandler().getSize());
+        bodiesTotalLabel.setText("Total: " + simulation.getStarSystem().getBodyHandler().getSize());
 
         table.remove(element);
         for(int i = 0; i < listElements.size(); i++)
@@ -114,10 +116,30 @@ public class Table extends JPanel implements GUIComponent
         scrollPane.setBorder(null);
         this.add(scrollPane, BorderLayout.CENTER);
 
-        bodiesTotalLabel = new JLabel("Total: " + simulation.getBodyHandler().getSize());
+        bodiesTotalLabel = new JLabel("Total: " + simulation.getStarSystem().getBodyHandler().getSize());
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
         panel.add(bodiesTotalLabel);
         this.add(panel, BorderLayout.SOUTH);
+    }
+
+    public void hierarchyChanged(HierarchyEvent e) {
+
+    }
+
+    public void componentResized(ComponentEvent e) {
+
+    }
+
+    public void componentMoved(ComponentEvent e) {
+
+    }
+
+    public void componentShown(ComponentEvent e) {
+
+    }
+
+    public void componentHidden(ComponentEvent e) {
+
     }
 }

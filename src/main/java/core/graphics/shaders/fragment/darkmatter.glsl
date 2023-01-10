@@ -21,7 +21,11 @@ float noise(in vec3 x)
 
 float fbm(vec3 p)
 {
+    mat3 m = mat3( 0.00,  0.80,  0.60,
+    -0.80,  0.36, -0.48,
+    -0.60, -0.48,  0.64);
     float f;
+
     f = 0.5000 * noise(p);
     p = m * p * 2.02;
     f += 0.2500 * noise(p);
@@ -34,11 +38,11 @@ vec2 mapDarkMatter(vec3 p)
 {
     vec2 res;
 
-    for(int i = 0; i < MAX_BODY_NUM; i++)
+    for(int i = 0; i < uBodyNum; i++)
     {
-        vec3 darkMatterPos = p + uDarkMatterPositions[i];
+        vec3 darkMatterPos = p + uPositions[0];
 
-        float darkMatterDist = fTorus(darkMatterPos, uDarkMatterRadiuses1[i], uDarkMatterRadiuses2[i]) + fbm(darkMatterPos * 0.3);
+        float darkMatterDist = fSphere(darkMatterPos, 10) + fbm(darkMatterPos * 0.9);
         float darkMatterID = -1;
         vec2 darkMatter = vec2(darkMatterDist, darkMatterID);
 

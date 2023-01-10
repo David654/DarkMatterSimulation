@@ -1,6 +1,6 @@
 package core.math.vector;
 
-public class Vector2 implements Vector<Vector2>
+public class Vector2 implements IVector<Vector2>
 {
     private double x;
     private double y;

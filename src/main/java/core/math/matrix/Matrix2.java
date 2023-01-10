@@ -1,27 +1,28 @@
 package core.math.matrix;
 
-import core.math.util.MathUtils;
+import core.math.vector.Vector2;
+import core.math.vector.Vector3;
 
-public class Matrix2 implements Matrix<Matrix2>
+public class Matrix2 implements IMatrix<Matrix2>
 {
-    private final float[][] matrix;
+    private final double[][] matrix;
 
     public Matrix2()
     {
-        this(new float[2][2]);
+        this(new double[2][2]);
     }
 
-    public Matrix2(float[][] matrix)
+    public Matrix2(double[][] matrix)
     {
         this.matrix = matrix;
     }
 
-    public float get(int i, int j)
+    public double get(int i, int j)
     {
         return matrix[i][j];
     }
 
-    public void set(int i, int j, float value)
+    public void set(int i, int j, double value)
     {
         matrix[i][j] = value;
     }
@@ -69,6 +70,14 @@ public class Matrix2 implements Matrix<Matrix2>
         return new Matrix2();
     }
 
+    public Matrix2 identity()
+    {
+        return new Matrix2(new double[][]{
+                {1, 0},
+                {0, 1},
+        });
+    }
+
     public Matrix2 abs()
     {
         Matrix2 matrix = new Matrix2();
@@ -77,7 +86,7 @@ public class Matrix2 implements Matrix<Matrix2>
         {
             for(int j = 0; j < 2; j++)
             {
-                matrix.set(i, j, MathUtils.abs(this.matrix[i][j]));
+                matrix.set(i, j, Math.abs(this.matrix[i][j]));
             }
         }
         return matrix;
@@ -91,7 +100,7 @@ public class Matrix2 implements Matrix<Matrix2>
         {
             for(int j = 0 ; j < 2; j++)
             {
-                b.set(i, j, MathUtils.min(this.get(i, j), matrix.get(i, j)));
+                b.set(i, j, Math.min(this.get(i, j), matrix.get(i, j)));
             }
         }
         return b;
@@ -105,9 +114,77 @@ public class Matrix2 implements Matrix<Matrix2>
         {
             for(int j = 0 ; j < 2; j++)
             {
-                b.set(i, j, MathUtils.max(this.get(i, j), matrix.get(i, j)));
+                b.set(i, j, Math.max(this.get(i, j), matrix.get(i, j)));
             }
         }
+        return b;
+    }
+
+    public Matrix2 rotate(double theta)
+    {
+        return new Matrix2(new double[][]{
+                {Math.cos(theta), -Math.sin(theta)},
+                {Math.sin(theta), Math.cos(theta)}
+        });
+    }
+
+    public Matrix2 add(Matrix2 matrix)
+    {
+
+        Matrix2 b = new Matrix2();
+
+        for(int i = 0; i < 2; i++)
+        {
+            for(int j = 0 ; j < 2; j++)
+            {
+                b.set(i, j, this.get(i, j) + matrix.get(i, j));
+            }
+        }
+        return b;
+    }
+
+    public Matrix2 subtract(Matrix2 matrix)
+    {
+        Matrix2 b = new Matrix2();
+
+        for(int i = 0; i < 2; i++)
+        {
+            for(int j = 0 ; j < 2; j++)
+            {
+                b.set(i, j, this.get(i, j) - matrix.get(i, j));
+            }
+        }
+        return b;
+    }
+
+    public Vector2 multiply(Vector2 vector)
+    {
+        Vector2 b = new Vector2();
+
+        b.setX(this.get(0, 0) * vector.getX() + this.get(0, 1) * vector.getY());
+        b.setY(this.get(1, 0) * vector.getX() + this.get(1, 1) * vector.getY());
+
+        return b;
+    }
+
+    public Matrix2 multiply(Matrix2 matrix)
+    {
+        Matrix2 b = new Matrix2();
+
+        for(int i = 0; i < 2; i++)
+        {
+            for(int j = 0 ; j < 2; j++)
+            {
+                double value = 0;
+
+                for(int k = 0; k < 2; k++)
+                {
+                    value += this.get(i, k) * matrix.get(k, j);
+                }
+                b.set(i, j, value);
+            }
+        }
+
         return b;
     }
 }

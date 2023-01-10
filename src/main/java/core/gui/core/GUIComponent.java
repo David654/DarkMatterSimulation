@@ -1,6 +1,8 @@
 package core.gui.core;
 
-public interface GUIComponent
+import java.awt.event.ComponentListener;
+
+public interface GUIComponent extends ComponentListener
 {
     void createAndShowGUI();
 }

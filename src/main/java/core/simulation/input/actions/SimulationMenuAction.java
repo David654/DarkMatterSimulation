@@ -15,6 +15,10 @@ public class SimulationMenuAction implements InputAction
     public void perform()
     {
         simulationMenu.setVisible(!simulationMenu.isVisible());
-        simulationMenu.toFront();
+        if(simulationMenu.isVisible())
+        {
+            simulationMenu.toFront();
+            //simulationMenu.setModal(true);
+        }
     }
 }

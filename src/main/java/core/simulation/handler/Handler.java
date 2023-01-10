@@ -26,6 +26,11 @@ public abstract class Handler<T>
         list.remove(t);
     }
 
+    public void set(int index, T t)
+    {
+        list.set(index, t);
+    }
+
     public void remove(int index)
     {
         list.remove(index);

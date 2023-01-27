@@ -1,32 +1,34 @@
 package core.gui.listelements;
 
-import core.gui.core.GUIComponent;
+import core.gui.components.GUIComponent;
 import core.simulation.physics.celestialobjects.CelestialObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.HierarchyEvent;
+import java.awt.event.*;
 
-public class ListElement extends JButton implements GUIComponent
+public class ListElement extends JButton implements GUIComponent, MouseListener
 {
+    private Table table;
     private CelestialObject celestialObject;
 
     private JLabel textLabel;
     private JCheckBox visibilityButton;
 
-    public ListElement(CelestialObject celestialObject)
+    public ListElement(Table table, CelestialObject celestialObject)
     {
+        this.table = table;
         this.celestialObject = celestialObject;
         createAndShowGUI();
+        this.addMouseListener(this);
     }
 
-    public CelestialObject getBody()
+    public CelestialObject getCelestialObject()
     {
         return celestialObject;
     }
 
-    public void setBody(CelestialObject celestialObject)
+    public void setCelestialObject(CelestialObject celestialObject)
     {
         this.celestialObject = celestialObject;
     }
@@ -49,23 +51,49 @@ public class ListElement extends JButton implements GUIComponent
         this.add(visibilityButton, BorderLayout.EAST);
     }
 
-    public void hierarchyChanged(HierarchyEvent e) {
+    @Override
+    public void componentResized(ComponentEvent e)
+    {
 
     }
 
-    public void componentResized(ComponentEvent e) {
+    @Override
+    public void componentMoved(ComponentEvent e)
+    {
 
     }
 
-    public void componentMoved(ComponentEvent e) {
+    @Override
+    public void componentShown(ComponentEvent e)
+    {
 
     }
 
-    public void componentShown(ComponentEvent e) {
+    @Override
+    public void componentHidden(ComponentEvent e)
+    {
 
     }
 
-    public void componentHidden(ComponentEvent e) {
-
+    @Override
+    public void mouseClicked(MouseEvent e)
+    {
+        table.setSelectedIndex(table.geIndexOfListElement(this));
+        if(e.getClickCount() == 2)
+        {
+            table.updateListElement(this);
+        }
     }
+
+    @Override
+    public void mousePressed(MouseEvent e) {}
+
+    @Override
+    public void mouseReleased(MouseEvent e) {}
+
+    @Override
+    public void mouseEntered(MouseEvent e) {}
+
+    @Override
+    public void mouseExited(MouseEvent e) {}
 }

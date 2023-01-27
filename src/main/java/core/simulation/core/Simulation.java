@@ -16,7 +16,7 @@ public class Simulation
 
     public Simulation()
     {
-        starSystem = new SolarSystem();
+        starSystem = new MarsAndMoonsSystem();
         initCelestialObjects();
         initDarkMatter();
         createThreads(1);

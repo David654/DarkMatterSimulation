@@ -29,6 +29,7 @@ uniform vec3 uDimensions[BODY_NUM_LIMIT];
 uniform float uMasses[BODY_NUM_LIMIT];
 uniform float uRotationSpeeds[BODY_NUM_LIMIT];
 uniform float uAxisInclinations[BODY_NUM_LIMIT];
+uniform float uApparentMagnitudes[BODY_NUM_LIMIT];
 uniform vec3 uColors[BODY_NUM_LIMIT];
 
 uniform sampler2D uTextures[BODY_NUM_LIMIT];

@@ -7,12 +7,17 @@ import core.simulation.physics.celestialobjects.Planet;
 import core.simulation.physics.celestialobjects.Ring;
 import core.simulation.physics.celestialobjects.Star;
 
+import java.awt.*;
+
 public final class BasicCelestialObjects
 {
     /**
      * Stars.
      */
-    public static CelestialObject SUN = new Star(new Vector3(0, 0, 0),  696_340, 1.989e30, new Vector3(0, 0, 0), 0, 0, "Sun");
+    public static CelestialObject SUN = new Star(new Vector3(0, 0, 0),  696_340, 1.989e30, new Vector3(0, 0, 0), 0, 7.25, 4.83, "Sun");
+    public static CelestialObject STEPHENSON_2_18 = new Star(new Vector3(0, 0, 0),  1.497131e9, 3.1824e31, new Vector3(0, 0, 0), 0, 0, 1.734, "Stephenson 2-18");
+    public static CelestialObject BETELGEUSE = new Star(new Vector3(0, 0, 0),  621_483_450, 3.53e31, new Vector3(0, 0, 0), 0, 0, 0.58,"Betelgeuse");
+    public static CelestialObject QUASAR_3C_273 = new Star(new Vector3(0, 0, 0),  270_916.869, 3.53e31, new Vector3(0, 0, 0), 0, 0, 12.9,"3C 273");
 
     /**
      * Planets.
@@ -30,8 +35,8 @@ public final class BasicCelestialObjects
      * Moons.
      */
     public static CelestialObject MOON = new Planet(new Vector3(-0.00257, 0, 0), 1738.1, 1736.0, 7.348e22, new Vector3(0, 0, 1.022), 16.7 / 3.6, 6.7, 5.1, "Moon");
-    public static CelestialObject PHOBOS = new Planet(new Vector3(-0.000040107, 0, 0), new Vector3(27, 22, 18), 1.0659e16, new Vector3(0, 0, 2.138), 11 / 3.6, 0, 26.04, "Phobos");
-    public static CelestialObject DEIMOS = new Planet(new Vector3(-0.00015682, 0, 0), new Vector3(15, 12.2, 11), 1.4762e15, new Vector3(0, 0, 1.3513), 11 / 3.6, 0, 27.58, "Deimos");
+    public static CelestialObject PHOBOS = new Planet(new Vector3(-0.000040107, 0, 0), new Vector3(27, 22, 18), 1.0659e16, new Vector3(0, 0, 2.138), 9.16 / 3.6, 0, 26.04, "Phobos");
+    public static CelestialObject DEIMOS = new Planet(new Vector3(-0.00015682, 0, 0), new Vector3(15, 12.2, 11), 1.4762e15, new Vector3(0, 0, 1.3513), 1.32 / 3.6, 0, 27.58, "Deimos");
     public static CelestialObject IO = new Planet(new Vector3(-0.002819, 0, 0), new Vector3(3660.0, 3637.4, 3630.6), 8.931938e22, new Vector3(0, 0, 17.334), 271 / 3.6, 0, 2.213, "Io");
     public static CelestialObject EUROPA = new Planet(new Vector3(-0.00448469, 0, 0), 1560.8, 4.799844e22, new Vector3(0, 0, 13.74336), 116.7 / 3.6, 0.1, 1.791, "Europa");
     public static CelestialObject GANYMEDE = new Planet(new Vector3(-0.0071552, 0, 0), 2634.1, 1.4819e23, new Vector3(0, 0, 10.880), 96.3 / 3.6, 0.33, 2.214, "Ganymede");
@@ -39,11 +44,18 @@ public final class BasicCelestialObjects
     public static CelestialObject DIONE = new Planet(new Vector3(-0.00252274, 0, 0), new Vector3(1128.8, 1122.6, 1119.2), 1.095452e21, new Vector3(0, 0, 16.72), 217.84 / 3.6, 0, 4.58, "Dione");
     public static CelestialObject ENCELADUS = new Planet(new Vector3(-0.00159058, 0, 0), new Vector3(513.2, 502.8, 496.6), 1.08022e20, new Vector3(0, 0, 12.64), 48.15 / 3.6, 0, 0.02, "Enceladus");
     public static CelestialObject HYPERION = new Planet(new Vector3(-0.00159058, 0, 0), new Vector3(360.2, 266.0, 205.4), 1.77e19, new Vector3(0, 0, 5.07), 174.17 / 3.6, 0, 0.02, "Hyperion");
-    public static CelestialObject IAPETUS = new Planet(new Vector3(-0.0238026, 0, 0), new Vector3(1492.0, 1492.0, 1424), 1.805635e21, new Vector3(0, 0, 3.26), 0.39 / 3.6, 0, 14.72, "Iapetus");
+    public static CelestialObject IAPETUS = new Planet(new Vector3(-0.0238026, 0, 0), new Vector3(1492.0, 1492.0, 1424), 1.805635e21, new Vector3(0, 0, 3.26), 2.409 / 3.6, 0, 14.72, "Iapetus");
     public static CelestialObject MIMAS = new Planet(new Vector3(-0.00124025, 0, 0), new Vector3(415.6, 393.4, 381.2), 3.7493e19, new Vector3(0, 0, 14.28), 55.104 / 3.6, 0, 1.53, "Mimas");
     public static CelestialObject RHEA = new Planet(new Vector3(-0.0035235, 0, 0), new Vector3(1532.4, 1525.6, 1524.4), 2.306518e21, new Vector3(0, 0, 8.48), 44.26 / 3.6, 0, 0.35, "Rhea");
     public static CelestialObject TETHYS = new Planet(new Vector3(-0.00196941, 0, 0), new Vector3(1076.8, 1057.4, 1052.6), 6.17449e20, new Vector3(0, 0, 11.35), 73.657 / 3.6, 0, 1.09, "Tethys");
     public static CelestialObject TITAN = new Planet(new Vector3(-0.0081677, 0, 0), 2574.73, 1.3452e23, new Vector3(0, 0, 5.57), 42.273 / 3.6, 0, 0.0292, "Titan");
+    public static CelestialObject ARIEL = new Planet(new Vector3(-0.001277, 0, 0), new Vector3(1162.2, 1155.8, 1155.4), 1.251e21, new Vector3(0, 0, 5.51), 60.132 / 3.6, 0, 0.31, "Ariel");
+    public static CelestialObject MIRANDA = new Planet(new Vector3(-0.0008675, 0, 0), new Vector3(480, 468.4, 465.8), 6.33e19, new Vector3(0, 0, 6.68), 43.674 / 3.6, 0, 4.22, "Miranda");
+    public static CelestialObject OBERON = new Planet(new Vector3(-0.00390059, 0, 0), 761.4, 3.03e21, new Vector3(0, 0, 3.15), 14.806 / 3.6, 0, 0.1, "Oberon");
+    public static CelestialObject TITANIA = new Planet(new Vector3(-0.0029139, 0, 0), 788.9, 3.49e21, new Vector3(0, 0, 3.64), 23.723 / 3.6, 0, 0.14, "Titania");
+    public static CelestialObject UMBRIEL = new Planet(new Vector3(-0.0017779, 0, 0), 584.7, 1.275e21, new Vector3(0, 0, 4.67), 36.937 / 3.6, 0, 0.36, "Umbriel");
+    public static CelestialObject TRITON = new Planet(new Vector3(-0.0023714, 0, 0), 1353.4, 2.1390e22, new Vector3(0, 0, 4.39), -60.291 / 3.6, 0, 157.35, "Triton");
+    public static CelestialObject CHARON = new Planet(new Vector3(-0.0001309, 0, 0), 635, 1.586e21, new Vector3(0, 0, 0.23), 26.027 / 3.6, 0, 98.80, "Charon");
 
     /**
      * Dwarf planets.
@@ -60,7 +72,9 @@ public final class BasicCelestialObjects
          * Colors.
          */
         // Stars.
-        SUN.setColor(TextureUtils.SUN_THUMBNAIL_PATH);
+        SUN.setColor(new Color(229, 79, 0));
+        STEPHENSON_2_18.setColor(new Color(243, 36, 13));
+        BETELGEUSE.setColor(new Color(220, 90, 1));
 
         // Planets.
         MERCURY.setColor(TextureUtils.MERCURY_THUMBNAIL_PATH);
@@ -89,6 +103,13 @@ public final class BasicCelestialObjects
         RHEA.setColor(TextureUtils.RHEA_THUMBNAIL_PATH);
         TETHYS.setColor(TextureUtils.TETHYS_THUMBNAIL_PATH);
         TITAN.setColor(TextureUtils.TITAN_THUMBNAIL_PATH);
+        ARIEL.setColor(TextureUtils.ARIEL_THUMBNAIL_PATH);
+        MIRANDA.setColor(TextureUtils.MIRANDA_THUMBNAIL_PATH);
+        OBERON.setColor(TextureUtils.OBERON_THUMBNAIL_PATH);
+        TITANIA.setColor(TextureUtils.TITANIA_THUMBNAIL_PATH);
+        UMBRIEL.setColor(TextureUtils.UMBRIEL_THUMBNAIL_PATH);
+        TRITON.setColor(TextureUtils.TRITON_THUMBNAIL_PATH);
+        CHARON.setColor(TextureUtils.CHARON_THUMBNAIL_PATH);
 
         // Dwarf planets.
         CERES.setColor(TextureUtils.CERES_THUMBNAIL_PATH);
@@ -101,7 +122,9 @@ public final class BasicCelestialObjects
          * Textures.
          */
         // Stars.
-        SUN.setTexture(TextureUtils.SUN_TEXTURE_PATH);
+        SUN.setTexture(TextureUtils.STAR_TEXTURE_PATH);
+        STEPHENSON_2_18.setTexture(TextureUtils.STAR_TEXTURE_PATH);
+        BETELGEUSE.setTexture(TextureUtils.STAR_TEXTURE_PATH);
 
         // Planets.
         MERCURY.setTexture(TextureUtils.MERCURY_TEXTURE_PATH);
@@ -129,6 +152,13 @@ public final class BasicCelestialObjects
         RHEA.setTexture(TextureUtils.RHEA_TEXTURE_PATH);
         TETHYS.setTexture(TextureUtils.TETHYS_TEXTURE_PATH);
         TITAN.setTexture(TextureUtils.TITAN_TEXTURE_PATH);
+        ARIEL.setTexture(TextureUtils.ARIEL_TEXTURE_PATH);
+        MIRANDA.setTexture(TextureUtils.MIRANDA_TEXTURE_PATH);
+        OBERON.setTexture(TextureUtils.OBERON_TEXTURE_PATH);
+        TITANIA.setTexture(TextureUtils.TITANIA_TEXTURE_PATH);
+        UMBRIEL.setTexture(TextureUtils.UMBRIEL_TEXTURE_PATH);
+        TRITON.setTexture(TextureUtils.TRITON_TEXTURE_PATH);
+        CHARON.setTexture(TextureUtils.CHARON_TEXTURE_PATH);
 
         // Dwarf planets.
         CERES.setTexture(TextureUtils.CERES_TEXTURE_PATH);

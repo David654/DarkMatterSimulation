@@ -68,6 +68,16 @@ vec3 getPlanet(vec3 p, float id, vec3 normal, vec3 bgColor)
 
     vec3 pos = normalize(p + uPositions[index]);
 
+    if(uIDs[index] == 1)
+    {
+        float waveSize = 0.01;
+        float ripple = 50.0;
+       // pos.y -= sin(((uTime * 0.1) + pos.x) * ripple) * waveSize;
+        //We do the reverse for x. I used cosine instead to make the uv.y and uv.x sync differently
+       // pos.x -= cos(((uTime * 0.1) + pos.y) * ripple) * waveSize;
+
+    }
+
     pos = rotateZ(pos, uAxisInclinations[index]);
     normal = rotateZ(normal, uAxisInclinations[index]);
     pR(pos.xz, -uRotationSpeeds[index] * uTime);

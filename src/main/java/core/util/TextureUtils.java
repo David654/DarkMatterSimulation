@@ -17,6 +17,11 @@ public final class TextureUtils
     public static final int LOW_QUALITY = 0;
 
     /**
+     * Icons.
+     */
+    public static final String APPLICATION_ICON_PATH = "src\\main\\resources\\logo\\logo 3.png";
+
+    /**
      * Directories.
      */
     public static final String PLANET_TEXTURE_DIRECTORY = "src\\main\\resources\\planets\\";
@@ -25,7 +30,7 @@ public final class TextureUtils
     /**
      * Stars.
      */
-    public static String SUN_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "sun\\sun";
+    public static String STAR_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "sun\\sun";
     public static String STEPHENSON_2_18_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "stephenson 2-18\\stephenson 2-18";
 
 
@@ -74,7 +79,7 @@ public final class TextureUtils
     public static String MIRANDA_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "miranda.jpg";
     public static String OBERON_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "oberon.jpg";
     public static String TITANIA_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "titania.jpg";
-    public static String UMBRIEL_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "umbriel.jpg";
+    public static String UMBRIEL_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "umbriel.png";
     public static String TRITON_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "neptune" + MOON_TEXTURE_DIRECTORY + "triton.jpg";
     public static String CHARON_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "pluto" + MOON_TEXTURE_DIRECTORY + "charon.jpg";
 
@@ -133,13 +138,13 @@ public final class TextureUtils
     public static String RHEA_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "rhea.jpg";
     public static String TETHYS_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "tethys.jpg";
     public static String TITAN_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "titan.jpg";
-    public static String ARIEL_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "ariel.jpg";
-    public static String MIRANDA_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "miranda.jpg";
-    public static String OBERON_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "oberon.jpg";
-    public static String TITANIA_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "titania.jpg";
-    public static String UMBRIEL_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "umbriel.jpg";
-    public static String TRITON_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "neptune" + MOON_TEXTURE_DIRECTORY + "triton.jpg";
-    public static String CHARON_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "pluto" + MOON_TEXTURE_DIRECTORY + "charon.jpg";
+    public static String ARIEL_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "ariel.jpg";
+    public static String MIRANDA_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "miranda.jpg";
+    public static String OBERON_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "oberon.jpg";
+    public static String TITANIA_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "titania.jpg";
+    public static String UMBRIEL_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "umbriel.png";
+    public static String TRITON_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "triton.jpg";
+    public static String CHARON_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "charon.jpg";
 
     // Dwarf planets.
     public static String PLUTO_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "pluto.jpg";
@@ -156,7 +161,7 @@ public final class TextureUtils
         {
             case HIGH_QUALITY ->
             {
-                SUN_TEXTURE_PATH += "_high.jpg";
+                STAR_TEXTURE_PATH += "_high.jpg";
                 STEPHENSON_2_18_TEXTURE_PATH += "_high.jpg";
 
                 MILKY_WAY_TEXTURE_PATH += "_high.jpg";
@@ -179,7 +184,7 @@ public final class TextureUtils
 
             case LOW_QUALITY ->
             {
-                SUN_TEXTURE_PATH += "_low.jpg";
+                STAR_TEXTURE_PATH += "_low.jpg";
                 STEPHENSON_2_18_TEXTURE_PATH += "_low.jpg";
 
                 MILKY_WAY_TEXTURE_PATH += "_low.jpg";

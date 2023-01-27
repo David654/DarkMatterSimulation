@@ -22,19 +22,19 @@ public class SaturnAndMoons extends StarSystem
 
     public void setRingScale()
     {
-        ringRadiusScale = r -> Math.pow(r, 1 / 1.5) * 0.000160555;
+        ringRadiusScale = r -> Math.pow(r, 1 / 1.52) * 0.000160555;
     }
 
     protected void initCelestialObjects()
     {
         celestialObjectHandler.add(BasicCelestialObjects.SATURN);
-        celestialObjectHandler.add(BasicCelestialObjects.DIONE);
+        celestialObjectHandler.add(BasicCelestialObjects.MIMAS);
         celestialObjectHandler.add(BasicCelestialObjects.ENCELADUS);
         celestialObjectHandler.add(BasicCelestialObjects.HYPERION);
-        celestialObjectHandler.add(BasicCelestialObjects.IAPETUS);
-        celestialObjectHandler.add(BasicCelestialObjects.MIMAS);
-        celestialObjectHandler.add(BasicCelestialObjects.RHEA);
         celestialObjectHandler.add(BasicCelestialObjects.TETHYS);
+        celestialObjectHandler.add(BasicCelestialObjects.DIONE);
+        celestialObjectHandler.add(BasicCelestialObjects.RHEA);
         celestialObjectHandler.add(BasicCelestialObjects.TITAN);
+        celestialObjectHandler.add(BasicCelestialObjects.IAPETUS);
     }
 }

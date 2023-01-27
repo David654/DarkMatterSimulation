@@ -1,16 +1,19 @@
 package core.gui.core;
 
-import core.util.TextureUtils;
+import core.gui.components.GUIComponent;
+import core.gui.grid.GridRow;
 import core.gui.listelements.ListElement;
 import core.gui.listelements.Table;
 import core.math.vector.Vector3;
 import core.simulation.core.Simulation;
 import core.simulation.physics.celestialobjects.CelestialObject;
+import core.util.Utils;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
+import java.util.function.IntConsumer;
 
 public class SimulationMenu extends JFrame implements GUIComponent
 {
@@ -20,13 +23,26 @@ public class SimulationMenu extends JFrame implements GUIComponent
 
     private JSplitPane mainPanel;
 
+    private JTabbedPane tabbedPane;
+
     private Table table;
     private JTextField nameField;
+    private JTextField positionXField;
+    private JTextField positionYField;
+    private JTextField positionZField;
+    private JTextField dimensionsXField;
+    private JTextField dimensionsYField;
+    private JTextField dimensionsZField;
     private JTextField massField;
     private JTextField velocityXField;
     private JTextField velocityYField;
     private JTextField velocityZField;
+    private JTextField rotationSpeedField;
+    private JTextField obliquityField;
+    private JTextField orbitalInclinationField;
     private JLabel selectedColorLabel;
+    private Color selectedColor;
+    private JButton selectColorButton;
     private JButton addButton;
     private JButton removeButton;
     private JButton applyButton;
@@ -39,10 +55,15 @@ public class SimulationMenu extends JFrame implements GUIComponent
         this.height = height;
         this.simulation = simulation;
         this.setSize(new Dimension(width, height));
-        this.setTitle("Control Panel");
+        this.setTitle("Simulation Menu");
         this.setLayout(new BorderLayout());
 
         createAndShowGUI();
+    }
+
+    public Simulation getSimulation()
+    {
+        return simulation;
     }
 
     public void createAndShowGUI()
@@ -50,177 +71,103 @@ public class SimulationMenu extends JFrame implements GUIComponent
         mainPanel = new JSplitPane();
         mainPanel.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
 
-        table = new Table(simulation);
+        tabbedPane = new JTabbedPane();
+        tabbedPane.putClientProperty("JTabbedPane.tabClosable", true);
+        tabbedPane.putClientProperty("JTabbedPane.tabCloseCallback", (IntConsumer) this::removeTab);
+        tabbedPane.putClientProperty("JTabbedPane.scrollButtonsPlacement", "both");
+        tabbedPane.putClientProperty("JTabbedPane.tabCloseToolTipText", "Close");
+        UIManager.put( "TabbedPane.showTabSeparators", true);
+        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+        table = new Table(this);
 
         for(int i = 0; i < simulation.getStarSystem().getBodyHandler().getSize(); i++)
         {
             CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(i);
-            table.addListElement(new ListElement(celestialObject));
+            table.addListElement(new ListElement(table, celestialObject));
         }
 
         table.setPreferredSize(new Dimension(width / 2, height));
         table.setBorder(new TitledBorder("Bodies"));
         //this.add(table, BorderLayout.NORTH);
         mainPanel.setTopComponent(table);
-
-        initParametersPanel();
+        mainPanel.setBottomComponent(tabbedPane);
 
         this.add(mainPanel, BorderLayout.CENTER);
         table.requestFocus();
     }
 
-    private void initParametersPanel()
+    private JScrollPane initParametersPanel()
     {
         JPanel parameters = new JPanel();
         parameters.setLayout(new GridBagLayout());
-        parameters.setBorder(new TitledBorder("Body parameters"));
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // name
-        JLabel nameLabel = new JLabel("Name: ");
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.insets = new Insets(0, 10, 0, 0);
-        gbc.weightx = 1;
-        parameters.add(nameLabel, gbc);
-
         nameField = new JTextField();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 3;
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        gbc.insets = new Insets(5, 0, 0, 10);
-        gbc.weightx = 1;
-        parameters.add(nameField, gbc);
-
-        // mass
-        JLabel massLabel = new JLabel("Mass: ");
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 1;
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.insets = new Insets(0, 10, 0, 0);
-        gbc.weightx = 1;
-        parameters.add(massLabel, gbc);
-
+        positionXField = new JTextField();
+        positionYField = new JTextField();
+        positionZField = new JTextField();
+        dimensionsXField = new JTextField();
+        dimensionsYField = new JTextField();
+        dimensionsZField = new JTextField();
         massField = new JTextField();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 3;
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.insets = new Insets(5, 0, 0, 10);
-        gbc.weightx = 1;
-        parameters.add(massField, gbc);
-
-        JLabel massLabel2 = new JLabel("kg");
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 1;
-        gbc.gridx = 4;
-        gbc.gridy = 1;
-        gbc.insets = new Insets(5, 0, 0, 10);
-        gbc.weightx = 1;
-        parameters.add(massLabel2, gbc);
-
-        // velocity x
-        JLabel velocityLabel = new JLabel("Velocity (x, y, z): ");
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 1;
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        gbc.insets = new Insets(0, 10, 0, 0);
-        gbc.weightx = 1;
-        parameters.add(velocityLabel, gbc);
-
         velocityXField = new JTextField();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 1;
-        gbc.gridx = 1;
-        gbc.gridy = 2;
-        gbc.insets = new Insets(5, 0, 0, 10);
-        gbc.weightx = 1;
-        parameters.add(velocityXField, gbc);
-
         velocityYField = new JTextField();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 1;
-        gbc.gridx = 2;
-        gbc.gridy = 2;
-        gbc.insets = new Insets(5, 0, 0, 10);
-        gbc.weightx = 1;
-        parameters.add(velocityYField, gbc);
-
         velocityZField = new JTextField();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 1;
-        gbc.gridx = 3;
-        gbc.gridy = 2;
-        gbc.insets = new Insets(5, 0, 0, 10);
-        gbc.weightx = 1;
-        parameters.add(velocityZField, gbc);
-
-        JLabel velocityLabel2 = new JLabel("m/s");
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 1;
-        gbc.gridx = 4;
-        gbc.gridy = 2;
-        gbc.insets = new Insets(5, 0, 0, 10);
-        gbc.weightx = 1;
-        parameters.add(velocityLabel2, gbc);
-
-        // color
-        JLabel colorLabel = new JLabel("Color: ");
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 1;
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.insets = new Insets(5, 10, 0, 0);
-        gbc.weightx = 1;
-        parameters.add(colorLabel, gbc);
-
+        rotationSpeedField = new JTextField();
+        obliquityField = new JTextField();
+        orbitalInclinationField = new JTextField();
         selectedColorLabel = new JLabel(simulation.getStarSystem().getBodyHandler().get(table.getSelectedIndex()).getColorString());
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 1;
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        gbc.insets = new Insets(5, 10, 0, 0);
-        gbc.weightx = 1;
-        parameters.add(selectedColorLabel, gbc);
+        selectColorButton = new JButton("Select");
 
-        JButton selectColorButton = new JButton("Select");
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridwidth = 1;
-        gbc.gridx = 2;
-        gbc.gridy = 4;
-        gbc.insets = new Insets(5, 0, 0, 10);
-        gbc.weightx = 1;
-        parameters.add(selectColorButton, gbc);
+        // Name.
+        GridRow nameRow = new GridRow(0, "Name");
+        nameRow.createAndShowGUI(gbc, 0, parameters, nameField);
+
+        // Position.
+        GridRow positionRow = new GridRow(1, "Position (x, y, z): ", "AU");
+        positionRow.createAndShowGUI(gbc, 0, parameters, positionXField, positionYField, positionZField);
+
+        // Dimensions.
+        GridRow dimensionsRow = new GridRow(2, "Dimensions (x, y, z): ", "km");
+        dimensionsRow.createAndShowGUI(gbc, 0, parameters, dimensionsXField, dimensionsYField, dimensionsZField);
+
+        // Mass.
+        GridRow massRow = new GridRow(3, "Mass: ", "kg");
+        massRow.createAndShowGUI(gbc, 0, parameters, massField);
+
+        // Velocity.
+        GridRow velocityRow = new GridRow(4, "Velocity (x, y, z): ", "km/s");
+        velocityRow.createAndShowGUI(gbc, 0, parameters, velocityXField, velocityYField, velocityZField);
+
+        // Rotation speed.
+        GridRow rotationSpeedRow = new GridRow(5, "Rotation speed: ", "km/h");
+        rotationSpeedRow.createAndShowGUI(gbc, 0, parameters, rotationSpeedField);
+
+        // Obliquity.
+        GridRow obliquityRow = new GridRow(6, "Obliquity: ", "degrees");
+        obliquityRow.createAndShowGUI(gbc, 0, parameters, obliquityField);
+
+        // Orbital inclination.
+        GridRow orbitalInclinationRow = new GridRow(7, "Orbital inclination: ", "degrees");
+        orbitalInclinationRow.createAndShowGUI(gbc, 0, parameters, orbitalInclinationField);
+
+        // Color
+        GridRow colorRow = new GridRow(8, "Color: ");
+        colorRow.createAndShowGUI(gbc, 0, parameters, selectedColorLabel, selectColorButton);
 
         selectColorButton.addActionListener(e ->
         {
             Color color = ColorChooser.showDialog(this, "Color Chooser", simulation.getStarSystem().getBodyHandler().get(table.getSelectedIndex()).getColor());
             if(color != null)
             {
-                CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(table.getSelectedIndex());
-                celestialObject.setColor(color);
-                selectedColorLabel.setText(celestialObject.getColorString());
+                selectedColor = color;
+                selectedColorLabel.setText(Utils.getColorString(selectedColor));
             }
         });
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-        // add
-        addButton = new JButton("Add");
-        addButton.setFocusable(false);
-        addButton.addActionListener(e -> add());
-        buttonPanel.add(addButton);
-
-        // remove
-        removeButton = new JButton("Remove");
-        removeButton.setFocusable(false);
-        removeButton.addActionListener(e -> remove());
-        buttonPanel.add(removeButton);
 
         // apply
         applyButton = new JButton("Apply");
@@ -233,8 +180,8 @@ public class SimulationMenu extends JFrame implements GUIComponent
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.gridwidth = 5;
         gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.insets = new Insets(40, 0, 0, 0);
+        gbc.gridy = 9;
+        gbc.insets = new Insets(0, 0, 0, 0);
         gbc.weightx = 1;
         gbc.weighty = 1;
         parameters.add(buttonPanel, gbc);
@@ -243,23 +190,7 @@ public class SimulationMenu extends JFrame implements GUIComponent
         scrollPane.getVerticalScrollBar().setUnitIncrement(10);
         scrollPane.setBorder(null);
         //this.add(scrollPane, BorderLayout.CENTER);
-        mainPanel.setBottomComponent(scrollPane);
-
-        Timer timer = new Timer(1, l ->
-        {
-            if(table.isListElementClicked())
-            {
-                CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(table.getSelectedIndex());
-                nameField.setText(celestialObject.getName());
-                massField.setText(String.valueOf((celestialObject.getMass())));
-                velocityXField.setText(String.valueOf(celestialObject.getVelocity().getX()));
-                velocityYField.setText(String.valueOf(celestialObject.getVelocity().getY()));
-                velocityZField.setText(String.valueOf(celestialObject.getVelocity().getZ()));
-                selectedColorLabel.setText(celestialObject.getColorString());
-                table.setListElementClicked(false);
-            }
-        });
-        timer.start();
+        //mainPanel.setBottomComponent(scrollPane);
 
 
         // simulation controls
@@ -275,28 +206,104 @@ public class SimulationMenu extends JFrame implements GUIComponent
         pauseButton.addActionListener(e -> pause());
         simulationPanel.add(pauseButton);
 
-        this.add(simulationPanel, BorderLayout.SOUTH);
+        //this.add(simulationPanel, BorderLayout.SOUTH);
+
+        return scrollPane;
     }
 
-    private void add()
+    public void addTab()
     {
-        CelestialObject celestialObject = new CelestialObject(new Vector3(0, 0, 0), new Vector3(5000), 1e24, new Vector3(10f * 1000, 0, 0), 0, 0, 0, "New Body");
-        celestialObject.setColor(Color.GRAY);
-        celestialObject.setTexture(TextureUtils.DEFAULT_PLANET_TEXTURE_PATH);
-        simulation.getStarSystem().getBodyHandler().add(celestialObject);
-        table.addListElement(new ListElement(celestialObject));
-        table.setSelectedIndex(simulation.getStarSystem().getBodyHandler().getSize() - 1);
-        removeButton.setEnabled(true);
-    }
+        CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(table.getSelectedIndex());
 
-    private void remove()
-    {
-        if(simulation.getStarSystem().getBodyHandler().getSize() > 1)
+        boolean contains = false;
+        for(int i = 0; i < tabbedPane.getTabCount(); i++)
         {
-            simulation.getStarSystem().getBodyHandler().remove(simulation.getStarSystem().getBodyHandler().get(table.getSelectedIndex()));
-            table.removeListElement(table.getSelectedIndex());
+            if(tabbedPane.getTitleAt(i).equals(celestialObject.getName()))
+            {
+                contains = true;
+                break;
+            }
         }
-        removeButton.setEnabled(simulation.getStarSystem().getBodyHandler().getSize() > 1);
+
+        if(!contains)
+        {
+            tabbedPane.addTab(celestialObject.getName(), initParametersPanel());
+            updateData();
+            tabbedPane.revalidate();
+            tabbedPane.repaint();
+        }
+
+        for(int i = 0; i < tabbedPane.getTabCount(); i++)
+        {
+            if(tabbedPane.getTitleAt(i).equals(celestialObject.getName()))
+            {
+                tabbedPane.setSelectedIndex(i);
+                break;
+            }
+        }
+    }
+
+    public int getIndexOfTab(String title)
+    {
+        for(int i = 0; i < tabbedPane.getTabCount(); i++)
+        {
+            if(tabbedPane.getTitleAt(i).equals(title))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void removeTab(int index)
+    {
+        if(tabbedPane.getTabCount() > 0)
+        {
+            tabbedPane.remove(index);
+            tabbedPane.revalidate();
+            tabbedPane.repaint();
+        }
+    }
+
+    public void updateData()
+    {
+        CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(table.getSelectedIndex());
+
+        // Name.
+        nameField.setText(celestialObject.getName());
+
+        // Position.
+        Vector3 position = celestialObject.getPosition();
+        positionXField.setText(String.valueOf(position.getX()));
+        positionYField.setText(String.valueOf(position.getY()));
+        positionZField.setText(String.valueOf(position.getZ()));
+
+        // Dimensions.
+        Vector3 dimensions = celestialObject.getDimensions();
+        dimensionsXField.setText(String.valueOf(dimensions.getX()));
+        dimensionsYField.setText(String.valueOf(dimensions.getY()));
+        dimensionsZField.setText(String.valueOf(dimensions.getZ()));
+
+        // Mass.
+        massField.setText(String.valueOf((celestialObject.getMass())));
+
+        // Velocity.
+        Vector3 velocity = celestialObject.getVelocity();
+        velocityXField.setText(String.valueOf(velocity.getX()));
+        velocityYField.setText(String.valueOf(velocity.getY()));
+        velocityZField.setText(String.valueOf(velocity.getZ()));
+
+        // Rotation speed.
+        rotationSpeedField.setText(String.valueOf(celestialObject.getRotationSpeed()));
+
+        // Obliquity.
+        obliquityField.setText(String.valueOf(celestialObject.getObliquity()));
+
+        // Orbital inclination.
+        orbitalInclinationField.setText(String.valueOf(celestialObject.getOrbitalInclination()));
+
+        // Color.
+        selectedColorLabel.setText(celestialObject.getColorString());
     }
 
     private void reset()
@@ -314,22 +321,44 @@ public class SimulationMenu extends JFrame implements GUIComponent
     {
         CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(table.getSelectedIndex());
         celestialObject.setName(nameField.getText());
-        if(parseDouble(massField))
-        {
-            celestialObject.setMass(Double.parseDouble(massField.getText()));
-        }
 
-        if(parseDouble(velocityXField))
-        {
-            Vector3 velocity = celestialObject.getVelocity();
-            celestialObject.setVelocity(new Vector3(Double.parseDouble(velocityXField.getText()), velocity.getY(), velocity.getZ()));
-        }
+        // Position.
+        Vector3 lastPosition = celestialObject.getPosition();
+        Vector3 position = new Vector3(Utils.parseDouble(lastPosition.getX(), positionXField.getText()), Utils.parseDouble(lastPosition.getY(), positionYField.getText()),
+                Utils.parseDouble(lastPosition.getZ(), positionZField.getText()));
+        celestialObject.setPosition(position);
 
-        if(parseDouble(velocityYField))
+        // Dimensions.
+        Vector3 lastDimensions = celestialObject.getDimensions();
+        Vector3 dimensions = new Vector3(Utils.parseDouble(lastDimensions.getX(), dimensionsXField.getText()), Utils.parseDouble(lastDimensions.getY(), dimensionsYField.getText()),
+                Utils.parseDouble(lastDimensions.getZ(), dimensionsZField.getText()));
+        celestialObject.setDimensions(dimensions);
+
+        // Mass.
+        celestialObject.setMass(Utils.parseDouble(celestialObject.getMass(), massField.getText()));
+
+        // Velocity.
+        Vector3 lastVelocity = celestialObject.getVelocity();
+        Vector3 velocity = new Vector3(Utils.parseDouble(lastVelocity.getX(), velocityXField.getText()), Utils.parseDouble(lastVelocity.getY(), velocityYField.getText()),
+                Utils.parseDouble(lastVelocity.getZ(), velocityZField.getText()));
+        celestialObject.setVelocity(velocity);
+
+        // Rotation speed.
+        celestialObject.setRotationSpeed(Utils.parseDouble(celestialObject.getRotationSpeed(), rotationSpeedField.getText()));
+
+        // Obliquity.
+        celestialObject.setObliquity(Utils.parseDouble(celestialObject.getObliquity(), obliquityField.getText()));
+
+        // Orbital inclination.
+        celestialObject.setOrbitalInclination(Utils.parseDouble(celestialObject.getOrbitalInclination(), orbitalInclinationField.getText()));
+
+        // Color.
+        if(selectedColor == null)
         {
-            Vector3 velocity = celestialObject.getVelocity();
-            celestialObject.setVelocity(new Vector3(velocity.getX(), Double.parseDouble(velocityYField.getText()), velocity.getZ()));
+            selectedColor = celestialObject.getColor();
         }
+        celestialObject.setColor(selectedColor);
+        selectedColor = null;
     }
 
     private boolean parseDouble(JTextField textField)
@@ -345,12 +374,6 @@ public class SimulationMenu extends JFrame implements GUIComponent
             textField.setForeground(new Color(199, 84, 80));
         }
         return false;
-    }
-
-    public static void main(String[] args)
-    {
-        JFrame frame = new JFrame();
-
     }
 
     public void componentResized(ComponentEvent e) {

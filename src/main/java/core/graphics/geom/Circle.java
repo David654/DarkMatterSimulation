@@ -2,7 +2,7 @@ package core.graphics.geom;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Circle implements Drawable
+public class Circle
 {
     private float x;
     private float y;

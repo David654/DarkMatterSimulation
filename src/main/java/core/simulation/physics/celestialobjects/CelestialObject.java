@@ -8,6 +8,7 @@ import core.util.MathUtils;
 import core.math.vector.Vector3;
 import core.simulation.handler.CelestialObjectHandler;
 import core.simulation.physics.PhysicsConstants;
+import core.util.Utils;
 
 import java.awt.*;
 
@@ -62,7 +63,7 @@ public class CelestialObject
     /**
      * The angle between the body's rotational axis and its orbital axis.
      */
-    private double axialTilt;
+    private double obliquity;
 
     /**
      * The color of the body.
@@ -126,7 +127,7 @@ public class CelestialObject
      * @param velocity the velocity of the body
      * @param name the name of the body
      */
-    public CelestialObject(Vector3 initialPosition, Vector3 dimensions, double mass, Vector3 velocity, double rotationSpeed, double axialTilt, double orbitalInclination, String name)
+    public CelestialObject(Vector3 initialPosition, Vector3 dimensions, double mass, Vector3 velocity, double rotationSpeed, double obliquity, double orbitalInclination, String name)
     {
         this.initialPosition = initialPosition;
      //   this.initialPosition = MathUtils.rotateZ(initialPosition, Math.toRadians(orbitalInclination));
@@ -142,7 +143,7 @@ public class CelestialObject
         initialVelocity = this.velocity;
         acceleration = new Vector3();
         this.rotationSpeed = rotationSpeed;
-        this.axialTilt = axialTilt;
+        this.obliquity = obliquity;
         this.orbitalInclination = orbitalInclination;
         this.name = name;
         texture = new Texture(TextureUtils.DEFAULT_PLANET_TEXTURE_PATH);
@@ -155,7 +156,7 @@ public class CelestialObject
     {
         CelestialObject object = (CelestialObject) o;
         return position.equals(object.getPosition()) && dimensions.equals(object.getDimensions()) && mass == object.getMass()
-                && velocity.equals(object.getVelocity()) && rotationSpeed == object.getRotationSpeed() && axialTilt == object.getAxialTilt()
+                && velocity.equals(object.getVelocity()) && rotationSpeed == object.getRotationSpeed() && obliquity == object.getObliquity()
                 && orbitalInclination == object.getOrbitalInclination() && name.equals(object.getName());
     }
 
@@ -242,14 +243,14 @@ public class CelestialObject
         this.rotationSpeed = rotationSpeed;
     }
 
-    public double getAxialTilt()
+    public double getObliquity()
     {
-        return axialTilt;
+        return obliquity;
     }
 
-    public void setAxialTilt(double axialTilt)
+    public void setObliquity(double obliquity)
     {
-        this.axialTilt = axialTilt;
+        this.obliquity = obliquity;
     }
 
     public double getOrbitalInclination()
@@ -269,7 +270,7 @@ public class CelestialObject
 
     public String getColorString()
     {
-        return "rgb(" + color.getRed() + ", " + color.getGreen() + ", " + color.getBlue() + ")";
+        return Utils.getColorString(color);
     }
 
     public void setColor(Color color)
@@ -456,6 +457,11 @@ public class CelestialObject
                 velocity = velocity.add(dvdt);
                 position = position.add(dxdt);
             }
+        }
+
+        if(name.equals("Earth"))
+        {
+            //System.out.println(velocity);
         }
 
        // tmpVelocity = tmpVelocity.subtract(velocity.subtract(lastVelocity));

@@ -50,21 +50,13 @@ vec3 getLight(vec3 p, vec3 rd, float id, vec3 lightPos[BODY_NUM_LIMIT], vec3 bgC
     vec3 V = -rd;
     vec3 N = getNormal(p);
     vec3 col = getPlanet(p, id, N, bgColor);
-    int lightSourcesNum = uLightSourcesNum;
-
-    if(lightSourcesNum == 0)
-    {
-        lightPos[0] == -vec3(0, -100, 0);
-        lightSourcesNum++;
-        return col;
-    }
 
     if(id == -1)
     {
         return col;
     }
 
-    for(int i = 0; i < lightSourcesNum; i++)
+    for(int i = 0; i < uLightSourcesNum; i++)
     {
         vec3 L = normalize(lightPos[i] - p);
         vec3 R = reflect(-L, N);

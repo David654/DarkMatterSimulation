@@ -4,7 +4,6 @@ import core.math.vector.Vector3;
 
 public class Planet extends CelestialObject
 {
-
     /**
      * Constructor.
      *

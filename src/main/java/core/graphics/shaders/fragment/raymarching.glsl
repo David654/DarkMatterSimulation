@@ -2,9 +2,33 @@ vec4 rayMarch(vec3 ro, inout vec3 rd)
 {
     vec3 initialRd = rd;
     vec2 hit;
-    vec2 object = vec2(0, -2);
+    vec2 object;
+    vec2 star;
     vec3 p = ro;
     vec2 nearest = vec2(3.402823466e+38, -2);
+
+    for(int i = 0; i < uMaxSteps; i++)
+    {
+        hit = mapStars(p);
+        star.x += hit.x;
+        star.y = hit.y;
+        int index = int(star.y) - 1;
+
+        if(hit.x < nearest.x)
+        {
+            nearest = vec2(hit.x, index);
+        }
+
+        if(abs(hit.x) < EPSILON || star.x > uMaxDist)
+        {
+            break;
+        }
+
+        p += rd * hit.x;
+    }
+
+    p = ro;
+    hit = vec2(0);
 
     for(int i = 0; i < uMaxSteps; i++)
     {
@@ -14,7 +38,6 @@ vec4 rayMarch(vec3 ro, inout vec3 rd)
         object.x += hit.x;
         object.y = hit.y;
         int index = int(object.y) - 1;
-
 
         //float theta = 2 * G * uMasses[int(object.y) - 1] / (hit.x * AU * pow(LIGHT_SPEED, 2));
 
@@ -45,12 +68,16 @@ vec4 rayMarch(vec3 ro, inout vec3 rd)
 
         //dist = 0.1 / dist;
 
-        if(uIDs[index] == 1 && hit.x < nearest.x)
+        if(abs(hit.x) < EPSILON)
         {
-            nearest = vec2(hit.x, index);
+            if(uIDs[index] != 1 && star.x > object.x)
+            {
+                nearest = vec2(3.402823466e+38, -2);
+            }
+            break;
         }
 
-        if(abs(hit.x) < EPSILON || object.x > uMaxDist)
+        if(object.x > uMaxDist)
         {
             break;
         }

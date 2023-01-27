@@ -1,5 +1,7 @@
 package core.gui.core;
 
+import core.gui.components.GUIComponent;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;

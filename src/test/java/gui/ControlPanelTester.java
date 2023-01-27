@@ -21,6 +21,7 @@ public class ControlPanelTester extends GUITester
     {
         Simulation simulation = new Simulation();
         SimulationMenu simulationMenu = new SimulationMenu(windowWidth, windowHeight, simulation);
+        simulationMenu.setVisible(true);
         window.add(simulationMenu, BorderLayout.CENTER);
     }
 }

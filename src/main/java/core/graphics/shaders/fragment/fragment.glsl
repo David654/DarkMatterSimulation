@@ -14,8 +14,10 @@ vec3 mouseControl(in vec3 ro)
     vec3 p = uPositions[uSelectedBodyIndex];
     mat3 translate = mat3(1, 0, -p.x, 0, 1, -p.y, 0, 0, -p.z);
     //ro *= translate;
-    ro = rotateX(ro - p, m.y * PI * 0.5 - 0.5) + p;
-    ro = rotateY(ro - p, m.x * 2 * PI) + p;
+    //ro = rotateX(ro - p, m.y * PI * 0.5 - 0.5) + p;
+    //ro = rotateY(ro - p, m.x * 2 * PI) + p;
+    ro = rotateX(ro, m.y * PI * 0.5 - 0.5);
+    ro = rotateY(ro, m.x * 2 * PI);
     //ro *= inverse(translate);
     return ro;
     //pR(ro.yz, ); // x axis
@@ -34,9 +36,10 @@ vec3 getSky(in vec3 rd)
 vec3 render(in vec2 uv)
 {
     vec3 ro = uPos;
+
     ro = mouseControl(ro);
 
-    vec3 lookAt = uPositions[0];
+    vec3 lookAt = vec3(0);
     vec3 rd = getCam(ro, lookAt) * normalize(vec3(uv, uFov));
 
     vec3 lightPos[BODY_NUM_LIMIT];
@@ -52,6 +55,11 @@ vec3 render(in vec2 uv)
         }
     }
 
+    if(lightCount == 0)
+    {
+        lightPos[0] = vec3(1000, 0, 0);
+    }
+
     vec4 object = rayMarch(ro, rd);
     vec3 col;
 
@@ -61,6 +69,15 @@ vec3 render(in vec2 uv)
         vec3 p = ro + object.x * rd;
 
         col = getLight(p, rd, object.y, lightPos, getSky(rd));
+
+        if(uIDs[int(object.y) - 1] == 1)
+        {
+            vec3 accentCol = uColors[int(object.w)];
+            vec3 gray = vec3((col.r + col.g + col.b) / 3.0);
+            vec3 diff = vec3(0.5) - gray;
+            col = accentCol - diff;
+            col = clamp(col, vec3(0), vec3(1));
+        }
 
         //vec4 antialiasing = getAntialiasing(p, ro, rd, lightPos, col, getSky(rd));
         //col = mix(col, antialiasing.xyz / (0.001 + antialiasing.w), antialiasing.w);
@@ -89,11 +106,11 @@ vec3 render(in vec2 uv)
         //col += 0.2 * sun * exp(-2.0 * d);
     }
 
-    if(object.w >= 0)
+    if(uIDs[int(object.w)] == 1)
     {
         vec3 glowColor = uColors[int(object.w)];
-        float glowValue = 0.6; // smaller - bigger
-        float glowSize = 0.7; // smaller - bigger
+        float glowValue = abs(0.3 * 4.83 / uApparentMagnitudes[int(object.w)]); // smaller - bigger
+        float glowSize = 0.55; // smaller - bigger
         float glow = pow(object.z + glowValue, -glowSize);
         col += glow * glowColor;
     }

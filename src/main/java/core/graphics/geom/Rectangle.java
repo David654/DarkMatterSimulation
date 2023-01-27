@@ -2,7 +2,7 @@ package core.graphics.geom;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Rectangle implements Drawable
+public class Rectangle
 {
     private float x;
     private float y;

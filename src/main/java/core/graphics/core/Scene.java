@@ -7,17 +7,18 @@ package core.graphics.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import core.graphics.hud.HUD;
-import core.graphics.hud.Parameter;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
+import core.graphics.hud.core.HUD;
+import core.graphics.hud.core.Parameter;
 import core.graphics.shaders.Shader;
+import core.util.FontUtils;
 import core.util.TextureUtils;
 import core.util.MathUtils;
 import core.math.vector.Vector2;
@@ -36,13 +37,12 @@ import core.simulation.physics.darkmatter.DarkMatter;
 import core.util.TimeUtils;
 import org.lwjgl.opengl.GL20;
 
-import java.awt.*;
+import java.awt.Color;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Scene extends ScreenAdapter implements Runnable
+public final class Scene extends ScreenAdapter implements Runnable
 {
     /**
      * Simulation.
@@ -52,7 +52,7 @@ public class Scene extends ScreenAdapter implements Runnable
     private Camera camera;
     private double time;
     private double simulationTime;
-    private double zoom = -100;
+    private double zoom = 1;
     private double scale = 14;
     private int selectedBodyIndex = 0;
     private Vector3 offset;
@@ -75,7 +75,9 @@ public class Scene extends ScreenAdapter implements Runnable
     private OrthographicCamera orthographicCamera;
     private SpriteBatch spriteBatch;
     private SpriteBatch spriteBatch2;
-    private BitmapFont font;
+    private Mesh mesh;
+    private BitmapFont titleFont;
+    private BitmapFont basicFont;
     private FrameBuffer frameBuffer;
     private HUD hud;
     private Preset preset;
@@ -96,6 +98,8 @@ public class Scene extends ScreenAdapter implements Runnable
     private boolean showGrid = false;
     private final Calendar calendar = Calendar.getInstance();
     private LocalDateTime dateTime = LocalDateTime.now();
+
+    private Skin skin;
 
 
     /**
@@ -202,17 +206,18 @@ public class Scene extends ScreenAdapter implements Runnable
         orthographicCamera.position.set(0, 0, 0);
 
         spriteBatch = new SpriteBatch();
-        spriteBatch.setProjectionMatrix(orthographicCamera.combined);
+        //spriteBatch.setProjectionMatrix(orthographicCamera.combined);
 
         spriteBatch2 = new SpriteBatch();
-        spriteBatch2.setProjectionMatrix(orthographicCamera.combined);
+       // spriteBatch2.setProjectionMatrix(orthographicCamera.combined);
 
         sprite = new Sprite();
         sprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         sprite2 = new Sprite();
         sprite2.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        font = new BitmapFont();
+        titleFont = FontUtils.createFont("src\\main\\resources\\fonts\\nasalization.otf", 160);
+        basicFont = FontUtils.createFont("src\\main\\resources\\fonts\\nasalization.otf", 14);
 
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
@@ -221,6 +226,67 @@ public class Scene extends ScreenAdapter implements Runnable
 
         Gdx.graphics.setVSync(preset.isVSYNCEnabled());
         Gdx.graphics.setForegroundFPS(1000);
+
+
+        float[] verts = new float[30];
+        int i = 0;
+        float x,y; // Mesh location in the world
+        float width,height; // Mesh width and height
+
+        x = y = 50f;
+        width = height = 300f;
+
+        //Top Left Vertex Triangle 1
+        verts[i++] = x;   //X
+        verts[i++] = y + height; //Y
+        verts[i++] = 0;    //Z
+        verts[i++] = 0f;   //U
+        verts[i++] = 0f;   //V
+
+        //Top Right Vertex Triangle 1
+        verts[i++] = x + width;
+        verts[i++] = y + height;
+        verts[i++] = 0;
+        verts[i++] = 1f;
+        verts[i++] = 0f;
+
+        //Bottom Left Vertex Triangle 1
+        verts[i++] = x;
+        verts[i++] = y;
+        verts[i++] = 0;
+        verts[i++] = 0f;
+        verts[i++] = 1f;
+
+        //Top Right Vertex Triangle 2
+        verts[i++] = x + width;
+        verts[i++] = y + height;
+        verts[i++] = 0;
+        verts[i++] = 1f;
+        verts[i++] = 0f;
+
+        //Bottom Right Vertex Triangle 2
+        verts[i++] = x + width;
+        verts[i++] = y;
+        verts[i++] = 0;
+        verts[i++] = 1f;
+        verts[i++] = 1f;
+
+        //Bottom Left Vertex Triangle 2
+        verts[i++] = x;
+        verts[i++] = y;
+        verts[i++] = 0;
+        verts[i++] = 0f;
+        verts[i] = 1f;
+
+        // Create a mesh out of two triangles rendered clockwise without indices
+        mesh = new Mesh( true, 6, 0,
+                new VertexAttribute( VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE ),
+                new VertexAttribute( VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE+"0" ) );
+
+        mesh.setVertices(verts);
+
+        //skin = new Skin(new FileHandle("src\\main\\java\\core\\gui\\font\\skins\\skin.json"));
+        //Label label = new Label("Hello", skin, "default");
     }
 
     /**
@@ -244,7 +310,7 @@ public class Scene extends ScreenAdapter implements Runnable
     /**
      * Loads necessary textures.
      */
-    private void loadTextures()
+    private synchronized void loadTextures()
     {
         canvasTexture = new Texture(TextureUtils.MILKY_WAY_TEXTURE_PATH);
         sprite.setTexture(canvasTexture);
@@ -326,7 +392,7 @@ public class Scene extends ScreenAdapter implements Runnable
      */
     private void updateShader()
     {
-        Vector2 mousePos = new Vector2(inputProcessor.getMouseDragX() * InputSettings.MOUSE_SENSITIVITY_X, inputProcessor.getMouseDragY() * InputSettings.MOUSE_SENSITIVITY_Y);
+        Vector2 mousePos = new Vector2(inputProcessor.getMouseDragX(), inputProcessor.getMouseDragY());
         //System.out.println(inputProcessor.getMouseDragY());
         inputProcessor.update();
 
@@ -337,11 +403,12 @@ public class Scene extends ScreenAdapter implements Runnable
         }
 
         CelestialObject selectedCelestialObject = simulation.getStarSystem().getBodyHandler().get(selectedBodyIndex);
-        offset = MathUtils.applyUnaryOperator(selectedCelestialObject.getInitialPosition(), simulation.getStarSystem().getPositionScale()).negate();
-        //offset = new Vector3();
+        offset = MathUtils.applyUnaryOperator(selectedCelestialObject.getPosition(), simulation.getStarSystem().getPositionScale()).negate();
+        double selectedCelestialObjectRadius =  simulation.getStarSystem().getRadiusScale().apply(selectedCelestialObject.getRadius());
+        double selectedCelestialObjectZoom = -selectedCelestialObjectRadius * 200 / 126.135712;
 
         Vector3 cameraPosition = camera.getCameraPosition();
-        cameraPosition.setZ(zoom * InputSettings.ZOOM_SENSITIVITY);
+        cameraPosition.setZ((selectedCelestialObjectZoom + zoom) * InputSettings.ZOOM_SENSITIVITY);
 
 
         //position.setY(-zoom * InputSettings.ZOOM_SENSITIVITY);
@@ -360,7 +427,7 @@ public class Scene extends ScreenAdapter implements Runnable
         shaderProgram.setUniformi("uShowGrid", showGrid ? 1 : 0);
         shaderProgram.setUniformi("uBackgroundTexture", 1);
         shaderProgram.setUniformi("uBodyNum", simulation.getStarSystem().getBodyHandler().getSize());
-        shaderProgram.setUniformi("uLightSourcesNum", simulation.getStarSystem().getBodyHandler().getNumStars());
+        shaderProgram.setUniformi("uLightSourcesNum", Math.max(1, simulation.getStarSystem().getBodyHandler().getNumStars()));
 
         int count = 0;
         int bumpCount = 0;
@@ -397,7 +464,8 @@ public class Scene extends ScreenAdapter implements Runnable
             shaderProgram.setUniformf("uDimensions[" + i + "]", (float) dimensions.getX(), (float) dimensions.getY(), (float) dimensions.getZ());
             shaderProgram.setUniformf("uMasses[" + i + "]", (float) mass);
             shaderProgram.setUniformf("uRotationSpeeds[" + i + "]",(float) rotationSpeed);
-            shaderProgram.setUniformf("uAxisInclinations[" + i + "]", (float) (celestialObject.getAxialTilt() * Math.PI / 180));
+            shaderProgram.setUniformf("uAxisInclinations[" + i + "]", (float) (celestialObject.getObliquity() * Math.PI / 180));
+            shaderProgram.setUniformf("uApparentMagnitudes[" + i + "]", celestialObject instanceof Star ? (float) ((Star) celestialObject).getApparentMagnitude() : 0);
             shaderProgram.setUniformf("uColors[" + i + "]", color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
             shaderProgram.setUniformi("uTextures[" + i + "]", i + 2 + count + bumpCount);
 
@@ -473,22 +541,53 @@ public class Scene extends ScreenAdapter implements Runnable
     {
         updateShader();
 
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl20.glEnable(GL20.GL_TEXTURE_2D);
+        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         Gdx.gl20.glEnable(GL20.GL_BLEND);
         Gdx.gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        spriteBatch.setShader(null);
+        /*if(time < 5)
+        {
+            spriteBatch.begin();
+            GlyphLayout glyphLayout = new GlyphLayout();
+            glyphLayout.setText(titleFont, "Dark Matter Simulation");
+            titleFont.draw(spriteBatch, glyphLayout, Gdx.graphics.getWidth() / 2f - glyphLayout.width / 2f, Gdx.graphics.getHeight() / 2f + glyphLayout.height / 2f);
+            spriteBatch.end();
+        }
+        else
+        {
+            spriteBatch.setShader(null);
+            spriteBatch.begin();
+            spriteBatch.draw(sprite2, 0, 0, Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+            hud.render(spriteBatch, basicFont);
+            spriteBatch.end();
+
+            spriteBatch.setShader(shaderProgram);
+            spriteBatch.begin();
+            spriteBatch.draw(sprite, Gdx.graphics.getWidth() / 8f, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            spriteBatch.end();
+        }**/
+
+        /*spriteBatch.setShader(null);
         spriteBatch.begin();
-       // spriteBatch.draw(sprite2, 0, 0, Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
-        hud.render(spriteBatch, font);
-        spriteBatch.end();
+        spriteBatch.draw(sprite2, 0, 0, Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight() / 2f);
+        hud.render(spriteBatch, basicFont);
+        spriteBatch.end();**/
+
+
 
         spriteBatch.setShader(shaderProgram);
+        shaderProgram.bind();
         spriteBatch.begin();
-        spriteBatch.draw(sprite, Gdx.graphics.getWidth() / 8f, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        spriteBatch.draw(sprite, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         spriteBatch.end();
+
+        //spriteBatch.setShader(null);
+        spriteBatch.begin();
+        hud.render(spriteBatch, basicFont);
+        spriteBatch.end();
+
+       // mesh.render(shaderProgram, GL20.GL_TRIANGLES);
 
 
 

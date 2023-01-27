@@ -8,7 +8,7 @@ public class HighPreset extends Preset
     {
         vsync = true;
         fps = 60;
-        maxDist = 2000;
+        maxDist = 10000;
         maxSteps = 256;
         fov = 60;
         textureQuality = TextureUtils.HIGH_QUALITY;

@@ -1,7 +1,10 @@
 package core.gui.listelements;
 
-import core.gui.core.GUIComponent;
-import core.simulation.core.Simulation;
+import core.gui.components.GUIComponent;
+import core.gui.core.SimulationMenu;
+import core.math.vector.Vector3;
+import core.simulation.physics.celestialobjects.CelestialObject;
+import core.util.TextureUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,30 +14,39 @@ import java.util.ArrayList;
 
 public class Table extends JPanel implements GUIComponent
 {
-    private final Simulation simulation;
+    private final SimulationMenu simulationMenu;
+
     private JPanel table;
     private JLabel bodiesTotalLabel;
+    private JButton addButton;
+    private JButton removeButton;
+
     private final ArrayList<ListElement> listElements;
     private int selectedIndex = 0;
-    private boolean isListElementClicked = false;
 
-    public Table(Simulation simulation)
+    public Table(SimulationMenu simulationMenu)
     {
-        this.simulation = simulation;
+        this.simulationMenu = simulationMenu;
         listElements = new ArrayList<>();
         createAndShowGUI();
+    }
+
+    public void add()
+    {
+        CelestialObject celestialObject = new CelestialObject(new Vector3(0, 0, 0), new Vector3(5000), 1e24, new Vector3(10f * 1000, 0, 0), 0, 0, 0, "New Body");
+        celestialObject.setColor(Color.GRAY);
+        celestialObject.setTexture(TextureUtils.DEFAULT_PLANET_TEXTURE_PATH);
+        simulationMenu.getSimulation().getStarSystem().getBodyHandler().add(celestialObject);
+        addListElement(new ListElement(this, celestialObject));
+        selectedIndex = simulationMenu.getSimulation().getStarSystem().getBodyHandler().getSize() - 1;
+        removeButton.setEnabled(true);
     }
 
     public void addListElement(ListElement element)
     {
         GridBagConstraints gbc = new GridBagConstraints();
         listElements.add(element);
-        element.addActionListener(e ->
-        {
-            selectedIndex = listElements.indexOf(element);
-            isListElementClicked = true;
-        });
-        bodiesTotalLabel.setText("Total: " + simulation.getStarSystem().getBodyHandler().getSize());
+        bodiesTotalLabel.setText("Total: " + simulationMenu.getSimulation().getStarSystem().getBodyHandler().getSize());
 
         table.removeAll();
         for(int i = 0; i < listElements.size(); i++)
@@ -54,12 +66,61 @@ public class Table extends JPanel implements GUIComponent
         table.repaint();
     }
 
-    public void removeListElement(int index)
+    public void updateListElement(ListElement element)
+    {
+        selectedIndex = listElements.indexOf(element);
+        simulationMenu.addTab();
+    }
+
+    public void remove()
+    {
+        /*if(simulationMenu.getSimulation().getStarSystem().getBodyHandler().getSize() > 1)
+        {
+            simulationMenu.getSimulation().getStarSystem().getBodyHandler().remove(simulationMenu.getSimulation().getStarSystem().getBodyHandler().get(selectedIndex));
+            removeListElement(selectedIndex);
+        }
+        removeButton.setEnabled(simulationMenu.getSimulation().getStarSystem().getBodyHandler().getSize() > 1);**/
+
+        if(simulationMenu.getSimulation().getStarSystem().getBodyHandler().getSize() > 0)
+        {
+            removeButton.setEnabled(true);
+            simulationMenu.getSimulation().getStarSystem().getBodyHandler().remove(simulationMenu.getSimulation().getStarSystem().getBodyHandler().get(selectedIndex));
+            removeListElement(selectedIndex);
+
+            if(selectedIndex > listElements.size() - 1)
+            {
+                selectedIndex = listElements.size() - 1;
+            }
+
+            for(int i = 0; i < listElements.size(); i++)
+            {
+                ListElement listElement = listElements.get(i);
+                if(i == selectedIndex)
+                {
+                    listElement.setFocusable(true);
+                    break;
+                }
+            }
+        }
+        else
+        {
+            removeButton.setEnabled(false);
+        }
+    }
+
+    private void removeListElement(int index)
     {
         ListElement element = listElements.get(index);
         GridBagConstraints gbc = new GridBagConstraints();
+
+        int tabIndex = simulationMenu.getIndexOfTab(element.getCelestialObject().getName());
+        if(tabIndex != -1)
+        {
+            simulationMenu.removeTab(tabIndex);
+        }
+
         listElements.remove(element);
-        bodiesTotalLabel.setText("Total: " + simulation.getStarSystem().getBodyHandler().getSize());
+        bodiesTotalLabel.setText("Total: " + simulationMenu.getSimulation().getStarSystem().getBodyHandler().getSize());
 
         table.remove(element);
         for(int i = 0; i < listElements.size(); i++)
@@ -74,7 +135,9 @@ public class Table extends JPanel implements GUIComponent
             {
                 gbc.weighty = 1;
             }
-            table.add(listElements.get(i), gbc);
+
+            ListElement listElement = listElements.get(i);
+            table.add(listElement, gbc);
         }
         table.repaint();
     }
@@ -82,6 +145,11 @@ public class Table extends JPanel implements GUIComponent
     public ListElement getListElement(int index)
     {
         return listElements.get(index);
+    }
+
+    public int geIndexOfListElement(ListElement listElement)
+    {
+        return listElements.indexOf(listElement);
     }
 
     public int getSelectedIndex()
@@ -95,16 +163,6 @@ public class Table extends JPanel implements GUIComponent
         listElements.get(selectedIndex).requestFocus();
     }
 
-    public boolean isListElementClicked()
-    {
-        return isListElementClicked;
-    }
-
-    public void setListElementClicked(boolean listElementClicked)
-    {
-        isListElementClicked = listElementClicked;
-    }
-
     public void createAndShowGUI()
     {
         table = new JPanel();
@@ -116,10 +174,23 @@ public class Table extends JPanel implements GUIComponent
         scrollPane.setBorder(null);
         this.add(scrollPane, BorderLayout.CENTER);
 
-        bodiesTotalLabel = new JLabel("Total: " + simulation.getStarSystem().getBodyHandler().getSize());
+        bodiesTotalLabel = new JLabel("Total: " + simulationMenu.getSimulation().getStarSystem().getBodyHandler().getSize());
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
         panel.add(bodiesTotalLabel);
+
+
+        addButton = new JButton("Add");
+        addButton.setBackground(new Color(55, 90, 129));
+        addButton.setFocusable(false);
+        addButton.addActionListener(e -> add());
+        panel.add(addButton);
+
+        removeButton = new JButton("Delete");
+        removeButton.setFocusable(false);
+        removeButton.addActionListener(e -> remove());
+        panel.add(removeButton);
+
         this.add(panel, BorderLayout.SOUTH);
     }
 

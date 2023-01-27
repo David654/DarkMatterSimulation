@@ -12,7 +12,7 @@ public class MarsAndMoonsSystem extends StarSystem
 
     public void setRadiusScale()
     {
-        radiusScale = r -> Math.pow(r, 1 / (3.0)) / 10;
+        radiusScale = r -> Math.pow(r, 1 / (2.0)) / 100;
     }
 
     public void setPositionScale()

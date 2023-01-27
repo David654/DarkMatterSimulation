@@ -11,10 +11,10 @@ import core.util.MathUtils;
 public class InputProcessor implements com.badlogic.gdx.InputProcessor
 {
     private final Scene scene;
-    private Vector2 mousePosition;
+    private Vector2 mousePosition = new Vector2();
     private int keyCode;
-    private int mouseDragX;
-    private int mouseDragY;
+    private double mouseDragX;
+    private double mouseDragY;
 
     private final InputAction exitAction;
     private final InputAction lightEnablingAction;
@@ -51,12 +51,12 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor
         }
     }
 
-    public int getMouseDragX()
+    public double getMouseDragX()
     {
         return mouseDragX;
     }
 
-    public int getMouseDragY()
+    public double getMouseDragY()
     {
         return mouseDragY;
     }
@@ -145,24 +145,20 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor
         int dx = (int) (screenX - mousePosition.getX());
         int dy = (int) (screenY - mousePosition.getY());
 
-        dx *= Math.signum(-scene.getZoom()) * Math.pow(Math.abs(scene.getZoom()), 1d / 3) * InputSettings.MOUSE_SENSITIVITY_X;
-        dy *= Math.signum(-scene.getZoom()) * Math.pow(Math.abs(scene.getZoom()), 1d / 3) * InputSettings.MOUSE_SENSITIVITY_Y;
+        dx *= Math.pow(Math.abs(scene.getZoom()), 1d / 3) * InputSettings.MOUSE_SENSITIVITY_X;
+        dy *= Math.pow(Math.abs(scene.getZoom()), 1d / 3) * InputSettings.MOUSE_SENSITIVITY_Y;
 
         mouseDragX += dx; // yaw
         mouseDragY += dy; // pitch
-        //mouseDragY = MathUtils.clamp(mouseDragY, -1500, 0);
+
+        mouseDragX = MathUtils.lerp(mouseDragX - dx, mouseDragX, 0.5);
+        mouseDragY = MathUtils.lerp(mouseDragY - dy, mouseDragY, 0.5);
+
+        mouseDragY = MathUtils.clamp(mouseDragY, -Gdx.graphics.getHeight() * 0.1, Gdx.graphics.getHeight() * 1.8);
         mousePosition = new Vector2(screenX, screenY);
 
         Vector2 direction = new Vector2(mouseDragX, -mouseDragY);
-        direction.clamp(new Vector2(direction.getY(), -89), new Vector2(direction.getY(), 89));
-
         scene.getCamera().setCameraFront(Math.toRadians(direction.getX()), Math.toRadians(direction.getY()));
-
-        //rotation = rotation.multiply(Matrix3.rotateX(direction.getY())).multiply(Matrix3.rotateY(direction.getX())).multiply(Matrix3.rotateZ(0));
-        //Matrix3 rotation = scene.getCameraRotation().multiply(Matrix3.rotateY(direction.getX())).multiply(Matrix3.rotateX(direction.getY()));
-       // scene.setCameraRotation(rotation);
-
-        //scene.setDirection(new Vector3(Math.cos(direction.getX()) * Math.cos(direction.getY()), Math.sin(direction.getY()), Math.sin(direction.getX()) * Math.cos(direction.getY())).normalize());
 
         return false;
     }

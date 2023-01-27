@@ -183,6 +183,26 @@ public final class MathUtils
         return MathUtils.max(min, MathUtils.min(value, max));
     }
 
+    public static int lerp(int a, int b, int f)
+    {
+        return a + f * (b - a);
+    }
+
+    public static long lerp(long a, long b, long f)
+    {
+        return a + f * (b - a);
+    }
+
+    public static float lerp(float a, float b, float f)
+    {
+        return a + f * (b - a);
+    }
+
+    public static double lerp(double a, double b, double f)
+    {
+        return a + f * (b - a);
+    }
+
     public static float sqrt(float a)
     {
         return (float) Math.sqrt(a);

@@ -28,6 +28,7 @@ public class JupiterAndMoonsSystem extends StarSystem
     public void initCelestialObjects()
     {
         celestialObjectHandler.add(BasicCelestialObjects.JUPITER);
+        celestialObjectHandler.add(BasicCelestialObjects.AMALTHEA);
         celestialObjectHandler.add(BasicCelestialObjects.IO);
         celestialObjectHandler.add(BasicCelestialObjects.EUROPA);
         celestialObjectHandler.add(BasicCelestialObjects.GANYMEDE);

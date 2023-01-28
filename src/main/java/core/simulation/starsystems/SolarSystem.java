@@ -28,7 +28,8 @@ public final class SolarSystem extends StarSystem
     {
         //ringRadiusScale = r -> Math.pow(r, 1 / (3.0)) / 12;
        // ringRadiusScale = r -> r * 3.09333e-7;
-        ringRadiusScale = r -> Math.pow(r, 1 / 1.52) * 0.000160555;
+       // ringRadiusScale = r -> Math.pow(r, 1 / 1.52) * 0.000160555;
+        ringRadiusScale = r -> Math.pow(r, 1 / (3.0)) / 20;
     }
 
     public void initCelestialObjects()
@@ -48,5 +49,12 @@ public final class SolarSystem extends StarSystem
         celestialObjectHandler.add(BasicCelestialObjects.MAKEMAKE);
         celestialObjectHandler.add(BasicCelestialObjects.ERIS);
         celestialObjectHandler.add(BasicCelestialObjects.HAUMEA);
+        celestialObjectHandler.add(BasicCelestialObjects.GONGGONG);
+
+        celestialObjectHandler.add(BasicCelestialObjects.VESTA);
+        celestialObjectHandler.add(BasicCelestialObjects.PALLAS);
+        celestialObjectHandler.add(BasicCelestialObjects.JUNO);
+        celestialObjectHandler.add(BasicCelestialObjects.HYGIEA);
+        celestialObjectHandler.add(BasicCelestialObjects.CHARIKLO);
     }
 }

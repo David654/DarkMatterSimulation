@@ -41,10 +41,11 @@ public final class BasicCelestialObjects
     public static CelestialObject EUROPA = new Planet(new Vector3(-0.00448469, 0, 0), 1560.8, 4.799844e22, new Vector3(0, 0, 13.74336), 116.7 / 3.6, 0.1, 1.791, "Europa");
     public static CelestialObject GANYMEDE = new Planet(new Vector3(-0.0071552, 0, 0), 2634.1, 1.4819e23, new Vector3(0, 0, 10.880), 96.3 / 3.6, 0.33, 2.214, "Ganymede");
     public static CelestialObject CALLISTO = new Planet(new Vector3(-0.0125851, 0, 0), 2410.3, 1.075938e23, new Vector3(0, 0, 8.204), 37.12 / 3.6, 0, 2.017, "Callisto");
+    public static CelestialObject AMALTHEA = new Planet(new Vector3(-0.0012124, 0, 0), new Vector3(250, 146, 128), 7.17e18, new Vector3(0, 0, 26.57), 46.16 / 3.6, 0, 0.4, "Amalthea");
     public static CelestialObject DIONE = new Planet(new Vector3(-0.00252274, 0, 0), new Vector3(1128.8, 1122.6, 1119.2), 1.095452e21, new Vector3(0, 0, 16.72), 217.84 / 3.6, 0, 4.58, "Dione");
     public static CelestialObject ENCELADUS = new Planet(new Vector3(-0.00159058, 0, 0), new Vector3(513.2, 502.8, 496.6), 1.08022e20, new Vector3(0, 0, 12.64), 48.15 / 3.6, 0, 0.02, "Enceladus");
     public static CelestialObject HYPERION = new Planet(new Vector3(-0.00159058, 0, 0), new Vector3(360.2, 266.0, 205.4), 1.77e19, new Vector3(0, 0, 5.07), 174.17 / 3.6, 0, 0.02, "Hyperion");
-    public static CelestialObject IAPETUS = new Planet(new Vector3(-0.0238026, 0, 0), new Vector3(1492.0, 1492.0, 1424), 1.805635e21, new Vector3(0, 0, 3.26), 2.409 / 3.6, 0, 14.72, "Iapetus");
+    public static CelestialObject IAPETUS = new Planet(new Vector3(-0.0238026, 0, 0), new Vector3(1492.0, 1492.0, 1424), 1.805635e21, new Vector3(0, 0, 3.26), 2.409 / 3.6, 0, 17.28, "Iapetus");
     public static CelestialObject MIMAS = new Planet(new Vector3(-0.00124025, 0, 0), new Vector3(415.6, 393.4, 381.2), 3.7493e19, new Vector3(0, 0, 14.28), 55.104 / 3.6, 0, 1.53, "Mimas");
     public static CelestialObject RHEA = new Planet(new Vector3(-0.0035235, 0, 0), new Vector3(1532.4, 1525.6, 1524.4), 2.306518e21, new Vector3(0, 0, 8.48), 44.26 / 3.6, 0, 0.35, "Rhea");
     public static CelestialObject TETHYS = new Planet(new Vector3(-0.00196941, 0, 0), new Vector3(1076.8, 1057.4, 1052.6), 6.17449e20, new Vector3(0, 0, 11.35), 73.657 / 3.6, 0, 1.09, "Tethys");
@@ -65,6 +66,16 @@ public final class BasicCelestialObjects
     public static CelestialObject MAKEMAKE = new Planet(new Vector3(-45.8, 0, 0), 1434, 1420, 3.1e21, new Vector3(0, 0, 4.419), 199.67 / 3.6, 0.0, 28.9, "Makemake");
     public static CelestialObject ERIS = new Planet(new Vector3(-67.68, 0, 0), 1163, 1.6e22, new Vector3(0, 0, 3.434), 282.14 / 3.6, 78.0, 44.0, "Eris");
     public static CelestialObject HAUMEA = new Planet(new Vector3(-43.13, 0, 0), new Vector3(2100, 1680, 1074), 1.6e22, new Vector3(0, 0, 4.531), 973.89 / 3.6, 0, 28.2, "Haumea");
+    public static CelestialObject GONGGONG = new Planet(new Vector3(-67.485, 0, 0), 615, 1.75e21, new Vector3(0, 0, 3.626), 973.89 / 3.6, 0, 30.6273, "Gonggong");
+
+    /**
+     * Asteroids.
+     */
+    public static CelestialObject VESTA = new Planet(new Vector3(-2.36179, 0, 0), new Vector3(572.6, 557.2, 446.4), 2.59076e20, new Vector3(0, 0, 19.34), 308.961 / 3.6, 29, 7.14043, "Vesta");
+    public static CelestialObject PALLAS = new Planet(new Vector3(-2.77, 0, 0), new Vector3(550, 516, 476), 2.04e20, new Vector3(0, 0, 17.885), 206.673 / 3.6, 84, 34.93, "Pallas");
+    public static CelestialObject JUNO = new Planet(new Vector3(-2.6707, 0, 0), new Vector3(320, 267, 200), 28.6e18, new Vector3(0, 0, 17.93), 114.306 / 3.6, 0, 12.9817, "Juno");
+    public static CelestialObject HYGIEA = new Planet(new Vector3(-3.1415, 0, 0), new Vector3(450, 430, 424), 87.4e18, new Vector3(0, 0, 16.76), 98.769 / 3.6, 0, 3.8316, "Hygiea");
+    public static CelestialObject CHARIKLO = new Planet(new Vector3(-15.822, 0, 0), new Vector3(287.6, 270.4, 198.2), 87.4e18, new Vector3(0, 0, 16.76), 113.063 / 3.6, 0, 23.382, "Chariklo");
 
     static
     {
@@ -88,9 +99,9 @@ public final class BasicCelestialObjects
 
         // Moons.
         MOON.setColor(TextureUtils.MOON_THUMBNAIL_PATH);
-        MOON.setColor(TextureUtils.MOON_THUMBNAIL_PATH);
         PHOBOS.setColor(TextureUtils.PHOBOS_THUMBNAIL_PATH);
         DEIMOS.setColor(TextureUtils.DEIMOS_THUMBNAIL_PATH);
+        AMALTHEA.setColor(Color.BLACK);
         IO.setColor(TextureUtils.IO_THUMBNAIL_PATH);
         EUROPA.setColor(TextureUtils.EUROPA_THUMBNAIL_PATH);
         GANYMEDE.setColor(TextureUtils.GANYMEDE_THUMBNAIL_PATH);
@@ -117,6 +128,14 @@ public final class BasicCelestialObjects
         MAKEMAKE.setColor(TextureUtils.MAKEMAKE_THUMBNAIL_PATH);
         ERIS.setColor(TextureUtils.ERIS_THUMBNAIL_PATH);
         HAUMEA.setColor(TextureUtils.HAUMEA_THUMBNAIL_PATH);
+        GONGGONG.setColor(Color.BLACK);
+
+        //Asteroids.
+        VESTA.setColor(Color.BLACK);
+        PALLAS.setColor(Color.BLACK);
+        JUNO.setColor(Color.BLACK);
+        HYGIEA.setColor(Color.BLACK);
+        CHARIKLO.setColor(Color.BLACK);
 
         /**
          * Textures.
@@ -140,6 +159,7 @@ public final class BasicCelestialObjects
         MOON.setTexture(TextureUtils.MOON_TEXTURE_PATH);
         PHOBOS.setTexture(TextureUtils.PHOBOS_TEXTURE_PATH);
         DEIMOS.setTexture(TextureUtils.DEIMOS_TEXTURE_PATH);
+        AMALTHEA.setTexture(TextureUtils.AMALTHEA_TEXTURE_PATH);
         IO.setTexture(TextureUtils.IO_TEXTURE_PATH);
         EUROPA.setTexture(TextureUtils.EUROPA_TEXTURE_PATH);
         GANYMEDE.setTexture(TextureUtils.GANYMEDE_TEXTURE_PATH);
@@ -166,6 +186,14 @@ public final class BasicCelestialObjects
         MAKEMAKE.setTexture(TextureUtils.MAKEMAKE_TEXTURE_PATH);
         ERIS.setTexture(TextureUtils.ERIS_TEXTURE_PATH);
         HAUMEA.setTexture(TextureUtils.HAUMEA_TEXTURE_PATH);
+        GONGGONG.setTexture(TextureUtils.GONGGONG_TEXTURE_PATH);
+
+        // Asteroids.
+        VESTA.setTexture(TextureUtils.VESTA_TEXTURE_PATH);
+        PALLAS.setTexture(TextureUtils.PALLAS_TEXTURE_PATH);
+        JUNO.setTexture(TextureUtils.JUNO_TEXTURE_PATH);
+        HYGIEA.setTexture(TextureUtils.HYGIEA_TEXTURE_PATH);
+        CHARIKLO.setTexture(TextureUtils.CHARIKLO_TEXTURE_PATH);
 
 
         /**
@@ -179,16 +207,35 @@ public final class BasicCelestialObjects
 
         // Moons.
         MOON.setBumpTexture(TextureUtils.MOON_BUMP_TEXTURE_PATH);
+        PHOBOS.setBumpTexture(TextureUtils.PHOBOS_BUMP_TEXTURE_PATH);
+        DEIMOS.setBumpTexture(TextureUtils.DEIMOS_BUMP_TEXTURE_PATH);
+        AMALTHEA.setBumpTexture(TextureUtils.AMALTHEA_BUMP_TEXTURE_PATH);
+        IO.setBumpTexture(TextureUtils.IO_BUMP_TEXTURE_PATH);
+        IAPETUS.setBumpTexture(TextureUtils.IAPETUS_BUMP_TEXTURE_PATH);
+        RHEA.setBumpTexture(TextureUtils.RHEA_BUMP_TEXTURE_PATH);
+        OBERON.setBumpTexture(TextureUtils.OBERON_BUMP_TEXTURE_PATH);
+        TITANIA.setBumpTexture(TextureUtils.TITANIA_BUMP_TEXTURE_PATH);
+        UMBRIEL.setBumpTexture(TextureUtils.UMBRIEL_BUMP_TEXTURE_PATH);
 
         // Dwarf planets.
         PLUTO.setBumpTexture(TextureUtils.PLUTO_BUMP_TEXTURE_PATH);
+        GONGGONG.setBumpTexture(TextureUtils.GONGGONG_BUMP_TEXTURE_PATH);
+
+        // Asteroids.
+        VESTA.setBumpTexture(TextureUtils.VESTA_BUMP_TEXTURE_PATH);
 
         /**
          * Rings.
          */
         // Planets.
-        SATURN.setRing(new Ring(SATURN.getPosition(), 66_900_000, 139_826_000, TextureUtils.SATURN_RING_TEXTURE_PATH));
-        URANUS.setRing(new Ring(URANUS.getPosition(), 41_837_000, 51_149_000, TextureUtils.URANUS_RING_TEXTURE_PATH));
+        SATURN.setRing(new Ring(SATURN.getPosition(), 66_900, 480_000, TextureUtils.SATURN_RING_TEXTURE_PATH));
+        URANUS.setRing(new Ring(URANUS.getPosition(), 41_837, 51_149, TextureUtils.URANUS_RING_TEXTURE_PATH));
+
+        // Dwarf planets.
+        HAUMEA.setRing(new Ring(HAUMEA.getPosition(), 2217, 2287, TextureUtils.URANUS_RING_TEXTURE_PATH));
+
+        // Asteroids.
+        CHARIKLO.setRing(new Ring(CHARIKLO.getPosition(), 390.6, 408.8, TextureUtils.URANUS_RING_TEXTURE_PATH));
 
 
         /*SUN.setColor(new Color(228, 91, 25));

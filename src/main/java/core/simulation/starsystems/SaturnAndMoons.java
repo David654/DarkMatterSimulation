@@ -17,7 +17,7 @@ public class SaturnAndMoons extends StarSystem
 
     public void setPositionScale()
     {
-        positionScale = p -> p / PhysicsConstants.AU * 20000;
+        positionScale = p -> p / PhysicsConstants.AU * 80000;
     }
 
     public void setRingScale()

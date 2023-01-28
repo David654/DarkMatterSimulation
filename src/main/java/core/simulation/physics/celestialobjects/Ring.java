@@ -19,8 +19,8 @@ public class Ring
     public Ring(Vector3 position, double radius1, double radius2, String texturePath)
     {
         this.position = position;
-        this.radius1 = radius1;
-        this.radius2 = radius2;
+        this.radius1 = radius1 * 1000;
+        this.radius2 = radius2 * 1000;
         texture = new Texture(texturePath);
     }
 

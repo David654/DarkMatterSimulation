@@ -15,40 +15,31 @@ import java.awt.*;
 public class CelestialObject
 {
     /**
-     * The starting position of the body in astronomical units (AU).
+     * The starting position of the celestial object in astronomical units (AU).
+     * 1 AU = 149 597 870 700 m.
      */
     private Vector3 initialPosition;
 
     /**
-     * The current position of the body in astronomical units (AU), which is regularly updated.
+     * The current position of the celestial object in astronomical units (AU), which is regularly updated.
      * @see #update(double) 
      */
     private Vector3 position;
 
-    private Vector3 tmpPosition;
-
     /**
-     * The dimension of the body.
+     * The dimension of the celestial objects in kilometres.
      */
     private Vector3 dimensions;
 
     /**
-     * The mass of the body in kg.
+     * The mass of the celestial object in kilograms.
      */
     private double mass;
 
     /**
-     * The velocity of the body in km/s.
+     * The velocity of the celestial object in kilometers per second.
      */
     private Vector3 velocity;
-
-    private Vector3 initialVelocity;
-
-    /**
-     * The acceleration of the body.
-     * @see #update(double) 
-     */
-    private Vector3 acceleration;
 
     /**
      * The speed of the body rotation around its own axis.
@@ -66,82 +57,62 @@ public class CelestialObject
     private double obliquity;
 
     /**
-     * The color of the body.
+     * The color of the celestial object.
      */
     private Color color;
 
     /**
-     * The name of the body.
+     * The name of the celestial object.
      */
     private String name;
 
     /**
-     * Whether the body is being rendered or not.
+     * Whether the celestial object is being rendered or not.
      * @see CelestialObjectHandler#render(ShapeRenderer)
      */
     private boolean isVisible;
 
     /**
-     * An instance of the class Orbit for creating an orbit of the body.
+     * An instance of the class Orbit for creating an orbit of the celestial object.
      * @see Orbit
      */
     private Orbit orbit;
 
     /**
-     * The texture of the body.
+     * The texture of the celestial object.
      */
     private Texture texture;
 
     /**
-     * The bump texture of the body.
+     * The bump texture of the celestial object.
      */
     private Texture bumpTexture;
 
+    /**
+     * The ring of the celestial object.
+     */
     private Ring ring;
-
-    private double time = 0;
-
-    private double dt = 0;
-
-
-    private Vector3 k1p;
-    private Vector3 k2p;
-    private Vector3 k3p;
-    private Vector3 k4p;
-
-    private Vector3 k1a;
-    private Vector3 k2a;
-    private Vector3 k3a;
-    private Vector3 k4a;
-
-    private Vector3 k1v;
-    private Vector3 k2v;
-    private Vector3 k3v;
-    private Vector3 k4v;
 
     /**
      * Constructor.
-     * @param initialPosition the initial position of the body
-     * @param dimensions the dimensions of the body
-     * @param mass the mass of the body
-     * @param velocity the velocity of the body
-     * @param name the name of the body
+     * @param initialPosition the initial position of the celestial object
+     * @param dimensions the dimensions of the celestial object
+     * @param mass the mass of the celestial object
+     * @param velocity the velocity of the celestial object
+     * @param rotationSpeed the rotation speed of the celestial object
+     * @param obliquity the obliquity of the celestial object
+     * @param orbitalInclination the orbital inclination of the celestial object
+     * @param name the name of the celestial object
      */
     public CelestialObject(Vector3 initialPosition, Vector3 dimensions, double mass, Vector3 velocity, double rotationSpeed, double obliquity, double orbitalInclination, String name)
     {
         this.initialPosition = initialPosition;
-     //   this.initialPosition = MathUtils.rotateZ(initialPosition, Math.toRadians(orbitalInclination));
-       // this.initialPosition.setX(initialPosition.getX());
-        //System.out.println(name + ": " + this.initialPosition);
         this.initialPosition = this.initialPosition.multiply(PhysicsConstants.AU);
         position = this.initialPosition;
         position = MathUtils.rotateZ(position, Math.toRadians(orbitalInclination));
-        tmpPosition = position;
         this.dimensions = dimensions.multiply(1000);
         this.mass = mass;
         this.velocity = velocity.multiply(1000);
-        initialVelocity = this.velocity;
-        acceleration = new Vector3();
         this.rotationSpeed = rotationSpeed;
         this.obliquity = obliquity;
         this.orbitalInclination = orbitalInclination;
@@ -187,16 +158,6 @@ public class CelestialObject
         return initialPosition.multiply(1 / PhysicsConstants.AU);
     }
 
-    public Vector3 getTmpPosition()
-    {
-        return tmpPosition;
-    }
-
-    public void setTmpPosition(Vector3 tmpPosition)
-    {
-        this.tmpPosition = tmpPosition;
-    }
-
     public Vector3 getDimensions()
     {
         return dimensions;
@@ -230,7 +191,6 @@ public class CelestialObject
     public void setVelocity(Vector3 velocity)
     {
         this.velocity = velocity;
-        this.initialVelocity = this.velocity;
     }
 
     public double getRotationSpeed()
@@ -439,17 +399,17 @@ public class CelestialObject
         {
             for(double i = 0; i < Math.abs(deltaTime); i += Math.abs(dt))
             {
-                k1a = getGravitationalAcceleration(position);
-                k1v = velocity;
+                Vector3 k1a = getGravitationalAcceleration(position);
+                Vector3 k1v = velocity;
 
-                k2a = getGravitationalAcceleration(position.add(k1v.multiply(dt * 0.5)));
-                k2v = velocity.add(k1a.multiply(dt * 0.5));
+                Vector3 k2a = getGravitationalAcceleration(position.add(k1v.multiply(dt * 0.5)));
+                Vector3 k2v = velocity.add(k1a.multiply(dt * 0.5));
 
-                k3a = getGravitationalAcceleration(position.add(k2v.multiply(dt * 0.5)));
-                k3v = velocity.add(k2a.multiply(dt * 0.5));
+                Vector3 k3a = getGravitationalAcceleration(position.add(k2v.multiply(dt * 0.5)));
+                Vector3 k3v = velocity.add(k2a.multiply(dt * 0.5));
 
-                k4a = getGravitationalAcceleration(position.add(k3v.multiply(dt)));
-                k4v = velocity.add(k3a.multiply(dt));
+                Vector3 k4a = getGravitationalAcceleration(position.add(k3v.multiply(dt)));
+                Vector3 k4v = velocity.add(k3a.multiply(dt));
 
                 Vector3 dvdt = k1a.add(k2a.add(k3a).multiply(2)).add(k4a).multiply(dt / 6.0);
                 Vector3 dxdt = k1v.add(k2v.add(k3v).multiply(2)).add(k4v).multiply(dt / 6.0);

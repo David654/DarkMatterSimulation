@@ -139,7 +139,7 @@ public class CelestialObjectHandler extends Handler<CelestialObject>
 
     public void sortCelestialObjectsByDistance()
     {
-        list.sort(Comparator.comparingDouble(o -> o.getPosition().length()));
+        list.sort(Comparator.comparingDouble(o -> o.getInitialPosition().length()));
     }
 
     public void sortCelestialObjectsByMass()

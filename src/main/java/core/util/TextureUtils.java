@@ -67,6 +67,7 @@ public final class TextureUtils
     public static String EUROPA_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "jupiter" + MOON_TEXTURE_DIRECTORY + "europa.jpg";
     public static String GANYMEDE_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "jupiter" + MOON_TEXTURE_DIRECTORY + "ganymede.jpg";
     public static String CALLISTO_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "jupiter" + MOON_TEXTURE_DIRECTORY + "callisto.jpg";
+    public static String AMALTHEA_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "jupiter" + MOON_TEXTURE_DIRECTORY + "amalthea.jpg";
     public static String DIONE_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "saturn" + MOON_TEXTURE_DIRECTORY + "dione.jpg";
     public static String ENCELADUS_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "saturn" + MOON_TEXTURE_DIRECTORY + "enceladus.jpg";
     public static String HYPERION_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "saturn" + MOON_TEXTURE_DIRECTORY + "hyperion.jpg";
@@ -79,11 +80,20 @@ public final class TextureUtils
     public static String MIRANDA_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "miranda.jpg";
     public static String OBERON_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "oberon.jpg";
     public static String TITANIA_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "titania.jpg";
-    public static String UMBRIEL_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "umbriel.png";
+    public static String UMBRIEL_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "umbriel.jpg";
     public static String TRITON_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "neptune" + MOON_TEXTURE_DIRECTORY + "triton.jpg";
     public static String CHARON_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "pluto" + MOON_TEXTURE_DIRECTORY + "charon.jpg";
 
     public static String MOON_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "earth" + MOON_TEXTURE_DIRECTORY + "moon_bump.jpg";
+    public static String PHOBOS_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "mars" + MOON_TEXTURE_DIRECTORY + "phobos_bump.jpg";
+    public static String DEIMOS_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "mars" + MOON_TEXTURE_DIRECTORY + "deimos_bump.jpg";
+    public static String IO_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "jupiter" + MOON_TEXTURE_DIRECTORY + "io_bump.jpg";
+    public static String AMALTHEA_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "jupiter" + MOON_TEXTURE_DIRECTORY + "amalthea_bump.jpg";
+    public static String IAPETUS_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "saturn" + MOON_TEXTURE_DIRECTORY + "iapetus_bump.jpg";
+    public static String RHEA_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "saturn" + MOON_TEXTURE_DIRECTORY + "rhea_bump.jpg";
+    public static String OBERON_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "oberon_bump.jpg";
+    public static String TITANIA_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "titania_bump.jpg";
+    public static String UMBRIEL_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "uranus" + MOON_TEXTURE_DIRECTORY + "umbriel_bump.jpg";
 
 
     /**
@@ -94,9 +104,23 @@ public final class TextureUtils
     public static String MAKEMAKE_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "makemake\\makemake";
     public static String ERIS_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "eris\\eris";
     public static String HAUMEA_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "haumea\\haumea";
+    public static String GONGGONG_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "gonggong\\gonggong.jpg";
 
     public static String PLUTO_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "pluto\\pluto_bump.png";
+    public static String GONGGONG_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "gonggong\\gonggong_bump.jpg";
 
+
+    /**
+     * Asteroids.
+     */
+    public static final String ASTEROID_TEXTURE_DIRECTORY = "\\asteroids\\";
+    public static String VESTA_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + ASTEROID_TEXTURE_DIRECTORY + "vesta\\vesta.jpg";
+    public static String PALLAS_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + ASTEROID_TEXTURE_DIRECTORY + "pallas\\pallas.jpg";
+    public static String JUNO_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + ASTEROID_TEXTURE_DIRECTORY + "juno\\juno.jpg";
+    public static String HYGIEA_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + ASTEROID_TEXTURE_DIRECTORY + "hygiea\\hygiea.jpg";
+    public static String CHARIKLO_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + ASTEROID_TEXTURE_DIRECTORY + "chariklo\\chariklo.jpg";
+
+    public static String VESTA_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + ASTEROID_TEXTURE_DIRECTORY + "vesta\\vesta_bump.jpg";
 
     /**
      * Backgrounds.
@@ -152,6 +176,7 @@ public final class TextureUtils
     public static String MAKEMAKE_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "makemake.jpg";
     public static String ERIS_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "eris.jpg";
     public static String HAUMEA_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "haumea.jpg";
+    public static String GONGGONG_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "gonggong.jpg";
 
 
 
@@ -172,8 +197,8 @@ public final class TextureUtils
                 MARS_TEXTURE_PATH += "_high.jpg";
                 JUPITER_TEXTURE_PATH += "_high.jpg";
                 SATURN_TEXTURE_PATH += "_high.jpg";
-                SATURN_RING_TEXTURE_PATH += "_high_2.png";
-                URANUS_RING_TEXTURE_PATH += "_high_2.png";
+                SATURN_RING_TEXTURE_PATH += "_high_2.jpg";
+                URANUS_RING_TEXTURE_PATH += "_high_2.jpg";
 
                 MOON_TEXTURE_PATH += "_high.jpg";
                 CERES_TEXTURE_PATH += "_high.jpg";

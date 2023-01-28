@@ -83,7 +83,7 @@ vec3 getPlanet(vec3 p, float id, vec3 normal, vec3 bgColor)
     pR(pos.xz, -uRotationSpeeds[index] * uTime);
     pR(normal.xz, -uRotationSpeeds[index] * uTime);
 
-    float scale = 0.9279 / uRingRadiuses[index].y;
+    float scale = 0.9897 / uRingRadiuses[index].y;
     vec3 ringPos = (p + uPositions[index]) * scale;
     ringPos = rotateZ(ringPos, uAxisInclinations[index]);
     pR(ringPos.xz, -uRotationSpeeds[index] * uTime);

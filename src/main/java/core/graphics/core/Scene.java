@@ -319,27 +319,26 @@ public final class Scene extends ScreenAdapter implements Runnable
         backgroundTexture = new Texture(TextureUtils.MILKY_WAY_TEXTURE_PATH);
         backgroundTexture.bind(1);
 
-        int count = 0;
-        int bumpCount = 0;
+        int index = 0;
 
         for(int i = 0; i < simulation.getStarSystem().getBodyHandler().getSize(); i++)
         {
             CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(i);
             Texture texture = celestialObject.getTexture();
-            texture.bind(i + 2 + count + bumpCount);
+            texture.bind(i + 2 + index);
 
             Ring ring = celestialObject.getRing();
             if(ring != null)
             {
+                index++;
                 Texture ringTexture = ring.getTexture();
-                ringTexture.bind(i + 3 + count + bumpCount);
-                count++;
+                ringTexture.bind(i + 2 + index);
             }
 
             if(celestialObject.getBumpTexture() != null)
             {
-                celestialObject.getBumpTexture().bind(i + 4 + count + bumpCount);
-                bumpCount++;
+                index++;
+                celestialObject.getBumpTexture().bind(i + 2 + index);
             }
         }
 
@@ -404,7 +403,7 @@ public final class Scene extends ScreenAdapter implements Runnable
 
         CelestialObject selectedCelestialObject = simulation.getStarSystem().getBodyHandler().get(selectedBodyIndex);
         offset = MathUtils.applyUnaryOperator(selectedCelestialObject.getPosition(), simulation.getStarSystem().getPositionScale()).negate();
-        double selectedCelestialObjectRadius =  simulation.getStarSystem().getRadiusScale().apply(selectedCelestialObject.getRadius());
+        double selectedCelestialObjectRadius = simulation.getStarSystem().getRadiusScale().apply(selectedCelestialObject.getRadius());
         double selectedCelestialObjectZoom = -selectedCelestialObjectRadius * 200 / 126.135712;
 
         Vector3 cameraPosition = camera.getCameraPosition();
@@ -429,8 +428,7 @@ public final class Scene extends ScreenAdapter implements Runnable
         shaderProgram.setUniformi("uBodyNum", simulation.getStarSystem().getBodyHandler().getSize());
         shaderProgram.setUniformi("uLightSourcesNum", Math.max(1, simulation.getStarSystem().getBodyHandler().getNumStars()));
 
-        int count = 0;
-        int bumpCount = 0;
+        int index = 0;
         //double radiusScale = 0.0000001;
         Vector3 maxPos = simulation.getStarSystem().getBodyHandler().getMaxPos();
         Vector3 minPos = simulation.getStarSystem().getBodyHandler().getMinPos();
@@ -467,20 +465,20 @@ public final class Scene extends ScreenAdapter implements Runnable
             shaderProgram.setUniformf("uAxisInclinations[" + i + "]", (float) (celestialObject.getObliquity() * Math.PI / 180));
             shaderProgram.setUniformf("uApparentMagnitudes[" + i + "]", celestialObject instanceof Star ? (float) ((Star) celestialObject).getApparentMagnitude() : 0);
             shaderProgram.setUniformf("uColors[" + i + "]", color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
-            shaderProgram.setUniformi("uTextures[" + i + "]", i + 2 + count + bumpCount);
+            shaderProgram.setUniformi("uTextures[" + i + "]", i + 2 + index);
 
             if(celestialObject.getRing() != null)
             {
-                shaderProgram.setUniformi("uRingTextures[" + i + "]", i + 3 + count + bumpCount);
-                count++;
+                index++;
+                shaderProgram.setUniformi("uRingTextures[" + i + "]", i + 2 + index);
             }
 
             shaderProgram.setUniformi("uBump[" + i + "]", celestialObject.getBumpTexture() == null ? 0 : 1);
 
             if(celestialObject.getBumpTexture() != null)
             {
-                shaderProgram.setUniformi("uBumpTextures[" + i + "]", i + 4 + count + bumpCount);
-                bumpCount++;
+                index++;
+                shaderProgram.setUniformi("uBumpTextures[" + i + "]", i + 2 + index);
             }
 
             shaderProgram.setUniformi("uRings[" + i + "]", celestialObject.getRing() == null ? 0 : 1);

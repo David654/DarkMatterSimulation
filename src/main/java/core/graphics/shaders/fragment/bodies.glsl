@@ -48,8 +48,9 @@ vec2 mapStars(vec3 p)
 
             if(uBump[i] == 1)
             {
-                bodyDist += bumpMapping(uBumpTextures[i], bodyPos, bodyPos + 0.9, bodyDist, 0.9);
-                bodyDist += 0.9;
+                float bumpFactor = 0.9;
+                bodyDist += bumpMapping(uBumpTextures[i], bodyPos, bodyPos + bumpFactor, bodyDist, bumpFactor);
+                bodyDist += bumpFactor;
             }
             vec2 body = vec2(bodyDist, i + 1);
 
@@ -114,8 +115,9 @@ vec2 mapBodies(vec3 p)
 
             if(uBump[i] == 1)
             {
-                bodyDist += bumpMapping(uBumpTextures[i], bodyPos, bodyPos + 0.9, bodyDist, 0.9);
-                bodyDist += 0.9;
+                float bumpFactor = 10.0;
+                bodyDist += bumpMapping(uBumpTextures[i], bodyPos, bodyPos + bumpFactor, bodyDist, bumpFactor);
+                bodyDist += bumpFactor;
             }
             vec2 body = vec2(bodyDist, i + 1);
 

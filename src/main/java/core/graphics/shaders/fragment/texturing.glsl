@@ -26,14 +26,10 @@ vec3 textureRing(sampler2D tex, vec3 pos, vec2 radiuses)
     return texture(tex, polarUV).rgb;
 }
 
-float bumpMapping(sampler2D tex, vec3 pos, vec3 n, float dist, float factor)
+float bumpMapping(sampler2D tex, vec3 pos, float factor)
 {
-    float bump = 0.0;
-    if(dist < 0.1)
-    {
-        vec3 normal = normalize(n);
-        bump += factor * textureSphere(tex, pos).r;
-    }
+    float bump = textureSphere(tex, pos).r;
+    bump *= factor;
 
     return bump;
 }

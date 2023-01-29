@@ -86,7 +86,7 @@ public class CelestialObject
     /**
      * The bump texture of the celestial object.
      */
-    private Texture bumpTexture;
+    private Texture bumpTexture = null;
 
     /**
      * The ring of the celestial object.

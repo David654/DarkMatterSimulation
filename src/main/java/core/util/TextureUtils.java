@@ -53,7 +53,7 @@ public final class TextureUtils
     public static String MERCURY_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "mercury\\mercury_bump.png";
     public static String VENUS_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "venus\\venus_bump.png";
     public static String EARTH_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "earth\\earth_bump.jpg";
-    public static String MARS_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "mars\\mars_bump.png";
+    public static String MARS_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "mars\\mars_bump.jpg";
 
 
     /**

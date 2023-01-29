@@ -20,11 +20,6 @@ public class EarthMoonSystem extends StarSystem
         positionScale = p -> p / PhysicsConstants.AU * 200000;
     }
 
-    public void setRingScale()
-    {
-
-    }
-
     public void initCelestialObjects()
     {
         celestialObjectHandler.add(BasicCelestialObjects.EARTH);

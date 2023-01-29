@@ -23,7 +23,6 @@ public abstract class StarSystem
         darkMatterHandler = new DarkMatterHandler();
         setRadiusScale();
         setPositionScale();
-        setRingScale();
     }
 
     public String getName()
@@ -50,8 +49,6 @@ public abstract class StarSystem
 
     public abstract void setPositionScale();
 
-    public abstract void setRingScale();
-
     public UnaryOperator<Double> getRadiusScale()
     {
         return radiusScale;
@@ -60,11 +57,6 @@ public abstract class StarSystem
     public UnaryOperator<Double> getPositionScale()
     {
         return positionScale;
-    }
-
-    public UnaryOperator<Double> getRingRadiusScale()
-    {
-        return ringRadiusScale;
     }
 
     public void update(double timeStep)

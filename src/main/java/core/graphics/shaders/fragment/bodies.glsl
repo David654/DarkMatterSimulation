@@ -44,14 +44,8 @@ vec2 mapStars(vec3 p)
             pR(bodyPos.xz, -uRotationSpeeds[i] * uTime);
             //bodyPos.y = pModSingle1(-bodyPos.y, 20);
 
-            float bodyDist = fEllipsoid(bodyPos, uDimensions[i]); //  * 0.05 + fbm(bodyPos * 0.3)
-
-            if(uBump[i] == 1)
-            {
-                float bumpFactor = 0.9;
-                bodyDist += bumpMapping(uBumpTextures[i], bodyPos, bodyPos + bumpFactor, bodyDist, bumpFactor);
-                bodyDist += bumpFactor;
-            }
+            float bump = (uBump[i] == 1 ? bumpMapping(uBumpTextures[i], normalize(bodyPos), 1.0) : 0);
+            float bodyDist = fEllipsoid(bodyPos, uDimensions[i] + vec3(bump));
             vec2 body = vec2(bodyDist, i + 1);
 
             if(i == 0)
@@ -109,16 +103,10 @@ vec2 mapBodies(vec3 p)
             pR(bodyPos.xz, -uRotationSpeeds[i] * uTime);
             //bodyPos.y = pModSingle1(-bodyPos.y, 20);
 
-            float bodyDist = fEllipsoid(bodyPos, uDimensions[i]); //  * 0.05 + fbm(bodyPos * 0.3)
+            float bump = (uBump[i] == 1 ? bumpMapping(uBumpTextures[i], normalize(bodyPos), pow(PI / uDimensions[i].x, 4)) : 0);
+            float bodyDist = fEllipsoid(bodyPos, uDimensions[i] + vec3(bump)); //  * 0.05 + fbm(bodyPos * 0.3)
             //bodyDist += fbm(bodyPos * 0.5); // + 10 * pow(uTime, 2 / uTime)
             //bodyDist += cosNoise(p.xz * cos(uTime));
-
-            if(uBump[i] == 1)
-            {
-                float bumpFactor = 10.0;
-                bodyDist += bumpMapping(uBumpTextures[i], bodyPos, bodyPos + bumpFactor, bodyDist, bumpFactor);
-                bodyDist += bumpFactor;
-            }
             vec2 body = vec2(bodyDist, i + 1);
 
             if(length(res) == 0)

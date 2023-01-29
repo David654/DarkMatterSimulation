@@ -24,14 +24,6 @@ public final class SolarSystem extends StarSystem
        // positionScale = p -> Math.signum(p) * Math.pow(Math.log(Math.abs(p) / PhysicsConstants.AU + 1), 1) * 200;
     }
 
-    public void setRingScale()
-    {
-        //ringRadiusScale = r -> Math.pow(r, 1 / (3.0)) / 12;
-       // ringRadiusScale = r -> r * 3.09333e-7;
-       // ringRadiusScale = r -> Math.pow(r, 1 / 1.52) * 0.000160555;
-        ringRadiusScale = r -> Math.pow(r, 1 / (3.0)) / 20;
-    }
-
     public void initCelestialObjects()
     {
         celestialObjectHandler.add(BasicCelestialObjects.SUN);

@@ -20,11 +20,6 @@ public class JupiterAndMoonsSystem extends StarSystem
         positionScale = p -> p / PhysicsConstants.AU * 20000;
     }
 
-    public void setRingScale()
-    {
-
-    }
-
     public void initCelestialObjects()
     {
         celestialObjectHandler.add(BasicCelestialObjects.JUPITER);

@@ -473,7 +473,7 @@ public final class Scene extends ScreenAdapter implements Runnable
                 shaderProgram.setUniformi("uRingTextures[" + i + "]", i + 2 + index);
             }
 
-            shaderProgram.setUniformi("uBump[" + i + "]", celestialObject.getBumpTexture() == null ? 0 : 1);
+            shaderProgram.setUniformf("uBump[" + i + "]", celestialObject.getBumpTexture() == null ? 0 : 1);
 
             if(celestialObject.getBumpTexture() != null)
             {
@@ -487,8 +487,8 @@ public final class Scene extends ScreenAdapter implements Runnable
             double ringRadius2 = 0;
             if(celestialObject.getRing() != null)
             {
-                ringRadius1 = simulation.getStarSystem().getRingRadiusScale().apply(celestialObject.getRing().getRadius1());
-                ringRadius2 = simulation.getStarSystem().getRingRadiusScale().apply(celestialObject.getRing().getRadius2());
+                ringRadius1 = simulation.getStarSystem().getRadiusScale().apply(celestialObject.getRing().getRadius1());
+                ringRadius2 = simulation.getStarSystem().getRadiusScale().apply(celestialObject.getRing().getRadius2());
             }
             shaderProgram.setUniformf("uRingRadiuses[" + i + "]", new com.badlogic.gdx.math.Vector2((float) ringRadius1, (float) ringRadius2));
         }

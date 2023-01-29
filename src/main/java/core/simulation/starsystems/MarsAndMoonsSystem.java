@@ -20,11 +20,6 @@ public class MarsAndMoonsSystem extends StarSystem
         positionScale = p -> p / PhysicsConstants.AU * 600000;
     }
 
-    public void setRingScale()
-    {
-
-    }
-
     public void initCelestialObjects()
     {
         celestialObjectHandler.add(BasicCelestialObjects.MARS);

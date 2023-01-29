@@ -20,11 +20,6 @@ public class SaturnAndMoons extends StarSystem
         positionScale = p -> p / PhysicsConstants.AU * 80000;
     }
 
-    public void setRingScale()
-    {
-        ringRadiusScale = r -> Math.pow(r, 1 / 1.52) * 0.000160555;
-    }
-
     protected void initCelestialObjects()
     {
         celestialObjectHandler.add(BasicCelestialObjects.SATURN);

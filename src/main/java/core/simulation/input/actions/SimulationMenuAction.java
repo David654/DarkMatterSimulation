@@ -1,5 +1,6 @@
 package core.simulation.input.actions;
 
+import core.graphics.core.Scene;
 import core.gui.core.SimulationMenu;
 import core.simulation.core.Simulation;
 

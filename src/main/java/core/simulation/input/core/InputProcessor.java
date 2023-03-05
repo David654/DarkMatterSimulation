@@ -15,6 +15,7 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor
     private int keyCode;
     private double mouseDragX;
     private double mouseDragY;
+    private boolean clicked = false;
 
     private final InputAction exitAction;
     private final InputAction lightEnablingAction;
@@ -34,7 +35,7 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor
         gridShowingAction = new GridShowingAction(scene);
         pauseAction = new PauseAction(scene);
         scrollAction = new ScrollAction(scene);
-        simulationMenuAction = new SimulationMenuAction(800, 600, scene.getSimulation());
+        simulationMenuAction = new SimulationMenuAction((int) (Gdx.graphics.getWidth() / 2.5), (int) (Gdx.graphics.getHeight() / 2.5), scene.getSimulation());
         timeStepAction = new TimeStepAction();
         movementAction = new MovementAction(scene);
         bodySelectionAction = new BodySelectionAction(scene);
@@ -48,6 +49,12 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor
             ma.setKeyCode(keyCode);
             ma.setMousePos(mousePosition);
             ma.perform();
+        }
+
+        if(!clicked)
+        {
+            mouseDragX += (mousePosition.getX() - mouseDragX) / 10;
+            mouseDragY += (mousePosition.getY() - mouseDragY) / 10;
         }
     }
 
@@ -132,16 +139,23 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
         mousePosition = new Vector2(screenX, screenY);
+        clicked = true;
         return false;
     }
 
     public boolean touchUp(int screenX, int screenY, int pointer, int button)
     {
+        mousePosition = new Vector2(mouseDragX, mouseDragY);
+        clicked = false;
         return false;
     }
 
     public boolean touchDragged(int screenX, int screenY, int pointer)
     {
+        //System.out.println(mouseDragX + ", " + mouseDragY);
+        //System.out.println(mousePosition.toString());
+        //System.out.println("\n\n");
+
         int dx = (int) (screenX - mousePosition.getX());
         int dy = (int) (screenY - mousePosition.getY());
 
@@ -151,8 +165,19 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor
         mouseDragX += dx; // yaw
         mouseDragY += dy; // pitch
 
-        mouseDragX = MathUtils.lerp(mouseDragX - dx, mouseDragX, 0.5);
-        mouseDragY = MathUtils.lerp(mouseDragY - dy, mouseDragY, 0.5);
+        double factor = Math.min(0.4, 0.4 / Math.abs(scene.getCamera().getCameraPosition().getZ()) * 700);
+        mouseDragX = MathUtils.lerp(mouseDragX - dx, mouseDragX, factor);
+        mouseDragY = MathUtils.lerp(mouseDragY - dy, mouseDragY, factor);
+
+        if(mouseDragX > Gdx.graphics.getWidth())
+        {
+            mouseDragX -= Gdx.graphics.getWidth();
+        }
+
+        if(mouseDragX < 0)
+        {
+            mouseDragX += Gdx.graphics.getWidth();
+        }
 
         mouseDragY = MathUtils.clamp(mouseDragY, -Gdx.graphics.getHeight() * 0.1, Gdx.graphics.getHeight() * 1.8);
         mousePosition = new Vector2(screenX, screenY);

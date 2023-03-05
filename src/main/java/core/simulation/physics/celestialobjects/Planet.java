@@ -23,11 +23,11 @@ public class Planet extends CelestialObject
 
     public Planet(Vector3 initialPosition, double equatorialRadius, double polarRadius, double mass, Vector3 velocity, double rotationSpeed, double axialTilt, double orbitalInclination, String name)
     {
-        this(initialPosition, new Vector3(equatorialRadius, polarRadius, equatorialRadius), mass, velocity, rotationSpeed, axialTilt, orbitalInclination, name);
+        super(initialPosition, new Vector3(equatorialRadius, polarRadius, equatorialRadius), mass, velocity, rotationSpeed, axialTilt, orbitalInclination, name);
     }
 
     public Planet(Vector3 initialPosition, double radius, double mass, Vector3 velocity, double rotationSpeed, double axialTilt, double orbitalInclination, String name)
     {
-        this(initialPosition, new Vector3(radius), mass, velocity, rotationSpeed, axialTilt, orbitalInclination, name);
+        super(initialPosition, new Vector3(radius), mass, velocity, rotationSpeed, axialTilt, orbitalInclination, name);
     }
 }

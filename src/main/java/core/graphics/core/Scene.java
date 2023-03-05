@@ -18,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import core.graphics.hud.core.HUD;
 import core.graphics.hud.core.Parameter;
 import core.graphics.shaders.Shader;
+import core.simulation.core.BasicCelestialObjects;
+import core.simulation.handler.CelestialObjectHandler;
 import core.util.FontUtils;
 import core.util.TextureUtils;
 import core.util.MathUtils;
@@ -35,6 +37,7 @@ import core.simulation.physics.celestialobjects.Ring;
 import core.simulation.physics.celestialobjects.Star;
 import core.simulation.physics.darkmatter.DarkMatter;
 import core.util.TimeUtils;
+import log.Logger;
 import org.lwjgl.opengl.GL20;
 
 import java.awt.Color;
@@ -54,7 +57,7 @@ public final class Scene extends ScreenAdapter implements Runnable
     private double simulationTime;
     private double zoom = 1;
     private double scale = 14;
-    private int selectedBodyIndex = 0;
+    public static int SELECTED_BODY_INDEX = 0;
     private Vector3 offset;
 
     /**
@@ -119,6 +122,8 @@ public final class Scene extends ScreenAdapter implements Runnable
         loadTextures();
         start();
         calendar.setTime(new Date());
+
+        Logger.getLog("Graphics initialized.");
     }
 
     public Camera getCamera()
@@ -166,23 +171,13 @@ public final class Scene extends ScreenAdapter implements Runnable
         this.enableLighting = enableLighting;
     }
 
-    public int getSelectedBodyIndex()
-    {
-        return selectedBodyIndex;
-    }
-
-    public void setSelectedBodyIndex(int selectedBodyIndex)
-    {
-        this.selectedBodyIndex = selectedBodyIndex;
-    }
-
     /**
      * Creates a simulation.
      */
     private void createSimulation()
     {
         simulation = new Simulation();
-      //  simulation.distributeBodiesRandomly();
+        simulation.distributeBodiesRandomly();
         hud = new HUD();
         initHUD();
     }
@@ -295,8 +290,9 @@ public final class Scene extends ScreenAdapter implements Runnable
      */
     private void loadShaders()
     {
+        Logger.getLog("Loading shaders...");
         String[] vertexShaderFilePaths = new String[] {"vertex.glsl"};
-        String[] fragmentShaderFilePaths = new String[] {"uniforms.glsl", "sdf.glsl", "util.glsl", "texturing.glsl", "darkmatter.glsl", "bodies.glsl", "map.glsl", "raymarching.glsl", "lighting.glsl", "fragment.glsl"};
+        String[] fragmentShaderFilePaths = new String[] {"uniforms.glsl", "sdf.glsl", "util.glsl", "texturing.glsl", "darkmatter.glsl", "bodies.glsl", "map.glsl", "lighting.glsl", "raymarching.glsl" , "fragment.glsl"};
 
         shader = new Shader(vertexShaderFilePaths, fragmentShaderFilePaths);
         String vertexShader = shader.getVertexShader();
@@ -305,13 +301,16 @@ public final class Scene extends ScreenAdapter implements Runnable
         ShaderProgram.pedantic = false;
         shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
         if(!shaderProgram.isCompiled()) System.err.println(shaderProgram.getLog());
+
+        Logger.getLog("Shaders loaded within " + Logger.getTimeAfterLastLog() / 10e9 + " seconds.");
     }
 
     /**
      * Loads necessary textures.
      */
-    private synchronized void loadTextures()
+    public synchronized void loadTextures()
     {
+        Logger.getLog("Loading textures...");
         canvasTexture = new Texture(TextureUtils.MILKY_WAY_TEXTURE_PATH);
         sprite.setTexture(canvasTexture);
         sprite2.setTexture(canvasTexture);
@@ -321,7 +320,15 @@ public final class Scene extends ScreenAdapter implements Runnable
 
         int index = 0;
 
-        for(int i = 0; i < simulation.getStarSystem().getBodyHandler().getSize(); i++)
+        for(int i = 0; i < BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.size(); i++)
+        {
+            CelestialObject celestialObject = BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.get(i);
+            Texture texture = celestialObject.getTexture();
+            BasicCelestialObjects.TEXTURES.add(texture);
+            texture.bind(i + 2);
+        }
+
+        /*for(int i = 0; i < simulation.getStarSystem().getBodyHandler().getSize(); i++)
         {
             CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(i);
             Texture texture = celestialObject.getTexture();
@@ -340,10 +347,31 @@ public final class Scene extends ScreenAdapter implements Runnable
                 index++;
                 celestialObject.getBumpTexture().bind(i + 2 + index);
             }
+        }**/
+
+        for(int i = 0; i < simulation.getStarSystem().getBodyHandler().getSize(); i++)
+        {
+            CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(i);
+
+            Ring ring = celestialObject.getRing();
+            if(ring != null)
+            {
+                index++;
+                Texture ringTexture = ring.getTexture();
+                ringTexture.bind(i + 2 + BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.size() + index);
+            }
+
+            if(celestialObject.getBumpTexture() != null)
+            {
+                index++;
+                celestialObject.getBumpTexture().bind(i + 2 + BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.size() + index);
+            }
         }
 
         canvasTexture.bind(0);
         //canvasTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+        Logger.getLog("Textures loaded within " + Logger.getTimeAfterLastLog() / 10e9 + " seconds.");
     }
 
     /**
@@ -395,13 +423,14 @@ public final class Scene extends ScreenAdapter implements Runnable
         //System.out.println(inputProcessor.getMouseDragY());
         inputProcessor.update();
 
+        //simulation.setPaused(PhysicsConstants.DAYS == 0);
 
         if(!simulation.isPaused())
         {
             time += Gdx.graphics.getDeltaTime();
         }
 
-        CelestialObject selectedCelestialObject = simulation.getStarSystem().getBodyHandler().get(selectedBodyIndex);
+        CelestialObject selectedCelestialObject = simulation.getStarSystem().getBodyHandler().get(SELECTED_BODY_INDEX);
         offset = MathUtils.applyUnaryOperator(selectedCelestialObject.getPosition(), simulation.getStarSystem().getPositionScale()).negate();
         double selectedCelestialObjectRadius = simulation.getStarSystem().getRadiusScale().apply(selectedCelestialObject.getRadius());
         double selectedCelestialObjectZoom = -selectedCelestialObjectRadius * 200 / 126.135712;
@@ -409,18 +438,17 @@ public final class Scene extends ScreenAdapter implements Runnable
         Vector3 cameraPosition = camera.getCameraPosition();
         cameraPosition.setZ((selectedCelestialObjectZoom + zoom) * InputSettings.ZOOM_SENSITIVITY);
 
-
         //position.setY(-zoom * InputSettings.ZOOM_SENSITIVITY);
 
         shaderProgram.setUniformf("uResolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         shaderProgram.setUniformf("uMaxDist", preset.getMaxDist());
         shaderProgram.setUniformf("uMaxSteps", preset.getMaxSteps());
         shaderProgram.setUniformf("uFov", 1f / preset.getFOV() * 100f);
-        shaderProgram.setUniformf("uMousePos", (float) mousePos.getX(), (float) mousePos.getY());
+        shaderProgram.setUniformf("uMousePos", (float) mousePos.getX(), (float) (mousePos.getY()));
         shaderProgram.setUniformf("uTime", (float) time);
         shaderProgram.setUniformf("uPos", (float) cameraPosition.getX(), (float) cameraPosition.getY(), (float) cameraPosition.getZ());
         shaderProgram.setUniformf("uOffset", (float) offset.getX(), (float) offset.getY(), (float) offset.getZ());
-        shaderProgram.setUniformf("uSelectedBodyIndex", selectedBodyIndex + 1);
+        shaderProgram.setUniformf("uSelectedBodyIndex", SELECTED_BODY_INDEX + 1);
         shaderProgram.setUniformMatrix("uView", MathUtils.toFloatMatrix(camera.getView()));
         shaderProgram.setUniformi("uEnableLighting", enableLighting ? 1 : 0);
         shaderProgram.setUniformi("uShowGrid", showGrid ? 1 : 0);
@@ -457,6 +485,7 @@ public final class Scene extends ScreenAdapter implements Runnable
             double rotationSpeed = celestialObject.getRotationSpeed() * PhysicsConstants.TIME_STEP.apply(PhysicsConstants.DAYS) * 0.000008;
             Color color = celestialObject.getColor();
 
+            shaderProgram.setUniformi("uVisibilities[" + i + "]", celestialObject.isVisible() ? 1 : 0);
             shaderProgram.setUniformf("uIDs[" + i + "]", celestialObject instanceof Star ? 1 : 0);
             shaderProgram.setUniformf("uPositions[" + i + "]", (float) bodyPosition.getX(), (float) bodyPosition.getY(), (float) bodyPosition.getZ());
             shaderProgram.setUniformf("uDimensions[" + i + "]", (float) dimensions.getX(), (float) dimensions.getY(), (float) dimensions.getZ());
@@ -465,12 +494,12 @@ public final class Scene extends ScreenAdapter implements Runnable
             shaderProgram.setUniformf("uAxisInclinations[" + i + "]", (float) (celestialObject.getObliquity() * Math.PI / 180));
             shaderProgram.setUniformf("uApparentMagnitudes[" + i + "]", celestialObject instanceof Star ? (float) ((Star) celestialObject).getApparentMagnitude() : 0);
             shaderProgram.setUniformf("uColors[" + i + "]", color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
-            shaderProgram.setUniformi("uTextures[" + i + "]", i + 2 + index);
+            shaderProgram.setUniformi("uTextures[" + i + "]", 2 + BasicCelestialObjects.TEXTURES.indexOf(celestialObject.getTexture()));
 
             if(celestialObject.getRing() != null)
             {
                 index++;
-                shaderProgram.setUniformi("uRingTextures[" + i + "]", i + 2 + index);
+                shaderProgram.setUniformi("uRingTextures[" + i + "]", i + 2 + BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.size() + index);
             }
 
             shaderProgram.setUniformf("uBump[" + i + "]", celestialObject.getBumpTexture() == null ? 0 : 1);
@@ -478,7 +507,7 @@ public final class Scene extends ScreenAdapter implements Runnable
             if(celestialObject.getBumpTexture() != null)
             {
                 index++;
-                shaderProgram.setUniformi("uBumpTextures[" + i + "]", i + 2 + index);
+                shaderProgram.setUniformi("uBumpTextures[" + i + "]", i + 2 + BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.size() + index);
             }
 
             shaderProgram.setUniformi("uRings[" + i + "]", celestialObject.getRing() == null ? 0 : 1);

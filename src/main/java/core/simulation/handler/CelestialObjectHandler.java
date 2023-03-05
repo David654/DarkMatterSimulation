@@ -2,6 +2,7 @@ package core.simulation.handler;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import core.math.vector.Vector3;
+import core.simulation.core.BasicCelestialObjects;
 import core.simulation.physics.celestialobjects.CelestialObject;
 import core.simulation.physics.PhysicsConstants;
 import core.simulation.physics.celestialobjects.Planet;
@@ -86,13 +87,23 @@ public class CelestialObjectHandler extends Handler<CelestialObject>
         return count;
     }
 
+    public String[] getCelestialObjectsNames()
+    {
+        String[] names = new String[list.size()];
+        for(int i = 0; i < list.size(); i++)
+        {
+            names[i] = list.get(i).getName();
+        }
+        return names;
+    }
+
     public double getTotalEnergy()
     {
         double energy = 0;
         for(int i = 0; i < list.size(); i++)
         {
             CelestialObject celestialObject = list.get(i);
-            energy += celestialObject.getMass() * celestialObject.getVelocity().getX() / 2;
+            energy += celestialObject.getMass() * Math.pow(celestialObject.getVelocity().length(), 2) / 2;
         }
         return energy;
     }
@@ -137,6 +148,19 @@ public class CelestialObjectHandler extends Handler<CelestialObject>
         return minPos;
     }
 
+    public int getCelestialObjectTextureIndex(CelestialObject celestialObject)
+    {
+        for(int i = 0; i < BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.size(); i++)
+        {
+            CelestialObject c = BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.get(i);
+            if(celestialObject.getTexture().equals(c.getTexture()))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public void sortCelestialObjectsByDistance()
     {
         list.sort(Comparator.comparingDouble(o -> o.getInitialPosition().length()));
@@ -150,7 +174,11 @@ public class CelestialObjectHandler extends Handler<CelestialObject>
     public void distributeCelestialObjectsRandomly()
     {
         double random = Math.random() * 2 - 1;
-        update(PhysicsConstants.TIME_STEP.apply(random * 365 * 500));
+        double dt = PhysicsConstants.TIME_STEP.apply(random * 365);
+        for(int i = 0; i < 1000; i++)
+        {
+            update(dt);
+        }
     }
 
     public synchronized void update(double time)

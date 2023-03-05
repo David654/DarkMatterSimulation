@@ -23,7 +23,7 @@ vec2 mapStars(vec3 p)
 
         for(int i = 0; i < uBodyNum; i++)
         {
-            if(uIDs[i] == 1)
+            if(uIDs[i] == 1 && uVisibilities[i] == 1)
             {
                 vec3 bodyPos = p + uPositions[i];
                 bodyPos.y = -10;
@@ -37,7 +37,7 @@ vec2 mapStars(vec3 p)
 
     for(int i = 0; i < uBodyNum; i++)
     {
-        if(uIDs[i] == 1)
+        if(uIDs[i] == 1 && uVisibilities[i] == 1)
         {
             vec3 bodyPos = p + uPositions[i];
             bodyPos = rotateZ(bodyPos, uAxisInclinations[i]);
@@ -72,13 +72,13 @@ vec2 mapStars(vec3 p)
     return res;
 }
 
-vec2 mapBodies(vec3 p)
+vec2 mapBodies(vec3 p, bool isBump)
 {
     vec2 res = mapStars(p);
 
     for(int i = 0; i < uBodyNum; i++)
     {
-        if(uIDs[i] != 1)
+        if(uIDs[i] != 1 && uVisibilities[i] == 1)
         {
             if(uShowGrid == 1)
             {
@@ -101,9 +101,14 @@ vec2 mapBodies(vec3 p)
             vec3 bodyPos = p + uPositions[i];
             bodyPos = rotateZ(bodyPos, uAxisInclinations[i]);
             pR(bodyPos.xz, -uRotationSpeeds[i] * uTime);
+            //pMirror(bodyPos.y, length(uDimensions[i]));
             //bodyPos.y = pModSingle1(-bodyPos.y, 20);
 
-            float bump = (uBump[i] == 1 ? bumpMapping(uBumpTextures[i], normalize(bodyPos), pow(PI / uDimensions[i].x, 4)) : 0);
+            float bump = 0;
+            if(isBump)
+            {
+                bump = (uBump[i] == 1 ? bumpMapping(uBumpTextures[i], normalize(bodyPos), pow(PI / uDimensions[i].x, 4)) : 0);
+            }
             float bodyDist = fEllipsoid(bodyPos, uDimensions[i] + vec3(bump)); //  * 0.05 + fbm(bodyPos * 0.3)
             //bodyDist += fbm(bodyPos * 0.5); // + 10 * pow(uTime, 2 / uTime)
             //bodyDist += cosNoise(p.xz * cos(uTime));

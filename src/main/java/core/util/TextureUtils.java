@@ -105,22 +105,42 @@ public final class TextureUtils
     public static String ERIS_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "eris\\eris";
     public static String HAUMEA_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "haumea\\haumea";
     public static String GONGGONG_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "gonggong\\gonggong.jpg";
+    public static String ORCUS_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "orcus\\orcus.jpg";
+    public static String QUAOAR_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "quaoar\\quaoar.jpg";
+    public static String SEDNA_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "sedna\\sedna.jpg";
+    public static String IXION_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "ixion\\ixion.jpg";
 
     public static String PLUTO_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "pluto\\pluto_bump.png";
     public static String GONGGONG_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "gonggong\\gonggong_bump.jpg";
+    public static String ORCUS_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "orcus\\orcus_bump.jpg";
+    public static String QUAOAR_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + "quaoar\\quaoar_bump.jpg";
 
 
     /**
      * Asteroids.
      */
-    public static final String ASTEROID_TEXTURE_DIRECTORY = "\\asteroids\\";
-    public static String VESTA_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + ASTEROID_TEXTURE_DIRECTORY + "vesta\\vesta.jpg";
-    public static String PALLAS_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + ASTEROID_TEXTURE_DIRECTORY + "pallas\\pallas.jpg";
-    public static String JUNO_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + ASTEROID_TEXTURE_DIRECTORY + "juno\\juno.jpg";
-    public static String HYGIEA_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + ASTEROID_TEXTURE_DIRECTORY + "hygiea\\hygiea.jpg";
-    public static String CHARIKLO_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + ASTEROID_TEXTURE_DIRECTORY + "chariklo\\chariklo.jpg";
+    public static final String ASTEROID_TEXTURE_DIRECTORY = PLANET_TEXTURE_DIRECTORY + "\\asteroids\\";
+    public static String VESTA_TEXTURE_PATH = ASTEROID_TEXTURE_DIRECTORY + "vesta\\vesta.jpg";
+    public static String PALLAS_TEXTURE_PATH = ASTEROID_TEXTURE_DIRECTORY + "pallas\\pallas.jpg";
+    public static String JUNO_TEXTURE_PATH = ASTEROID_TEXTURE_DIRECTORY + "juno\\juno.jpg";
+    public static String HYGIEA_TEXTURE_PATH = ASTEROID_TEXTURE_DIRECTORY + "hygiea\\hygiea.jpg";
+    public static String CHARIKLO_TEXTURE_PATH = ASTEROID_TEXTURE_DIRECTORY + "chariklo\\chariklo.jpg";
 
-    public static String VESTA_BUMP_TEXTURE_PATH = PLANET_TEXTURE_DIRECTORY + ASTEROID_TEXTURE_DIRECTORY + "vesta\\vesta_bump.jpg";
+    public static String VESTA_BUMP_TEXTURE_PATH = ASTEROID_TEXTURE_DIRECTORY + "vesta\\vesta_bump.jpg";
+
+    /**
+     * Exoplanets.
+     */
+    public static final String EXOPLANET_TEXTURE_DIRECTORY = PLANET_TEXTURE_DIRECTORY + "\\exoplanets\\";
+    public static String GJ_504_B_TEXTURE_PATH = EXOPLANET_TEXTURE_DIRECTORY + "gj 504 b\\gj_504_b.jpg";
+    public static String HAT_P_11_B_TEXTURE_PATH = EXOPLANET_TEXTURE_DIRECTORY + "hat p 11 b\\hat_p_11_b.jpg";
+    public static String HD_189733_TEXTURE_PATH = EXOPLANET_TEXTURE_DIRECTORY + "hd 189733 b\\hd_189733_b.jpg";
+    public static String KEPLER_7_B_TEXTURE_PATH = EXOPLANET_TEXTURE_DIRECTORY + "kepler 7 b\\kepler_7_b.jpg";
+    public static String KEPLER_22_B_TEXTURE_PATH = EXOPLANET_TEXTURE_DIRECTORY + "kepler 22 b\\kepler_22_b.jpg";
+    public static String KEPLER_452_B_TEXTURE_PATH = EXOPLANET_TEXTURE_DIRECTORY + "kepler 452 b\\kepler_452_b.jpg";
+    public static String OGLE_2005_BLG_390L_B_TEXTURE_PATH = EXOPLANET_TEXTURE_DIRECTORY + "ogle 2005 blg 390l b\\ogle_2005_blg_390l_b.jpg";
+    public static String PROXIMA_CENTAURI_B_TEXTURE_PATH = EXOPLANET_TEXTURE_DIRECTORY + "proxima centauri b\\proxima_centauri_b.jpg";
+    public static String YZ_CETI_D_TEXTURE_PATH = EXOPLANET_TEXTURE_DIRECTORY + "yz ceti d\\yz_ceti_d.jpg";
 
     /**
      * Backgrounds.
@@ -154,6 +174,7 @@ public final class TextureUtils
     public static String EUROPA_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "europa.jpg";
     public static String GANYMEDE_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "ganymede.jpg";
     public static String CALLISTO_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "callisto.jpg";
+    public static String AMALTHEA_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "amalthea.jpg";
     public static String DIONE_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "dione.jpg";
     public static String ENCELADUS_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "enceladus.jpg";
     public static String HYPERION_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "hyperion.jpg";
@@ -177,8 +198,28 @@ public final class TextureUtils
     public static String ERIS_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "eris.jpg";
     public static String HAUMEA_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "haumea.jpg";
     public static String GONGGONG_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "gonggong.jpg";
+    public static String ORCUS_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "orcus.jpg";
+    public static String QUAOAR_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "quaoar.jpg";
+    public static String SEDNA_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "sedna.jpg";
+    public static String IXION_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "ixion.jpg";
 
-
+    // Asteroids.
+    public static String VESTA_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "vesta.jpg";
+    public static String PALLAS_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "pallas.jpg";
+    public static String JUNO_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "juno.jpg";
+    public static String HYGIEA_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "hygiea.jpg";
+    public static String CHARIKLO_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "chariklo.jpg";
+    
+    // Exoplanets.
+    public static String GJ_504_B_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "gj_504_b.jpg";
+    public static String HAT_P_11_B_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "hat_p_11_b.jpg";
+    public static String HD_189733_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "hd_189733_b.jpg";
+    public static String KEPLER_7_B_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "kepler_7_b.jpg";
+    public static String KEPLER_22_B_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "kepler_22_b.jpg";
+    public static String KEPLER_452_B_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "kepler_452_b.jpg";
+    public static String OGLE_2005_BLG_390L_B_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "ogle_2005_blg_390l_b.jpg";
+    public static String PROXIMA_CENTAURI_B_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "proxima_centauri_b.jpg";
+    public static String YZ_CETI_D_THUMBNAIL_PATH = THUMBNAIL_DIRECTORY + "yz_ceti_d.jpg";
 
     public TextureUtils(Preset preset)
     {
@@ -251,10 +292,9 @@ public final class TextureUtils
         }
     }
 
-    public static Color getMostCommonColor(String imagePath)
+    public static Color getMostCommonColor(BufferedImage image)
     {
         HashMap<Color, Integer> colorMap = new HashMap<>();
-        BufferedImage image = readImage(imagePath);
         //image = resizeImage(image, 10, 10);
 
         for (int i = 0; i < image.getWidth(); i++)

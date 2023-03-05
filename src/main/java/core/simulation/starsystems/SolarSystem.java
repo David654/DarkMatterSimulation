@@ -42,6 +42,10 @@ public final class SolarSystem extends StarSystem
         celestialObjectHandler.add(BasicCelestialObjects.ERIS);
         celestialObjectHandler.add(BasicCelestialObjects.HAUMEA);
         celestialObjectHandler.add(BasicCelestialObjects.GONGGONG);
+        celestialObjectHandler.add(BasicCelestialObjects.ORCUS);
+        celestialObjectHandler.add(BasicCelestialObjects.QUAOAR);
+        celestialObjectHandler.add(BasicCelestialObjects.SEDNA);
+        celestialObjectHandler.add(BasicCelestialObjects.IXION);
 
         celestialObjectHandler.add(BasicCelestialObjects.VESTA);
         celestialObjectHandler.add(BasicCelestialObjects.PALLAS);

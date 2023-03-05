@@ -1,5 +1,6 @@
 package core.gui.listelements;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import core.gui.components.GUIComponent;
 import core.simulation.physics.celestialobjects.CelestialObject;
 
@@ -14,6 +15,8 @@ public class ListElement extends JButton implements GUIComponent, MouseListener
 
     private JLabel textLabel;
     private JCheckBox visibilityButton;
+    private JButton upButton;
+    private JButton downButton;
 
     public ListElement(Table table, CelestialObject celestialObject)
     {
@@ -42,37 +45,19 @@ public class ListElement extends JButton implements GUIComponent, MouseListener
         visibilityButton.setSelected(celestialObject.isVisible());
         visibilityButton.setFocusable(false);
         visibilityButton.setToolTipText("Visibility");
-        visibilityButton.addItemListener(l ->
-        {
-            celestialObject.setVisible(!celestialObject.isVisible());
-        });
+        visibilityButton.addItemListener(l -> celestialObject.setVisible(!celestialObject.isVisible()));
+        upButton = new JButton("↑");
+        downButton = new JButton("↓");
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(null);
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+      //  buttonPanel.add(upButton);
+       // buttonPanel.add(downButton);
+        buttonPanel.add(visibilityButton);
 
         this.add(textLabel, BorderLayout.CENTER);
-        this.add(visibilityButton, BorderLayout.EAST);
-    }
-
-    @Override
-    public void componentResized(ComponentEvent e)
-    {
-
-    }
-
-    @Override
-    public void componentMoved(ComponentEvent e)
-    {
-
-    }
-
-    @Override
-    public void componentShown(ComponentEvent e)
-    {
-
-    }
-
-    @Override
-    public void componentHidden(ComponentEvent e)
-    {
-
+        this.add(buttonPanel, BorderLayout.EAST);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package core.simulation.core;
 
+import com.badlogic.gdx.graphics.Texture;
 import core.util.TextureUtils;
 import core.math.vector.Vector3;
 import core.simulation.physics.celestialobjects.CelestialObject;
@@ -8,16 +9,22 @@ import core.simulation.physics.celestialobjects.Ring;
 import core.simulation.physics.celestialobjects.Star;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public final class BasicCelestialObjects
 {
+    public static ArrayList<BufferedImage> THUMBNAILS = new ArrayList<>();
+    public static ArrayList<Texture> TEXTURES = new ArrayList<>();
+    public static ArrayList<CelestialObject> BASIC_CELESTIAL_OBJECTS = new ArrayList<>();
+
     /**
      * Stars.
      */
-    public static CelestialObject SUN = new Star(new Vector3(0, 0, 0),  696_340, 1.989e30, new Vector3(0, 0, 0), 0, 7.25, 4.83, "Sun");
+    public static CelestialObject SUN = new Star(new Vector3(0, 0, 0),  696_340, 1.989e30, new Vector3(0, 0, 1000), 0, 7.25, 4.83, "Sun");
     public static CelestialObject STEPHENSON_2_18 = new Star(new Vector3(0, 0, 0),  1.497131e9, 3.1824e31, new Vector3(0, 0, 0), 0, 0, 1.734, "Stephenson 2-18");
-    public static CelestialObject BETELGEUSE = new Star(new Vector3(0, 0, 0),  621_483_450, 3.53e31, new Vector3(0, 0, 0), 0, 0, 0.58,"Betelgeuse");
-    public static CelestialObject QUASAR_3C_273 = new Star(new Vector3(0, 0, 0),  270_916.869, 3.53e31, new Vector3(0, 0, 0), 0, 0, 12.9,"3C 273");
+    public static CelestialObject BETELGEUSE = new Star(new Vector3(0, 0, 0),  621_483_450, 3.53e31, new Vector3(0, 0, 0), 0, 0, 0.58, "Betelgeuse");
+    public static CelestialObject QUASAR_3C_273 = new Star(new Vector3(0, 0, 0),  270_916.869, 3.53e31, new Vector3(0, 0, 0), 0, 0, 12.9, "3C 273");
 
     /**
      * Planets.
@@ -67,6 +74,10 @@ public final class BasicCelestialObjects
     public static CelestialObject ERIS = new Planet(new Vector3(-67.68, 0, 0), 1163, 1.6e22, new Vector3(0, 0, 3.434), 282.14 / 3.6, 78.0, 44.0, "Eris");
     public static CelestialObject HAUMEA = new Planet(new Vector3(-43.13, 0, 0), new Vector3(2100, 1680, 1074), 1.6e22, new Vector3(0, 0, 4.531), 973.89 / 3.6, 0, 28.2, "Haumea");
     public static CelestialObject GONGGONG = new Planet(new Vector3(-67.485, 0, 0), 615, 1.75e21, new Vector3(0, 0, 3.626), 973.89 / 3.6, 0, 30.6273, "Gonggong");
+    public static CelestialObject ORCUS = new Planet(new Vector3(-39.174, 0, 0), 910, 917, 6.348e20, new Vector3(0, 0, 4.759), 569.41 / 3.6, 0, 20.592, "Orcus");
+    public static CelestialObject QUAOAR = new Planet(new Vector3(-43.694, 0, 0), 1138, 1036, 3e20, new Vector3(0, 0, 4.506), 772.66 / 3.6, 0, 7.9895, "Quaoar");
+    public static CelestialObject SEDNA = new Planet(new Vector3(-525.606, 0, 0), 1490, 3.9e21, new Vector3(0, 0, 1.04), 936.16 / 3.6, 0, 11.934, "Sedna");
+    public static CelestialObject IXION = new Planet(new Vector3(-39.802, 0, 0), 650, 3e20, new Vector3(0, 0, 4.66), 256.86 / 3.6, 0, 19.584, "Ixion");
 
     /**
      * Asteroids.
@@ -77,12 +88,30 @@ public final class BasicCelestialObjects
     public static CelestialObject HYGIEA = new Planet(new Vector3(-3.1415, 0, 0), new Vector3(450, 430, 424), 87.4e18, new Vector3(0, 0, 16.76), 98.769 / 3.6, 0, 3.8316, "Hygiea");
     public static CelestialObject CHARIKLO = new Planet(new Vector3(-15.822, 0, 0), new Vector3(287.6, 270.4, 198.2), 87.4e18, new Vector3(0, 0, 16.76), 113.063 / 3.6, 0, 23.382, "Chariklo");
 
+    /**
+     * Exoplanets.
+     */
+    public static CelestialObject GJ_504_B = new Planet(new Vector3(-43.5, 0, 0), 80_240.68, 7.592e27, new Vector3(0, 0, 4.989), 45_583 / 3.6, 0, 141, "GJ 504 b");
+    public static CelestialObject KEPLER_7_B = new Planet(new Vector3(-0.06067, 0, 0), 112_198.606, 8.37018e26, new Vector3(0, 0, 134.7), 45_583 / 3.6, 0, 86.5, "Kepler 7 b");
+    public static CelestialObject KEPLER_22_B = new Planet(new Vector3(-0.849, 0, 0), 14_664.676, 2.15e26, new Vector3(0, 0, 31.86), 1574 / 3.6, 0, 89.764, "Kepler 22 b");
+    public static CelestialObject KEPLER_452_B = new Planet(new Vector3(-1.046, 0, 0), 10_378.9, 1.9647e25, new Vector3(0, 0, 29.57), 1574 / 3.6, 0, 0, "Kepler 142 b");
+    public static CelestialObject HAT_P_11_B = new Planet(new Vector3(-0.05254, 0, 0), 26_908.297, 1.5944e26, new Vector3(0, 0, 116.65), 9_719 / 3.6, 0, 89.05, "HAT-P-11 b");
+    public static CelestialObject HD_189733 = new Planet(new Vector3(-0.03126, 0, 0), 75_905.49, 1.806e27, new Vector3(0, 0, 154.58), 45_583 / 3.6, 0, 85.76, "HD 189733 b");
+    public static CelestialObject OGLE_2005_BLG_390L_B = new Planet(new Vector3(-2.6, 0, 0), 14_072.05, 3.285e25, new Vector3(0, 0, 8.61), 9_719 / 3.6, 0, 0, "OGLE 2005 BLG 390L b");
+    public static CelestialObject PROXIMA_CENTAURI_B = new Planet(new Vector3(-0.04856, 0, 0), 6558.48, 6.39e24, new Vector3(0, 0, 47.17), 1574 / 3.6, 0, 0, "Proxima Centauri b");
+    public static CelestialObject YZ_CETI_D = new Planet(new Vector3(-0.02851, 0, 0), 6558.47, 6.509e24, new Vector3(0, 0, 65.99), 1574 / 3.6, 0, 0, "YZ Ceti d");
+
     static
     {
         /**
          * Colors.
          */
         // Stars.
+        SUN.setColor(TextureUtils.SUN_THUMBNAIL_PATH);
+        STEPHENSON_2_18.setColor(TextureUtils.SUN_THUMBNAIL_PATH);
+        BETELGEUSE.setColor(TextureUtils.SUN_THUMBNAIL_PATH);
+        QUASAR_3C_273.setColor(TextureUtils.SUN_THUMBNAIL_PATH);
+
         SUN.setColor(new Color(229, 79, 0));
         STEPHENSON_2_18.setColor(new Color(243, 36, 13));
         BETELGEUSE.setColor(new Color(220, 90, 1));
@@ -101,7 +130,7 @@ public final class BasicCelestialObjects
         MOON.setColor(TextureUtils.MOON_THUMBNAIL_PATH);
         PHOBOS.setColor(TextureUtils.PHOBOS_THUMBNAIL_PATH);
         DEIMOS.setColor(TextureUtils.DEIMOS_THUMBNAIL_PATH);
-        AMALTHEA.setColor(Color.BLACK);
+        AMALTHEA.setColor(TextureUtils.AMALTHEA_THUMBNAIL_PATH);
         IO.setColor(TextureUtils.IO_THUMBNAIL_PATH);
         EUROPA.setColor(TextureUtils.EUROPA_THUMBNAIL_PATH);
         GANYMEDE.setColor(TextureUtils.GANYMEDE_THUMBNAIL_PATH);
@@ -128,14 +157,29 @@ public final class BasicCelestialObjects
         MAKEMAKE.setColor(TextureUtils.MAKEMAKE_THUMBNAIL_PATH);
         ERIS.setColor(TextureUtils.ERIS_THUMBNAIL_PATH);
         HAUMEA.setColor(TextureUtils.HAUMEA_THUMBNAIL_PATH);
-        GONGGONG.setColor(Color.BLACK);
+        GONGGONG.setColor(TextureUtils.GONGGONG_THUMBNAIL_PATH);
+        ORCUS.setColor(TextureUtils.ORCUS_THUMBNAIL_PATH);
+        QUAOAR.setColor(TextureUtils.QUAOAR_THUMBNAIL_PATH);
+        SEDNA.setColor(TextureUtils.SEDNA_THUMBNAIL_PATH);
+        IXION.setColor(TextureUtils.IXION_THUMBNAIL_PATH);
 
-        //Asteroids.
-        VESTA.setColor(Color.BLACK);
-        PALLAS.setColor(Color.BLACK);
-        JUNO.setColor(Color.BLACK);
-        HYGIEA.setColor(Color.BLACK);
-        CHARIKLO.setColor(Color.BLACK);
+        // Asteroids.
+        VESTA.setColor(TextureUtils.VESTA_THUMBNAIL_PATH);
+        PALLAS.setColor(TextureUtils.PALLAS_THUMBNAIL_PATH);
+        JUNO.setColor(TextureUtils.JUNO_THUMBNAIL_PATH);
+        HYGIEA.setColor(TextureUtils.HYGIEA_THUMBNAIL_PATH);
+        CHARIKLO.setColor(TextureUtils.CHARIKLO_THUMBNAIL_PATH);
+
+        // Exoplanets.
+        GJ_504_B.setColor(TextureUtils.GJ_504_B_THUMBNAIL_PATH);
+        KEPLER_7_B.setColor(TextureUtils.KEPLER_7_B_THUMBNAIL_PATH);
+        KEPLER_22_B.setColor(TextureUtils.KEPLER_22_B_THUMBNAIL_PATH);
+        KEPLER_452_B.setColor(TextureUtils.KEPLER_452_B_THUMBNAIL_PATH);
+        HAT_P_11_B.setColor(TextureUtils.HAT_P_11_B_THUMBNAIL_PATH);
+        HD_189733.setColor(TextureUtils.HD_189733_THUMBNAIL_PATH);
+        OGLE_2005_BLG_390L_B.setColor(TextureUtils.OGLE_2005_BLG_390L_B_THUMBNAIL_PATH);
+        PROXIMA_CENTAURI_B.setColor(TextureUtils.PROXIMA_CENTAURI_B_THUMBNAIL_PATH);
+        YZ_CETI_D.setColor(TextureUtils.YZ_CETI_D_THUMBNAIL_PATH);
 
         /**
          * Textures.
@@ -144,6 +188,7 @@ public final class BasicCelestialObjects
         SUN.setTexture(TextureUtils.STAR_TEXTURE_PATH);
         STEPHENSON_2_18.setTexture(TextureUtils.STAR_TEXTURE_PATH);
         BETELGEUSE.setTexture(TextureUtils.STAR_TEXTURE_PATH);
+        QUASAR_3C_273.setTexture(TextureUtils.STAR_TEXTURE_PATH);
 
         // Planets.
         MERCURY.setTexture(TextureUtils.MERCURY_TEXTURE_PATH);
@@ -187,6 +232,10 @@ public final class BasicCelestialObjects
         ERIS.setTexture(TextureUtils.ERIS_TEXTURE_PATH);
         HAUMEA.setTexture(TextureUtils.HAUMEA_TEXTURE_PATH);
         GONGGONG.setTexture(TextureUtils.GONGGONG_TEXTURE_PATH);
+        ORCUS.setTexture(TextureUtils.ORCUS_TEXTURE_PATH);
+        QUAOAR.setTexture(TextureUtils.QUAOAR_TEXTURE_PATH);
+        SEDNA.setTexture(TextureUtils.SEDNA_TEXTURE_PATH);
+        IXION.setTexture(TextureUtils.IXION_TEXTURE_PATH);
 
         // Asteroids.
         VESTA.setTexture(TextureUtils.VESTA_TEXTURE_PATH);
@@ -195,6 +244,16 @@ public final class BasicCelestialObjects
         HYGIEA.setTexture(TextureUtils.HYGIEA_TEXTURE_PATH);
         CHARIKLO.setTexture(TextureUtils.CHARIKLO_TEXTURE_PATH);
 
+        // Exoplanets.
+        GJ_504_B.setTexture(TextureUtils.GJ_504_B_TEXTURE_PATH);
+        KEPLER_7_B.setTexture(TextureUtils.KEPLER_7_B_TEXTURE_PATH);
+        KEPLER_22_B.setTexture(TextureUtils.KEPLER_22_B_TEXTURE_PATH);
+        KEPLER_452_B.setTexture(TextureUtils.KEPLER_452_B_TEXTURE_PATH);
+        HAT_P_11_B.setTexture(TextureUtils.HAT_P_11_B_TEXTURE_PATH);
+        HD_189733.setTexture(TextureUtils.HD_189733_TEXTURE_PATH);
+        OGLE_2005_BLG_390L_B.setTexture(TextureUtils.OGLE_2005_BLG_390L_B_TEXTURE_PATH);
+        PROXIMA_CENTAURI_B.setTexture(TextureUtils.PROXIMA_CENTAURI_B_TEXTURE_PATH);
+        YZ_CETI_D.setTexture(TextureUtils.YZ_CETI_D_TEXTURE_PATH);
 
         /**
          * Bump textures.
@@ -220,6 +279,8 @@ public final class BasicCelestialObjects
         // Dwarf planets.
         PLUTO.setBumpTexture(TextureUtils.PLUTO_BUMP_TEXTURE_PATH);
         GONGGONG.setBumpTexture(TextureUtils.GONGGONG_BUMP_TEXTURE_PATH);
+        ORCUS.setBumpTexture(TextureUtils.ORCUS_BUMP_TEXTURE_PATH);
+        QUAOAR.setBumpTexture(TextureUtils.QUAOAR_BUMP_TEXTURE_PATH);
 
         // Asteroids.
         VESTA.setBumpTexture(TextureUtils.VESTA_BUMP_TEXTURE_PATH);
@@ -228,7 +289,7 @@ public final class BasicCelestialObjects
          * Rings.
          */
         // Planets.
-        SATURN.setRing(new Ring(SATURN.getPosition(), 66_900, 480_000, TextureUtils.SATURN_RING_TEXTURE_PATH));
+        SATURN.setRing(new Ring(SATURN.getPosition(), 122_340, 480_000, TextureUtils.SATURN_RING_TEXTURE_PATH));
         URANUS.setRing(new Ring(URANUS.getPosition(), 41_837, 51_149, TextureUtils.URANUS_RING_TEXTURE_PATH));
 
         // Dwarf planets.

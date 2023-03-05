@@ -53,6 +53,11 @@ vec3 getLight(vec3 p, vec3 rd, float id, vec3 lightPos[BODY_NUM_LIMIT], vec3 bgC
 
     if(id == -1)
     {
+        return vec3(0);
+    }
+
+    if(id == -2)
+    {
         return col;
     }
 
@@ -88,64 +93,12 @@ vec3 getLight(vec3 p, vec3 rd, float id, vec3 lightPos[BODY_NUM_LIMIT], vec3 bgC
     return finalCol;
 }
 
-vec3 shade(in float t, in float m, in float v, in vec3 ro, in vec3 rd)
+vec3 getGlow(vec3 glowColor, float nearest, float value)
 {
-    float px = EPSILON;
-    float eps = px * t;
-
-    vec3 pos = ro + t * rd;
-    vec3 nor = getNormal(pos);
-    float occ = getAmbientOcclusion(pos, nor);
-
-    vec3 col = 0.5 + 0.5 * cos(m * vec3(1.4, 1.2, 1.0) + vec3(0.0, 1.0, 2.0));
-    col += 0.05 * nor;
-    col = clamp(col, 0.0, 1.0);
-    col *= 1.0 + 0.5 * nor.x;
-    col += 0.2 * clamp(1.0 + dot(rd, nor), 0.0, 1.0);
-    col *= 1.4;
-    col *= occ;
-    col *= exp(-0.15 * t);
-    col *= 1.0 - smoothstep(15.0, 35.0, t);
-
-    return col;
-}
-
-vec4 getAntialiasing(vec3 p, vec3 ro, vec3 rd, vec3 lightPos[BODY_NUM_LIMIT], vec3 inCol, vec3 bgColor)
-{
-    vec2 hit, object;
-    vec4 col;
-    float oh = 0;
-    vec4 tmp = vec4(0.0);
-    float px = 2.0 / uResolution.y;
-
-    for(int i = 0; i < uMaxSteps; i++)
-    {
-        hit = map(p);
-        object.x += hit.x;
-        object.y = hit.y;
-
-        float th1 = EPSILON / 1.5;
-
-        if(abs(hit.x) < th1 || object.x > uMaxDist)
-        {
-            break;
-        }
-
-        float th2 = EPSILON / 2;
-
-        float lalp = 1.0 - (hit.x - th1) / (th2 - th1);
-        tmp.xyz += (1.0 - tmp.w) * lalp * inCol;
-        tmp.w += (1.0 - tmp.w) * lalp;
-        col = tmp;
-
-        if(tmp.w > 1 - EPSILON)
-        {
-            break;
-        }
-        col = vec4(1, 0, 0, 1);
-        oh = hit.x;
-    }
-    return col;
+    float glowValue = abs(0.3 * 4.83 / value); // smaller - bigger
+    float glowSize = 0.55; // smaller - bigger
+    float glow = pow(nearest + glowValue, -glowSize);
+    return glow * glowColor;
 }
 
 vec3 gammaCorrection(vec3 col)

@@ -1,6 +1,7 @@
 package core.gui.listelements;
 
 import core.gui.components.GUIComponent;
+import core.gui.components.PrimaryButton;
 import core.gui.core.SimulationMenu;
 import core.math.vector.Vector3;
 import core.simulation.physics.celestialobjects.CelestialObject;
@@ -69,7 +70,7 @@ public class Table extends JPanel implements GUIComponent
     public void updateListElement(ListElement element)
     {
         selectedIndex = listElements.indexOf(element);
-        simulationMenu.addTab();
+        simulationMenu.getTabbedPane().addTab();
     }
 
     public void remove()
@@ -113,10 +114,10 @@ public class Table extends JPanel implements GUIComponent
         ListElement element = listElements.get(index);
         GridBagConstraints gbc = new GridBagConstraints();
 
-        int tabIndex = simulationMenu.getIndexOfTab(element.getCelestialObject().getName());
+        int tabIndex = simulationMenu.getTabbedPane().getSelectedIndex();
         if(tabIndex != -1)
         {
-            simulationMenu.removeTab(tabIndex);
+            simulationMenu.getTabbedPane().removeTab(tabIndex);
         }
 
         listElements.remove(element);
@@ -169,6 +170,11 @@ public class Table extends JPanel implements GUIComponent
         table.setLayout(new GridBagLayout());
 
         this.setLayout(new BorderLayout());
+        UIManager.put("ScrollBar.thumbArc", 999);
+        UIManager.put("ScrollBar.trackArc", 999);
+        UIManager.put("ScrollBar.thumbInsets", new Insets(2, 2, 2, 2));
+        UIManager.put("ScrollBar.trackInsets", new Insets(999, 999, 999, 999));
+        UIManager.put("ScrollPane.smoothScrolling", true);
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.getVerticalScrollBar().setUnitIncrement(10);
         scrollPane.setBorder(null);
@@ -180,9 +186,7 @@ public class Table extends JPanel implements GUIComponent
         panel.add(bodiesTotalLabel);
 
 
-        addButton = new JButton("Add");
-        addButton.setBackground(new Color(55, 90, 129));
-        addButton.setFocusable(false);
+        addButton = new PrimaryButton("Add");
         addButton.addActionListener(e -> add());
         panel.add(addButton);
 

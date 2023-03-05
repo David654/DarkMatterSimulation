@@ -1,6 +1,7 @@
 package core.gui.core;
 
 import core.gui.components.GUIComponent;
+import core.gui.components.PrimaryButton;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -101,10 +102,15 @@ public class ColorChooser extends JDialog implements GUIComponent
 
 
         Color color = new Color(red, green, blue);
-        System.out.println(color);
+        //System.out.println(color);
 
         int[] pos = getPos(colorWheelPanel.getColorWheel(), color);
-        System.out.println(Arrays.toString(pos));
+        if(pos[0] != -1 && pos[1] != -1)
+        {
+            wheelCursorX = pos[0];
+            wheelCursorY = pos[1];
+        }
+        //System.out.println(Arrays.toString(pos));
     }
 
     private void createColorControlPanelGUI()
@@ -211,8 +217,7 @@ public class ColorChooser extends JDialog implements GUIComponent
         JPanel panel3 = new JPanel();
         panel3.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-        selectButton = new JButton("Select");
-        selectButton.setBackground(new Color(54, 88, 128));
+        selectButton = new PrimaryButton("Select");
         cancelButton = new JButton("Cancel");
         panel3.add(selectButton);
         panel3.add(cancelButton);
@@ -296,29 +301,14 @@ public class ColorChooser extends JDialog implements GUIComponent
             for(int y = 0; y < image.getHeight(); y++)
             {
                 Color c = new Color(image.getRGB(x, y));
-                if(c.equals(color))
+                int threshold = 5;
+                if(Math.abs(c.getRed() - color.getRed()) <= threshold && Math.abs(c.getGreen() - color.getGreen()) <= threshold && Math.abs(c.getBlue() - color.getBlue()) <= threshold)
                 {
                     return new int[] {x, y};
                 }
             }
         }
         return new int[] {-1, -1};
-    }
-
-    public void componentResized(ComponentEvent e) {
-
-    }
-
-    public void componentMoved(ComponentEvent e) {
-
-    }
-
-    public void componentShown(ComponentEvent e) {
-
-    }
-
-    public void componentHidden(ComponentEvent e) {
-
     }
 
     private class ColorWheelPanel extends JPanel implements MouseListener, MouseMotionListener
@@ -377,8 +367,10 @@ public class ColorChooser extends JDialog implements GUIComponent
 
         public void paintComponent(Graphics g)
         {
+            super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            //g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
             g2d.drawImage(colorWheel, 0, 0, null);
             //g2d.setColor((currColor.getRed() + currColor.getGreen() + currColor.getBlue()) / 3 > 128 ? Color.BLACK : Color.WHITE);
             g2d.setColor(this.getBackground());

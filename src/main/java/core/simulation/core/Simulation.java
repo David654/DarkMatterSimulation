@@ -11,8 +11,10 @@ public class Simulation
 {
     private final StarSystem starSystem;
     private float scale = 0.5f;
-    private double time = 0;
     private boolean paused = false;
+
+    private final double initialValue;
+    private double time = 0;
 
     public Simulation()
     {
@@ -20,16 +22,13 @@ public class Simulation
         initCelestialObjects();
         initDarkMatter();
         createThreads(1);
+
+        initialValue = starSystem.getBodyHandler().getTotalEnergy();
     }
 
     public StarSystem getStarSystem()
     {
         return starSystem;
-    }
-
-    public double getTime()
-    {
-        return time;
     }
 
     public float getScale()
@@ -90,8 +89,10 @@ public class Simulation
     {
         //long time = System.nanoTime();
 
-        time += PhysicsConstants.DELTA_TIME;
         starSystem.update(PhysicsConstants.TIME_STEP.apply(PhysicsConstants.DAYS));
+
+        //calculateError(PhysicsConstants.TIME_STEP.apply(PhysicsConstants.DAYS), time);
+        //time++;
 
        // deltaTime = (int) ((time - lastTime) / 1000000000);
         //lastTime = time;
@@ -109,6 +110,27 @@ public class Simulation
         this.time += Constants.timeStep;**/
 
 
+    }
+
+    private void calculateError(double deltaTime, double time)
+    {
+        double value1 = starSystem.getBodyHandler().get(1).getVelocity().length();
+        starSystem.update(deltaTime);
+        double value2 = starSystem.getBodyHandler().getTotalEnergy();
+
+        double error = (value2 - initialValue) / initialValue;
+
+
+
+        if(time % 60 == 0)
+        {
+            System.out.println(time / 60 + "; " +  Math.log10(Math.abs(error)));
+        }
+
+        if(time >= 3600)
+        {
+            System.exit(0);
+        }
     }
 
     public void render(ShapeRenderer shapeRenderer)

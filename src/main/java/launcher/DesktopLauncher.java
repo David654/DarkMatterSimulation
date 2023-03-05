@@ -5,11 +5,13 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import core.settings.GeneralSettings;
 import core.util.TextureUtils;
+import log.Logger;
 
 public class DesktopLauncher
 {
     private static void initGraphics(boolean visible)
     {
+        Logger.getLog("Initializing graphics...");
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 
         config.setWindowedMode(GeneralSettings.WIDTH, GeneralSettings.HEIGHT);
@@ -24,6 +26,7 @@ public class DesktopLauncher
 
     public static void launch(boolean visible)
     {
+        Logger.getLog("Application launched.");
         FlatDarculaLaf.setup();
         initGraphics(visible);
     }

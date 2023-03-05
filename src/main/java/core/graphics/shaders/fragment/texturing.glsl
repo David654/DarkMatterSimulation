@@ -1,9 +1,15 @@
 vec3 triPlanar(sampler2D tex, vec3 p, vec3 normal, vec3 bgColor)
 {
     normal = abs(normal);
-    normal *= pow(normal, vec3(5.0));
+    normal *= pow(normal, vec3(25.0));
     normal /= normal.x + normal.y + normal.z;
     vec3 col = (texture(tex, p.xy * 0.5 + 0.5) * normal.z + texture(tex, p.xz * 0.5 + 0.5) * normal.y + texture(tex, p.yz * 0.5 + 0.5) * normal.x).rgb;
+
+    if(normal.y < (normal.x + normal.z))
+    {
+        col = vec3(0);
+    }
+
     return col;
 }
 
@@ -58,7 +64,7 @@ vec3 getPlanet(vec3 p, float id, vec3 normal, vec3 bgColor)
 
     if(id == -1)
     {
-        vec3 col = vec3(1);
+        vec3 col = vec3(0);
         return col;
     }
 

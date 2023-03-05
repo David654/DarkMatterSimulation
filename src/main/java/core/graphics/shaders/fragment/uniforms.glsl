@@ -2,7 +2,7 @@
 
 const float PI = 3.1415926;
 const float E = 2.7182818;
-const float EPSILON = 0.0001;
+const float EPSILON = 0.01;
 const float G = 6.6743 * pow(10.0, -11);
 const float LIGHT_SPEED = 299792458.0;
 const float AU = 149597870700.0;
@@ -23,6 +23,7 @@ uniform int uSelectedBodyIndex;
 
 uniform int uBodyNum;
 uniform int uLightSourcesNum;
+uniform int uVisibilities[BODY_NUM_LIMIT];
 uniform float uIDs[BODY_NUM_LIMIT];
 uniform vec3 uPositions[BODY_NUM_LIMIT];
 uniform vec3 uDimensions[BODY_NUM_LIMIT];

@@ -21,9 +21,9 @@ float noise(in vec3 x)
 
 float fbm(vec3 p)
 {
-    mat3 m = mat3( 0.00,  0.80,  0.60,
-    -0.80,  0.36, -0.48,
-    -0.60, -0.48,  0.64);
+    mat3 m = mat3(0.00, 0.80, 0.60,
+    -0.80, 0.36, -0.48,
+    -0.60, -0.48, 0.64);
     float f;
 
     f = 0.5000 * noise(p);
@@ -38,11 +38,28 @@ vec2 mapDarkMatter(vec3 p)
 {
     vec2 res;
 
-    for(int i = 0; i < uBodyNum; i++)
+    for(int i = 0; i < 1; i++)
     {
-        vec3 darkMatterPos = p + uPositions[0];
+        vec3 darkMatterPos = p + uPositions[i];
+        float radius = (uDimensions[i].x + uDimensions[i].y + uDimensions[i].z) * 2 / 3;
+        //darkMatterPos.xz = pMod2(darkMatterPos.xz, vec2(radius * 2));
+        //pMod3(darkMatterPos, vec3(radius * 2));
+        //pMirrorOctant(darkMatterPos.xz, vec2(radius + radius / 8));
+        //pMod2(darkMatterPos.xz, vec2(radius * 2));
 
-        float darkMatterDist = fSphere(darkMatterPos, 10) + fbm(darkMatterPos * 0.9);
+        float darkMatterDist = fBox(darkMatterPos, vec3(radius)) * 0.05 - fbm(darkMatterPos * pow(radius, -0.593938));
+       // float darkMatterDist1 = fBox(darkMatterPos, vec3(radius)) * 0.1 - fbm(darkMatterPos * pow(radius, -0.593938));
+       // float darkMatterDist2 = fBox(darkMatterPos, vec3(radius  - radius / 8)) * 0.1 - fbm(darkMatterPos * pow(radius, -0.593938));
+        //float darkMatterDist = fBox(darkMatterPos, vec3(radius)) * 0.02 / length(uPos) * 1000 - fbm(darkMatterPos * pow(radius, -0.593938));
+        //float darkMatterDist = fPlane(darkMatterPos, vec3(0, 1, 0), 10.0) * 0.02 / length(uPos) * 1000 - fbm(darkMatterPos * pow(radius, -0.593938));
+       // float darkMatterDist2 = fBox(darkMatterPos, vec3(uMaxDist - uMaxDist / 8)) * 0.02 / length(uPos) * 1000 - fbm(darkMatterPos * pow(radius, -0.593938));
+        //float darkMatterDist = max(darkMatterDist1, -darkMatterDist2);
+        /*float darkMatterDist2 = fBox(vec3(darkMatterPos.x + radius * 2, darkMatterPos.yz), vec3(radius)) * 0.01 / length(uPos) * 1000 - fbm(vec3(darkMatterPos.x + radius, darkMatterPos.yz) * pow(radius, -0.593938));
+        float darkMatterDist3 = fBox(vec3(darkMatterPos.xy, darkMatterPos.z + radius * 2), vec3(radius)) * 0.01 / length(uPos) * 1000 - fbm(vec3(darkMatterPos.xy, darkMatterPos.z + radius) * pow(radius, -0.593938));
+        float darkMatterDist4 = fBox(vec3(darkMatterPos.x + radius * 2, darkMatterPos.y, darkMatterPos.z + radius * 2), vec3(radius)) * 0.01 / length(uPos) * 1000 - fbm(vec3(darkMatterPos.x + radius, darkMatterPos.y, darkMatterPos.z + radius) * pow(radius, -0.593938));
+        float darkMatterDist = min(darkMatterDist1, darkMatterDist2);
+        darkMatterDist = min(darkMatterDist, darkMatterDist3);
+        darkMatterDist = min(darkMatterDist, darkMatterDist4);**/
         float darkMatterID = -1;
         vec2 darkMatter = vec2(darkMatterDist, darkMatterID);
 
@@ -55,5 +72,5 @@ vec2 mapDarkMatter(vec3 p)
             res = fOpUnionID(res, darkMatter);
         }
     }
-    return res;
+    return vec2(-res.x, res.y);
 }

@@ -3,6 +3,7 @@ package core.simulation.physics.celestialobjects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import core.graphics.core.Scene;
+import core.simulation.core.BasicCelestialObjects;
 import core.util.TextureUtils;
 import core.util.MathUtils;
 import core.math.vector.Vector3;
@@ -11,6 +12,8 @@ import core.simulation.physics.PhysicsConstants;
 import core.util.Utils;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 public class CelestialObject
 {
@@ -59,7 +62,7 @@ public class CelestialObject
     /**
      * The color of the celestial object.
      */
-    private Color color;
+    private Color color = Color.BLACK;
 
     /**
      * The name of the celestial object.
@@ -117,12 +120,16 @@ public class CelestialObject
         this.obliquity = obliquity;
         this.orbitalInclination = orbitalInclination;
         this.name = name;
+
         texture = new Texture(TextureUtils.DEFAULT_PLANET_TEXTURE_PATH);
         isVisible = true;
+
+        BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.add(this);
 
         //orbit = new Orbit(Scene.simulation);
     }
 
+    @Override
     public boolean equals(Object o)
     {
         CelestialObject object = (CelestialObject) o;
@@ -131,9 +138,20 @@ public class CelestialObject
                 && orbitalInclination == object.getOrbitalInclination() && name.equals(object.getName());
     }
 
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(mass, velocity, name);
+    }
+
     public Vector3 getInitialPosition()
     {
         return initialPosition;
+    }
+
+    public Vector3 getInitialPositionAU()
+    {
+        return initialPosition.multiply(1 / PhysicsConstants.AU);
     }
 
     public void setInitialPosition(Vector3 initialPosition)
@@ -146,16 +164,16 @@ public class CelestialObject
         return position;
     }
 
+    public Vector3 getPositionAU()
+    {
+        return position.multiply(1 / PhysicsConstants.AU);
+    }
+
     public void setPosition(Vector3 position)
     {
         this.position = position.multiply(PhysicsConstants.AU);
         this.initialPosition = this.position;
         this.position = MathUtils.rotateZ(this.position, Math.toRadians(orbitalInclination));
-    }
-
-    public Vector3 getInitialPositionAU()
-    {
-        return initialPosition.multiply(1 / PhysicsConstants.AU);
     }
 
     public Vector3 getDimensions()
@@ -240,7 +258,9 @@ public class CelestialObject
 
     public void setColor(String texturePath)
     {
-        color = TextureUtils.getMostCommonColor(texturePath);
+        BufferedImage image = TextureUtils.readImage(texturePath);
+        BasicCelestialObjects.THUMBNAILS.add(image);
+        color = TextureUtils.getMostCommonColor(image);
     }
 
     public String getName()
@@ -281,6 +301,11 @@ public class CelestialObject
     public void setTexture(String texturePath)
     {
         this.texture = new Texture(texturePath);
+    }
+
+    public void setTexture(Texture texture)
+    {
+        this.texture = texture;
     }
 
     public Texture getBumpTexture()
@@ -393,33 +418,38 @@ public class CelestialObject
 
        // position = position.add(velocity.multiply(dt)).add(acceleration.multiply(Math.pow(dt, 2) / 2));
         //velocity = velocity.add(acceleration.multiply(dt));
-        double dt = Math.signum(deltaTime) * Math.min(Math.abs(deltaTime), PhysicsConstants.TIME_STEP.apply(1.0));
+        //double dt = Math.signum(deltaTime) * Math.min(Math.abs(deltaTime), PhysicsConstants.TIME_STEP.apply(1.0));
 
-        if(!this.equals(Scene.simulation.getStarSystem().getBodyHandler().getCelestialObjectWithLargestMass()))
-        {
-            for(double i = 0; i < Math.abs(deltaTime); i += Math.abs(dt))
-            {
-                Vector3 k1a = getGravitationalAcceleration(position);
-                Vector3 k1v = velocity;
+        // RK4
+        /*Vector3 k1a = getGravitationalAcceleration(position);
+        Vector3 k1v = velocity;
 
-                Vector3 k2a = getGravitationalAcceleration(position.add(k1v.multiply(dt * 0.5)));
-                Vector3 k2v = velocity.add(k1a.multiply(dt * 0.5));
+        Vector3 k2a = getGravitationalAcceleration(position.add(k1v.multiply(deltaTime * 0.5)));
+        Vector3 k2v = velocity.add(k1a.multiply(deltaTime * 0.5));
 
-                Vector3 k3a = getGravitationalAcceleration(position.add(k2v.multiply(dt * 0.5)));
-                Vector3 k3v = velocity.add(k2a.multiply(dt * 0.5));
+        Vector3 k3a = getGravitationalAcceleration(position.add(k2v.multiply(deltaTime * 0.5)));
+        Vector3 k3v = velocity.add(k2a.multiply(deltaTime * 0.5));
 
-                Vector3 k4a = getGravitationalAcceleration(position.add(k3v.multiply(dt)));
-                Vector3 k4v = velocity.add(k3a.multiply(dt));
+        Vector3 k4a = getGravitationalAcceleration(position.add(k3v.multiply(deltaTime)));
+        Vector3 k4v = velocity.add(k3a.multiply(deltaTime));
 
-                Vector3 dvdt = k1a.add(k2a.add(k3a).multiply(2)).add(k4a).multiply(dt / 6.0);
-                Vector3 dxdt = k1v.add(k2v.add(k3v).multiply(2)).add(k4v).multiply(dt / 6.0);
+        Vector3 dvdt = k1a.add(k2a.add(k3a).multiply(2)).add(k4a).multiply(deltaTime / 6.0);
+        Vector3 dxdt = k1v.add(k2v.add(k3v).multiply(2)).add(k4v).multiply(deltaTime / 6.0);
 
-                velocity = velocity.add(dvdt);
-                position = position.add(dxdt);
-            }
-        }
+        velocity = velocity.add(dvdt);
+        position = position.add(dxdt);**/
 
-        if(name.equals("Earth"))
+        // Leapfrog
+        Vector3 acceleration = getGravitationalAcceleration(position);
+        Vector3 initialVelocity = velocity.add(acceleration.multiply(deltaTime / 2));
+        position = position.add(initialVelocity.multiply(deltaTime));
+
+        acceleration = getGravitationalAcceleration(position);
+        velocity = initialVelocity.add(acceleration.multiply(deltaTime));
+        position = position.add(velocity.multiply(deltaTime));
+
+
+        if(name.equals("Mercury"))
         {
             //System.out.println(velocity);
         }

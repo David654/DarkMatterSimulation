@@ -26,6 +26,7 @@ public class BodySelectionAction implements InputAction
     public void perform()
     {
         selectedBodyIndex = MathUtils.clamp(selectedBodyIndex, 0, Scene.simulation.getStarSystem().getBodyHandler().getSize() - 1);
-        scene.setSelectedBodyIndex(selectedBodyIndex);
+        Scene.SELECTED_BODY_INDEX = selectedBodyIndex;
+        scene.setZoom(0);
     }
 }

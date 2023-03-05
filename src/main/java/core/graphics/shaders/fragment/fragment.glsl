@@ -60,19 +60,19 @@ vec3 render(in vec2 uv)
         lightPos[0] = vec3(1000, 0, 0);
     }
 
-    vec4 object = rayMarch(ro, rd);
+    vec4 object[4] = rayMarch(ro, rd, lightPos, getSky(rd));
     vec3 col;
 
-    if(object.x < uMaxDist)
+    if(object[0].x < uMaxDist)
     {
         //rd = getCam(ro, lookAt) * normalize(vec3(uv, uFov));
-        vec3 p = ro + object.x * rd;
+        vec3 p = ro + object[0].x * rd;
 
-        col = getLight(p, rd, object.y, lightPos, getSky(rd));
+        col = getLight(p, rd, object[0].y, lightPos, getSky(rd));
 
-        if(uIDs[int(object.y) - 1] == 1)
+        if(uIDs[int(object[0].y) - 1] == 1)
         {
-            vec3 accentCol = uColors[int(object.w)];
+            vec3 accentCol = uColors[int(object[1].y)];
             vec3 gray = vec3((col.r + col.g + col.b) / 3.0);
             vec3 diff = vec3(0.5) - gray;
             col = accentCol - diff;
@@ -106,14 +106,12 @@ vec3 render(in vec2 uv)
         //col += 0.2 * sun * exp(-2.0 * d);
     }
 
-    if(uIDs[int(object.w)] == 1)
-    {
-        vec3 glowColor = uColors[int(object.w)];
-        float glowValue = abs(0.3 * 4.83 / uApparentMagnitudes[int(object.w)]); // smaller - bigger
-        float glowSize = 0.55; // smaller - bigger
-        float glow = pow(object.z + glowValue, -glowSize);
-        col += glow * glowColor;
-    }
+    col += getGlow(uColors[int(object[1].y)], object[1].x, uApparentMagnitudes[int(object[1].y)]);
+
+    //col += object[3].rgb;
+
+    vec4 tmp = object[2];
+    col = mix(col, tmp.xyz / (0.001 + tmp.w), tmp.w);
 
     return col;
 }

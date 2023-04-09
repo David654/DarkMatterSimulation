@@ -5,10 +5,13 @@ import core.simulation.handler.CelestialObjectHandler;
 import core.simulation.handler.DarkMatterHandler;
 import core.simulation.physics.celestialobjects.CelestialObject;
 
+import java.util.ArrayList;
 import java.util.function.UnaryOperator;
 
 public abstract class StarSystem
 {
+    public static final ArrayList<StarSystem> STAR_SYSTEMS = initStarSystems();
+
     protected String name;
     protected final CelestialObjectHandler celestialObjectHandler;
     protected final DarkMatterHandler darkMatterHandler;
@@ -23,6 +26,30 @@ public abstract class StarSystem
         darkMatterHandler = new DarkMatterHandler();
         setRadiusScale();
         setPositionScale();
+    }
+
+    private static ArrayList<StarSystem> initStarSystems()
+    {
+        ArrayList<StarSystem> starSystems = new ArrayList<>();
+        starSystems.add(new SolarSystem());
+        starSystems.add(new EarthMoonSystem());
+        starSystems.add(new MarsAndMoonsSystem());
+        starSystems.add(new JupiterAndMoonsSystem());
+        starSystems.add(new SaturnAndMoons());
+        starSystems.add(new UranusAndMoonsSystem());
+        starSystems.add(new NeptuneAndTritonSystem());
+        starSystems.add(new PlutoAndCharonSystem());
+        return starSystems;
+    }
+
+    public static String[] getStarSystemNames()
+    {
+        String[] names = new String[STAR_SYSTEMS.size()];
+        for(int i = 0; i < names.length; i++)
+        {
+            names[i] = STAR_SYSTEMS.get(i).getName();
+        }
+        return names;
     }
 
     public String getName()
@@ -66,8 +93,9 @@ public abstract class StarSystem
 
     protected abstract void initCelestialObjects();
 
-    public void initStarSystem()
+    public final void initStarSystem()
     {
+        celestialObjectHandler.clear();
         initCelestialObjects();
 
         CelestialObject celestialObjectWithLargestMass = celestialObjectHandler.getCelestialObjectWithLargestMass();
@@ -84,8 +112,14 @@ public abstract class StarSystem
         }
     }
 
-    public void initDarkMatter()
+    public final void initDarkMatter()
     {
         darkMatterHandler.initDarkMatter(this);
+
+        for(int i = 0; i < celestialObjectHandler.getSize(); i++)
+        {
+            CelestialObject celestialObject = celestialObjectHandler.get(i);
+            celestialObject.setDarkMatter(darkMatterHandler.get(i));
+        }
     }
 }

@@ -13,6 +13,21 @@ import java.util.Comparator;
 
 public class CelestialObjectHandler extends Handler<CelestialObject>
 {
+    public void add(CelestialObject celestialObject)
+    {
+        CelestialObject c = null;
+
+        if(celestialObject instanceof Star star)
+        {
+            c = new Star(star);
+        }
+        else if(celestialObject instanceof Planet planet)
+        {
+            c = new Planet(planet);
+        }
+        list.add(c);
+    }
+
     public CelestialObject getCelestialObjectByName(String name)
     {
         for(int i = 0; i < list.size(); i++)
@@ -179,6 +194,20 @@ public class CelestialObjectHandler extends Handler<CelestialObject>
         {
             update(dt);
         }
+    }
+
+    public void swapCelestialObjects(CelestialObject object1, CelestialObject object2)
+    {
+        Vector3 position1 = object1.getPositionAU();
+        Vector3 position2 = object2.getPositionAU();
+
+        object1.setPosition(position2);
+        object2.setPosition(position1);
+    }
+
+    public void clear()
+    {
+        list.clear();
     }
 
     public synchronized void update(double time)

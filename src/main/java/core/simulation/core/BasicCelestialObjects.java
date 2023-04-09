@@ -1,7 +1,7 @@
 package core.simulation.core;
 
 import com.badlogic.gdx.graphics.Texture;
-import core.util.TextureUtils;
+import core.assets.textures.Textures;
 import core.math.vector.Vector3;
 import core.simulation.physics.celestialobjects.CelestialObject;
 import core.simulation.physics.celestialobjects.Planet;
@@ -15,14 +15,15 @@ import java.util.ArrayList;
 public final class BasicCelestialObjects
 {
     public static ArrayList<BufferedImage> THUMBNAILS = new ArrayList<>();
+    public static ArrayList<String> TEXTURE_PATHS = new ArrayList<>();
     public static ArrayList<Texture> TEXTURES = new ArrayList<>();
     public static ArrayList<CelestialObject> BASIC_CELESTIAL_OBJECTS = new ArrayList<>();
 
     /**
      * Stars.
      */
-    public static CelestialObject SUN = new Star(new Vector3(0, 0, 0),  696_340, 1.989e30, new Vector3(0, 0, 1000), 0, 7.25, 4.83, "Sun");
-    public static CelestialObject STEPHENSON_2_18 = new Star(new Vector3(0, 0, 0),  1.497131e9, 3.1824e31, new Vector3(0, 0, 0), 0, 0, 1.734, "Stephenson 2-18");
+    public static CelestialObject SUN = new Star(new Vector3(0, 0, 0),  696_340, 1.989e30, new Vector3(0, 0, 0), 0, 7.25, 4.83, "Sun");
+    public static CelestialObject STEPHENSON_2_18 = new Star(new Vector3(0, 0, 0),  1.497131e9, 3.1824e31, new Vector3(0, 0, 0), 0, 0, 1.73, "Stephenson 2-18");
     public static CelestialObject BETELGEUSE = new Star(new Vector3(0, 0, 0),  621_483_450, 3.53e31, new Vector3(0, 0, 0), 0, 0, 0.58, "Betelgeuse");
     public static CelestialObject QUASAR_3C_273 = new Star(new Vector3(0, 0, 0),  270_916.869, 3.53e31, new Vector3(0, 0, 0), 0, 0, 12.9, "3C 273");
 
@@ -92,9 +93,9 @@ public final class BasicCelestialObjects
      * Exoplanets.
      */
     public static CelestialObject GJ_504_B = new Planet(new Vector3(-43.5, 0, 0), 80_240.68, 7.592e27, new Vector3(0, 0, 4.989), 45_583 / 3.6, 0, 141, "GJ 504 b");
-    public static CelestialObject KEPLER_7_B = new Planet(new Vector3(-0.06067, 0, 0), 112_198.606, 8.37018e26, new Vector3(0, 0, 134.7), 45_583 / 3.6, 0, 86.5, "Kepler 7 b");
-    public static CelestialObject KEPLER_22_B = new Planet(new Vector3(-0.849, 0, 0), 14_664.676, 2.15e26, new Vector3(0, 0, 31.86), 1574 / 3.6, 0, 89.764, "Kepler 22 b");
-    public static CelestialObject KEPLER_452_B = new Planet(new Vector3(-1.046, 0, 0), 10_378.9, 1.9647e25, new Vector3(0, 0, 29.57), 1574 / 3.6, 0, 0, "Kepler 142 b");
+    public static CelestialObject KEPLER_7_B = new Planet(new Vector3(-0.06067, 0, 0), 112_198.606, 8.37018e26, new Vector3(0, 0, 134.7), 45_583 / 3.6, 0, 86.5, "Kepler-7 b");
+    public static CelestialObject KEPLER_22_B = new Planet(new Vector3(-0.849, 0, 0), 14_664.676, 2.15e26, new Vector3(0, 0, 31.86), 1574 / 3.6, 0, 89.764, "Kepler-22 b");
+    public static CelestialObject KEPLER_452_B = new Planet(new Vector3(-1.046, 0, 0), 10_378.9, 1.9647e25, new Vector3(0, 0, 29.57), 1574 / 3.6, 0, 0, "Kepler-142 b");
     public static CelestialObject HAT_P_11_B = new Planet(new Vector3(-0.05254, 0, 0), 26_908.297, 1.5944e26, new Vector3(0, 0, 116.65), 9_719 / 3.6, 0, 89.05, "HAT-P-11 b");
     public static CelestialObject HD_189733 = new Planet(new Vector3(-0.03126, 0, 0), 75_905.49, 1.806e27, new Vector3(0, 0, 154.58), 45_583 / 3.6, 0, 85.76, "HD 189733 b");
     public static CelestialObject OGLE_2005_BLG_390L_B = new Planet(new Vector3(-2.6, 0, 0), 14_072.05, 3.285e25, new Vector3(0, 0, 8.61), 9_719 / 3.6, 0, 0, "OGLE 2005 BLG 390L b");
@@ -107,196 +108,196 @@ public final class BasicCelestialObjects
          * Colors.
          */
         // Stars.
-        SUN.setColor(TextureUtils.SUN_THUMBNAIL_PATH);
-        STEPHENSON_2_18.setColor(TextureUtils.SUN_THUMBNAIL_PATH);
-        BETELGEUSE.setColor(TextureUtils.SUN_THUMBNAIL_PATH);
-        QUASAR_3C_273.setColor(TextureUtils.SUN_THUMBNAIL_PATH);
+        SUN.setColor(Textures.SUN_THUMBNAIL_PATH);
+        STEPHENSON_2_18.setColor(Textures.SUN_THUMBNAIL_PATH);
+        BETELGEUSE.setColor(Textures.SUN_THUMBNAIL_PATH);
+        QUASAR_3C_273.setColor(Textures.SUN_THUMBNAIL_PATH);
 
         SUN.setColor(new Color(229, 79, 0));
         STEPHENSON_2_18.setColor(new Color(243, 36, 13));
         BETELGEUSE.setColor(new Color(220, 90, 1));
 
         // Planets.
-        MERCURY.setColor(TextureUtils.MERCURY_THUMBNAIL_PATH);
-        VENUS.setColor(TextureUtils.VENUS_THUMBNAIL_PATH);
-        EARTH.setColor(TextureUtils.EARTH_THUMBNAIL_PATH);
-        MARS.setColor(TextureUtils.MARS_THUMBNAIL_PATH);
-        JUPITER.setColor(TextureUtils.JUPITER_THUMBNAIL_PATH);
-        SATURN.setColor(TextureUtils.SATURN_THUMBNAIL_PATH);
-        URANUS.setColor(TextureUtils.URANUS_THUMBNAIL_PATH);
-        NEPTUNE.setColor(TextureUtils.NEPTUNE_THUMBNAIL_PATH);
+        MERCURY.setColor(Textures.MERCURY_THUMBNAIL_PATH);
+        VENUS.setColor(Textures.VENUS_THUMBNAIL_PATH);
+        EARTH.setColor(Textures.EARTH_THUMBNAIL_PATH);
+        MARS.setColor(Textures.MARS_THUMBNAIL_PATH);
+        JUPITER.setColor(Textures.JUPITER_THUMBNAIL_PATH);
+        SATURN.setColor(Textures.SATURN_THUMBNAIL_PATH);
+        URANUS.setColor(Textures.URANUS_THUMBNAIL_PATH);
+        NEPTUNE.setColor(Textures.NEPTUNE_THUMBNAIL_PATH);
 
         // Moons.
-        MOON.setColor(TextureUtils.MOON_THUMBNAIL_PATH);
-        PHOBOS.setColor(TextureUtils.PHOBOS_THUMBNAIL_PATH);
-        DEIMOS.setColor(TextureUtils.DEIMOS_THUMBNAIL_PATH);
-        AMALTHEA.setColor(TextureUtils.AMALTHEA_THUMBNAIL_PATH);
-        IO.setColor(TextureUtils.IO_THUMBNAIL_PATH);
-        EUROPA.setColor(TextureUtils.EUROPA_THUMBNAIL_PATH);
-        GANYMEDE.setColor(TextureUtils.GANYMEDE_THUMBNAIL_PATH);
-        CALLISTO.setColor(TextureUtils.CALLISTO_THUMBNAIL_PATH);
-        DIONE.setColor(TextureUtils.DIONE_THUMBNAIL_PATH);
-        ENCELADUS.setColor(TextureUtils.ENCELADUS_THUMBNAIL_PATH);
-        HYPERION.setColor(TextureUtils.HYPERION_THUMBNAIL_PATH);
-        IAPETUS.setColor(TextureUtils.IAPETUS_THUMBNAIL_PATH);
-        MIMAS.setColor(TextureUtils.MIMAS_THUMBNAIL_PATH);
-        RHEA.setColor(TextureUtils.RHEA_THUMBNAIL_PATH);
-        TETHYS.setColor(TextureUtils.TETHYS_THUMBNAIL_PATH);
-        TITAN.setColor(TextureUtils.TITAN_THUMBNAIL_PATH);
-        ARIEL.setColor(TextureUtils.ARIEL_THUMBNAIL_PATH);
-        MIRANDA.setColor(TextureUtils.MIRANDA_THUMBNAIL_PATH);
-        OBERON.setColor(TextureUtils.OBERON_THUMBNAIL_PATH);
-        TITANIA.setColor(TextureUtils.TITANIA_THUMBNAIL_PATH);
-        UMBRIEL.setColor(TextureUtils.UMBRIEL_THUMBNAIL_PATH);
-        TRITON.setColor(TextureUtils.TRITON_THUMBNAIL_PATH);
-        CHARON.setColor(TextureUtils.CHARON_THUMBNAIL_PATH);
+        MOON.setColor(Textures.MOON_THUMBNAIL_PATH);
+        PHOBOS.setColor(Textures.PHOBOS_THUMBNAIL_PATH);
+        DEIMOS.setColor(Textures.DEIMOS_THUMBNAIL_PATH);
+        AMALTHEA.setColor(Textures.AMALTHEA_THUMBNAIL_PATH);
+        IO.setColor(Textures.IO_THUMBNAIL_PATH);
+        EUROPA.setColor(Textures.EUROPA_THUMBNAIL_PATH);
+        GANYMEDE.setColor(Textures.GANYMEDE_THUMBNAIL_PATH);
+        CALLISTO.setColor(Textures.CALLISTO_THUMBNAIL_PATH);
+        DIONE.setColor(Textures.DIONE_THUMBNAIL_PATH);
+        ENCELADUS.setColor(Textures.ENCELADUS_THUMBNAIL_PATH);
+        HYPERION.setColor(Textures.HYPERION_THUMBNAIL_PATH);
+        IAPETUS.setColor(Textures.IAPETUS_THUMBNAIL_PATH);
+        MIMAS.setColor(Textures.MIMAS_THUMBNAIL_PATH);
+        RHEA.setColor(Textures.RHEA_THUMBNAIL_PATH);
+        TETHYS.setColor(Textures.TETHYS_THUMBNAIL_PATH);
+        TITAN.setColor(Textures.TITAN_THUMBNAIL_PATH);
+        ARIEL.setColor(Textures.ARIEL_THUMBNAIL_PATH);
+        MIRANDA.setColor(Textures.MIRANDA_THUMBNAIL_PATH);
+        OBERON.setColor(Textures.OBERON_THUMBNAIL_PATH);
+        TITANIA.setColor(Textures.TITANIA_THUMBNAIL_PATH);
+        UMBRIEL.setColor(Textures.UMBRIEL_THUMBNAIL_PATH);
+        TRITON.setColor(Textures.TRITON_THUMBNAIL_PATH);
+        CHARON.setColor(Textures.CHARON_THUMBNAIL_PATH);
 
         // Dwarf planets.
-        CERES.setColor(TextureUtils.CERES_THUMBNAIL_PATH);
-        PLUTO.setColor(TextureUtils.PLUTO_THUMBNAIL_PATH);
-        MAKEMAKE.setColor(TextureUtils.MAKEMAKE_THUMBNAIL_PATH);
-        ERIS.setColor(TextureUtils.ERIS_THUMBNAIL_PATH);
-        HAUMEA.setColor(TextureUtils.HAUMEA_THUMBNAIL_PATH);
-        GONGGONG.setColor(TextureUtils.GONGGONG_THUMBNAIL_PATH);
-        ORCUS.setColor(TextureUtils.ORCUS_THUMBNAIL_PATH);
-        QUAOAR.setColor(TextureUtils.QUAOAR_THUMBNAIL_PATH);
-        SEDNA.setColor(TextureUtils.SEDNA_THUMBNAIL_PATH);
-        IXION.setColor(TextureUtils.IXION_THUMBNAIL_PATH);
+        CERES.setColor(Textures.CERES_THUMBNAIL_PATH);
+        PLUTO.setColor(Textures.PLUTO_THUMBNAIL_PATH);
+        MAKEMAKE.setColor(Textures.MAKEMAKE_THUMBNAIL_PATH);
+        ERIS.setColor(Textures.ERIS_THUMBNAIL_PATH);
+        HAUMEA.setColor(Textures.HAUMEA_THUMBNAIL_PATH);
+        GONGGONG.setColor(Textures.GONGGONG_THUMBNAIL_PATH);
+        ORCUS.setColor(Textures.ORCUS_THUMBNAIL_PATH);
+        QUAOAR.setColor(Textures.QUAOAR_THUMBNAIL_PATH);
+        SEDNA.setColor(Textures.SEDNA_THUMBNAIL_PATH);
+        IXION.setColor(Textures.IXION_THUMBNAIL_PATH);
 
         // Asteroids.
-        VESTA.setColor(TextureUtils.VESTA_THUMBNAIL_PATH);
-        PALLAS.setColor(TextureUtils.PALLAS_THUMBNAIL_PATH);
-        JUNO.setColor(TextureUtils.JUNO_THUMBNAIL_PATH);
-        HYGIEA.setColor(TextureUtils.HYGIEA_THUMBNAIL_PATH);
-        CHARIKLO.setColor(TextureUtils.CHARIKLO_THUMBNAIL_PATH);
+        VESTA.setColor(Textures.VESTA_THUMBNAIL_PATH);
+        PALLAS.setColor(Textures.PALLAS_THUMBNAIL_PATH);
+        JUNO.setColor(Textures.JUNO_THUMBNAIL_PATH);
+        HYGIEA.setColor(Textures.HYGIEA_THUMBNAIL_PATH);
+        CHARIKLO.setColor(Textures.CHARIKLO_THUMBNAIL_PATH);
 
         // Exoplanets.
-        GJ_504_B.setColor(TextureUtils.GJ_504_B_THUMBNAIL_PATH);
-        KEPLER_7_B.setColor(TextureUtils.KEPLER_7_B_THUMBNAIL_PATH);
-        KEPLER_22_B.setColor(TextureUtils.KEPLER_22_B_THUMBNAIL_PATH);
-        KEPLER_452_B.setColor(TextureUtils.KEPLER_452_B_THUMBNAIL_PATH);
-        HAT_P_11_B.setColor(TextureUtils.HAT_P_11_B_THUMBNAIL_PATH);
-        HD_189733.setColor(TextureUtils.HD_189733_THUMBNAIL_PATH);
-        OGLE_2005_BLG_390L_B.setColor(TextureUtils.OGLE_2005_BLG_390L_B_THUMBNAIL_PATH);
-        PROXIMA_CENTAURI_B.setColor(TextureUtils.PROXIMA_CENTAURI_B_THUMBNAIL_PATH);
-        YZ_CETI_D.setColor(TextureUtils.YZ_CETI_D_THUMBNAIL_PATH);
+        GJ_504_B.setColor(Textures.GJ_504_B_THUMBNAIL_PATH);
+        KEPLER_7_B.setColor(Textures.KEPLER_7_B_THUMBNAIL_PATH);
+        KEPLER_22_B.setColor(Textures.KEPLER_22_B_THUMBNAIL_PATH);
+        KEPLER_452_B.setColor(Textures.KEPLER_452_B_THUMBNAIL_PATH);
+        HAT_P_11_B.setColor(Textures.HAT_P_11_B_THUMBNAIL_PATH);
+        HD_189733.setColor(Textures.HD_189733_THUMBNAIL_PATH);
+        OGLE_2005_BLG_390L_B.setColor(Textures.OGLE_2005_BLG_390L_B_THUMBNAIL_PATH);
+        PROXIMA_CENTAURI_B.setColor(Textures.PROXIMA_CENTAURI_B_THUMBNAIL_PATH);
+        YZ_CETI_D.setColor(Textures.YZ_CETI_D_THUMBNAIL_PATH);
 
         /**
          * Textures.
          */
         // Stars.
-        SUN.setTexture(TextureUtils.STAR_TEXTURE_PATH);
-        STEPHENSON_2_18.setTexture(TextureUtils.STAR_TEXTURE_PATH);
-        BETELGEUSE.setTexture(TextureUtils.STAR_TEXTURE_PATH);
-        QUASAR_3C_273.setTexture(TextureUtils.STAR_TEXTURE_PATH);
+        SUN.setTexturePath(Textures.STAR_TEXTURE_PATH);
+        STEPHENSON_2_18.setTexturePath(Textures.STAR_TEXTURE_PATH);
+        BETELGEUSE.setTexturePath(Textures.STAR_TEXTURE_PATH);
+        QUASAR_3C_273.setTexturePath(Textures.STAR_TEXTURE_PATH);
 
         // Planets.
-        MERCURY.setTexture(TextureUtils.MERCURY_TEXTURE_PATH);
-        VENUS.setTexture(TextureUtils.VENUS_TEXTURE_PATH);
-        EARTH.setTexture(TextureUtils.EARTH_TEXTURE_PATH);
-        MARS.setTexture(TextureUtils.MARS_TEXTURE_PATH);
-        JUPITER.setTexture(TextureUtils.JUPITER_TEXTURE_PATH);
-        SATURN.setTexture(TextureUtils.SATURN_TEXTURE_PATH);
-        URANUS.setTexture(TextureUtils.URANUS_TEXTURE_PATH);
-        NEPTUNE.setTexture(TextureUtils.NEPTUNE_TEXTURE_PATH);
+        MERCURY.setTexturePath(Textures.MERCURY_TEXTURE_PATH);
+        VENUS.setTexturePath(Textures.VENUS_TEXTURE_PATH);
+        EARTH.setTexturePath(Textures.EARTH_TEXTURE_PATH);
+        MARS.setTexturePath(Textures.MARS_TEXTURE_PATH);
+        JUPITER.setTexturePath(Textures.JUPITER_TEXTURE_PATH);
+        SATURN.setTexturePath(Textures.SATURN_TEXTURE_PATH);
+        URANUS.setTexturePath(Textures.URANUS_TEXTURE_PATH);
+        NEPTUNE.setTexturePath(Textures.NEPTUNE_TEXTURE_PATH);
 
         // Moons.
-        MOON.setTexture(TextureUtils.MOON_TEXTURE_PATH);
-        PHOBOS.setTexture(TextureUtils.PHOBOS_TEXTURE_PATH);
-        DEIMOS.setTexture(TextureUtils.DEIMOS_TEXTURE_PATH);
-        AMALTHEA.setTexture(TextureUtils.AMALTHEA_TEXTURE_PATH);
-        IO.setTexture(TextureUtils.IO_TEXTURE_PATH);
-        EUROPA.setTexture(TextureUtils.EUROPA_TEXTURE_PATH);
-        GANYMEDE.setTexture(TextureUtils.GANYMEDE_TEXTURE_PATH);
-        CALLISTO.setTexture(TextureUtils.CALLISTO_TEXTURE_PATH);
-        DIONE.setTexture(TextureUtils.DIONE_TEXTURE_PATH);
-        ENCELADUS.setTexture(TextureUtils.ENCELADUS_TEXTURE_PATH);
-        HYPERION.setTexture(TextureUtils.HYPERION_TEXTURE_PATH);
-        IAPETUS.setTexture(TextureUtils.IAPETUS_TEXTURE_PATH);
-        MIMAS.setTexture(TextureUtils.MIMAS_TEXTURE_PATH);
-        RHEA.setTexture(TextureUtils.RHEA_TEXTURE_PATH);
-        TETHYS.setTexture(TextureUtils.TETHYS_TEXTURE_PATH);
-        TITAN.setTexture(TextureUtils.TITAN_TEXTURE_PATH);
-        ARIEL.setTexture(TextureUtils.ARIEL_TEXTURE_PATH);
-        MIRANDA.setTexture(TextureUtils.MIRANDA_TEXTURE_PATH);
-        OBERON.setTexture(TextureUtils.OBERON_TEXTURE_PATH);
-        TITANIA.setTexture(TextureUtils.TITANIA_TEXTURE_PATH);
-        UMBRIEL.setTexture(TextureUtils.UMBRIEL_TEXTURE_PATH);
-        TRITON.setTexture(TextureUtils.TRITON_TEXTURE_PATH);
-        CHARON.setTexture(TextureUtils.CHARON_TEXTURE_PATH);
+        MOON.setTexturePath(Textures.MOON_TEXTURE_PATH);
+        PHOBOS.setTexturePath(Textures.PHOBOS_TEXTURE_PATH);
+        DEIMOS.setTexturePath(Textures.DEIMOS_TEXTURE_PATH);
+        AMALTHEA.setTexturePath(Textures.AMALTHEA_TEXTURE_PATH);
+        IO.setTexturePath(Textures.IO_TEXTURE_PATH);
+        EUROPA.setTexturePath(Textures.EUROPA_TEXTURE_PATH);
+        GANYMEDE.setTexturePath(Textures.GANYMEDE_TEXTURE_PATH);
+        CALLISTO.setTexturePath(Textures.CALLISTO_TEXTURE_PATH);
+        DIONE.setTexturePath(Textures.DIONE_TEXTURE_PATH);
+        ENCELADUS.setTexturePath(Textures.ENCELADUS_TEXTURE_PATH);
+        HYPERION.setTexturePath(Textures.HYPERION_TEXTURE_PATH);
+        IAPETUS.setTexturePath(Textures.IAPETUS_TEXTURE_PATH);
+        MIMAS.setTexturePath(Textures.MIMAS_TEXTURE_PATH);
+        RHEA.setTexturePath(Textures.RHEA_TEXTURE_PATH);
+        TETHYS.setTexturePath(Textures.TETHYS_TEXTURE_PATH);
+        TITAN.setTexturePath(Textures.TITAN_TEXTURE_PATH);
+        ARIEL.setTexturePath(Textures.ARIEL_TEXTURE_PATH);
+        MIRANDA.setTexturePath(Textures.MIRANDA_TEXTURE_PATH);
+        OBERON.setTexturePath(Textures.OBERON_TEXTURE_PATH);
+        TITANIA.setTexturePath(Textures.TITANIA_TEXTURE_PATH);
+        UMBRIEL.setTexturePath(Textures.UMBRIEL_TEXTURE_PATH);
+        TRITON.setTexturePath(Textures.TRITON_TEXTURE_PATH);
+        CHARON.setTexturePath(Textures.CHARON_TEXTURE_PATH);
 
         // Dwarf planets.
-        CERES.setTexture(TextureUtils.CERES_TEXTURE_PATH);
-        PLUTO.setTexture(TextureUtils.PLUTO_TEXTURE_PATH);
-        MAKEMAKE.setTexture(TextureUtils.MAKEMAKE_TEXTURE_PATH);
-        ERIS.setTexture(TextureUtils.ERIS_TEXTURE_PATH);
-        HAUMEA.setTexture(TextureUtils.HAUMEA_TEXTURE_PATH);
-        GONGGONG.setTexture(TextureUtils.GONGGONG_TEXTURE_PATH);
-        ORCUS.setTexture(TextureUtils.ORCUS_TEXTURE_PATH);
-        QUAOAR.setTexture(TextureUtils.QUAOAR_TEXTURE_PATH);
-        SEDNA.setTexture(TextureUtils.SEDNA_TEXTURE_PATH);
-        IXION.setTexture(TextureUtils.IXION_TEXTURE_PATH);
+        CERES.setTexturePath(Textures.CERES_TEXTURE_PATH);
+        PLUTO.setTexturePath(Textures.PLUTO_TEXTURE_PATH);
+        MAKEMAKE.setTexturePath(Textures.MAKEMAKE_TEXTURE_PATH);
+        ERIS.setTexturePath(Textures.ERIS_TEXTURE_PATH);
+        HAUMEA.setTexturePath(Textures.HAUMEA_TEXTURE_PATH);
+        GONGGONG.setTexturePath(Textures.GONGGONG_TEXTURE_PATH);
+        ORCUS.setTexturePath(Textures.ORCUS_TEXTURE_PATH);
+        QUAOAR.setTexturePath(Textures.QUAOAR_TEXTURE_PATH);
+        SEDNA.setTexturePath(Textures.SEDNA_TEXTURE_PATH);
+        IXION.setTexturePath(Textures.IXION_TEXTURE_PATH);
 
         // Asteroids.
-        VESTA.setTexture(TextureUtils.VESTA_TEXTURE_PATH);
-        PALLAS.setTexture(TextureUtils.PALLAS_TEXTURE_PATH);
-        JUNO.setTexture(TextureUtils.JUNO_TEXTURE_PATH);
-        HYGIEA.setTexture(TextureUtils.HYGIEA_TEXTURE_PATH);
-        CHARIKLO.setTexture(TextureUtils.CHARIKLO_TEXTURE_PATH);
+        VESTA.setTexturePath(Textures.VESTA_TEXTURE_PATH);
+        PALLAS.setTexturePath(Textures.PALLAS_TEXTURE_PATH);
+        JUNO.setTexturePath(Textures.JUNO_TEXTURE_PATH);
+        HYGIEA.setTexturePath(Textures.HYGIEA_TEXTURE_PATH);
+        CHARIKLO.setTexturePath(Textures.CHARIKLO_TEXTURE_PATH);
 
         // Exoplanets.
-        GJ_504_B.setTexture(TextureUtils.GJ_504_B_TEXTURE_PATH);
-        KEPLER_7_B.setTexture(TextureUtils.KEPLER_7_B_TEXTURE_PATH);
-        KEPLER_22_B.setTexture(TextureUtils.KEPLER_22_B_TEXTURE_PATH);
-        KEPLER_452_B.setTexture(TextureUtils.KEPLER_452_B_TEXTURE_PATH);
-        HAT_P_11_B.setTexture(TextureUtils.HAT_P_11_B_TEXTURE_PATH);
-        HD_189733.setTexture(TextureUtils.HD_189733_TEXTURE_PATH);
-        OGLE_2005_BLG_390L_B.setTexture(TextureUtils.OGLE_2005_BLG_390L_B_TEXTURE_PATH);
-        PROXIMA_CENTAURI_B.setTexture(TextureUtils.PROXIMA_CENTAURI_B_TEXTURE_PATH);
-        YZ_CETI_D.setTexture(TextureUtils.YZ_CETI_D_TEXTURE_PATH);
+        GJ_504_B.setTexturePath(Textures.GJ_504_B_TEXTURE_PATH);
+        KEPLER_7_B.setTexturePath(Textures.KEPLER_7_B_TEXTURE_PATH);
+        KEPLER_22_B.setTexturePath(Textures.KEPLER_22_B_TEXTURE_PATH);
+        KEPLER_452_B.setTexturePath(Textures.KEPLER_452_B_TEXTURE_PATH);
+        HAT_P_11_B.setTexturePath(Textures.HAT_P_11_B_TEXTURE_PATH);
+        HD_189733.setTexturePath(Textures.HD_189733_TEXTURE_PATH);
+        OGLE_2005_BLG_390L_B.setTexturePath(Textures.OGLE_2005_BLG_390L_B_TEXTURE_PATH);
+        PROXIMA_CENTAURI_B.setTexturePath(Textures.PROXIMA_CENTAURI_B_TEXTURE_PATH);
+        YZ_CETI_D.setTexturePath(Textures.YZ_CETI_D_TEXTURE_PATH);
 
         /**
          * Bump textures.
          */
         // Planets.
-        MERCURY.setBumpTexture(TextureUtils.MERCURY_BUMP_TEXTURE_PATH);
-        VENUS.setBumpTexture(TextureUtils.VENUS_BUMP_TEXTURE_PATH);
-        EARTH.setBumpTexture(TextureUtils.EARTH_BUMP_TEXTURE_PATH);
-        MARS.setBumpTexture(TextureUtils.MARS_BUMP_TEXTURE_PATH);
+        MERCURY.setBumpTexturePath(Textures.MERCURY_BUMP_TEXTURE_PATH);
+        VENUS.setBumpTexturePath(Textures.VENUS_BUMP_TEXTURE_PATH);
+        EARTH.setBumpTexturePath(Textures.EARTH_BUMP_TEXTURE_PATH);
+        MARS.setBumpTexturePath(Textures.MARS_BUMP_TEXTURE_PATH);
 
         // Moons.
-        MOON.setBumpTexture(TextureUtils.MOON_BUMP_TEXTURE_PATH);
-        PHOBOS.setBumpTexture(TextureUtils.PHOBOS_BUMP_TEXTURE_PATH);
-        DEIMOS.setBumpTexture(TextureUtils.DEIMOS_BUMP_TEXTURE_PATH);
-        AMALTHEA.setBumpTexture(TextureUtils.AMALTHEA_BUMP_TEXTURE_PATH);
-        IO.setBumpTexture(TextureUtils.IO_BUMP_TEXTURE_PATH);
-        IAPETUS.setBumpTexture(TextureUtils.IAPETUS_BUMP_TEXTURE_PATH);
-        RHEA.setBumpTexture(TextureUtils.RHEA_BUMP_TEXTURE_PATH);
-        OBERON.setBumpTexture(TextureUtils.OBERON_BUMP_TEXTURE_PATH);
-        TITANIA.setBumpTexture(TextureUtils.TITANIA_BUMP_TEXTURE_PATH);
-        UMBRIEL.setBumpTexture(TextureUtils.UMBRIEL_BUMP_TEXTURE_PATH);
+        MOON.setBumpTexturePath(Textures.MOON_BUMP_TEXTURE_PATH);
+        PHOBOS.setBumpTexturePath(Textures.PHOBOS_BUMP_TEXTURE_PATH);
+        DEIMOS.setBumpTexturePath(Textures.DEIMOS_BUMP_TEXTURE_PATH);
+        AMALTHEA.setBumpTexturePath(Textures.AMALTHEA_BUMP_TEXTURE_PATH);
+        IO.setBumpTexturePath(Textures.IO_BUMP_TEXTURE_PATH);
+        IAPETUS.setBumpTexturePath(Textures.IAPETUS_BUMP_TEXTURE_PATH);
+        RHEA.setBumpTexturePath(Textures.RHEA_BUMP_TEXTURE_PATH);
+        OBERON.setBumpTexturePath(Textures.OBERON_BUMP_TEXTURE_PATH);
+        TITANIA.setBumpTexturePath(Textures.TITANIA_BUMP_TEXTURE_PATH);
+        UMBRIEL.setBumpTexturePath(Textures.UMBRIEL_BUMP_TEXTURE_PATH);
 
         // Dwarf planets.
-        PLUTO.setBumpTexture(TextureUtils.PLUTO_BUMP_TEXTURE_PATH);
-        GONGGONG.setBumpTexture(TextureUtils.GONGGONG_BUMP_TEXTURE_PATH);
-        ORCUS.setBumpTexture(TextureUtils.ORCUS_BUMP_TEXTURE_PATH);
-        QUAOAR.setBumpTexture(TextureUtils.QUAOAR_BUMP_TEXTURE_PATH);
+        PLUTO.setBumpTexturePath(Textures.PLUTO_BUMP_TEXTURE_PATH);
+        GONGGONG.setBumpTexturePath(Textures.GONGGONG_BUMP_TEXTURE_PATH);
+        ORCUS.setBumpTexturePath(Textures.ORCUS_BUMP_TEXTURE_PATH);
+        QUAOAR.setBumpTexturePath(Textures.QUAOAR_BUMP_TEXTURE_PATH);
 
         // Asteroids.
-        VESTA.setBumpTexture(TextureUtils.VESTA_BUMP_TEXTURE_PATH);
+        VESTA.setBumpTexturePath(Textures.VESTA_BUMP_TEXTURE_PATH);
 
         /**
          * Rings.
          */
         // Planets.
-        SATURN.setRing(new Ring(SATURN.getPosition(), 122_340, 480_000, TextureUtils.SATURN_RING_TEXTURE_PATH));
-        URANUS.setRing(new Ring(URANUS.getPosition(), 41_837, 51_149, TextureUtils.URANUS_RING_TEXTURE_PATH));
+        SATURN.setRing(new Ring(SATURN.getPosition(), 122_340, 480_000, Textures.SATURN_RING_TEXTURE_PATH));
+        URANUS.setRing(new Ring(URANUS.getPosition(), 41_837, 51_149, Textures.URANUS_RING_TEXTURE_PATH));
 
         // Dwarf planets.
-        HAUMEA.setRing(new Ring(HAUMEA.getPosition(), 2217, 2287, TextureUtils.URANUS_RING_TEXTURE_PATH));
+        HAUMEA.setRing(new Ring(HAUMEA.getPosition(), 2217, 2287, Textures.URANUS_RING_TEXTURE_PATH));
 
         // Asteroids.
-        CHARIKLO.setRing(new Ring(CHARIKLO.getPosition(), 390.6, 408.8, TextureUtils.URANUS_RING_TEXTURE_PATH));
+        CHARIKLO.setRing(new Ring(CHARIKLO.getPosition(), 390.6, 408.8, Textures.URANUS_RING_TEXTURE_PATH));
 
 
         /*SUN.setColor(new Color(228, 91, 25));

@@ -3,8 +3,9 @@ package launcher;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.formdev.flatlaf.FlatDarculaLaf;
-import core.settings.GeneralSettings;
-import core.util.TextureUtils;
+import core.assets.icons.Icons;
+import core.assets.textures.Textures;
+import core.settings.core.GeneralSettings;
 import log.Logger;
 
 public class DesktopLauncher
@@ -19,7 +20,7 @@ public class DesktopLauncher
         config.setMaximized(true);
         config.setInitialVisible(visible);
         config.setDecorated(false);
-        config.setWindowIcon(TextureUtils.APPLICATION_ICON_PATH);
+        config.setWindowIcon(Icons.APPLICATION_ICON_PATH);
 
         new Lwjgl3Application(new Boot(), config);
     }

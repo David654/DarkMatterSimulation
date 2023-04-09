@@ -2,8 +2,10 @@ package core.simulation.physics.celestialobjects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import core.assets.textures.Textures;
 import core.graphics.core.Scene;
 import core.simulation.core.BasicCelestialObjects;
+import core.simulation.physics.darkmatter.DarkMatter;
 import core.util.TextureUtils;
 import core.util.MathUtils;
 import core.math.vector.Vector3;
@@ -86,15 +88,21 @@ public class CelestialObject
      */
     private Texture texture;
 
+    private String texturePath;
+
     /**
      * The bump texture of the celestial object.
      */
     private Texture bumpTexture = null;
 
+    private String bumpTexturePath;
+
     /**
      * The ring of the celestial object.
      */
     private Ring ring;
+
+    private DarkMatter darkMatter;
 
     /**
      * Constructor.
@@ -121,7 +129,7 @@ public class CelestialObject
         this.orbitalInclination = orbitalInclination;
         this.name = name;
 
-        texture = new Texture(TextureUtils.DEFAULT_PLANET_TEXTURE_PATH);
+        texturePath = Textures.DEFAULT_PLANET_TEXTURE_PATH;
         isVisible = true;
 
         BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.add(this);
@@ -208,6 +216,7 @@ public class CelestialObject
 
     public void setVelocity(Vector3 velocity)
     {
+        this.initialPosition = velocity;
         this.velocity = velocity;
     }
 
@@ -298,7 +307,18 @@ public class CelestialObject
         return texture;
     }
 
-    public void setTexture(String texturePath)
+    public String getTexturePath()
+    {
+        return texturePath;
+    }
+
+    public void setTexturePath(String texturePath)
+    {
+        this.texturePath = texturePath;
+        BasicCelestialObjects.TEXTURE_PATHS.add(texturePath);
+    }
+
+    public void loadTexture()
     {
         this.texture = new Texture(texturePath);
     }
@@ -313,9 +333,19 @@ public class CelestialObject
         return bumpTexture;
     }
 
-    public void setBumpTexture(String texturePath)
+    public void setBumpTexture(Texture bumpTexture)
     {
-        this.bumpTexture = new Texture(texturePath);
+        this.bumpTexture = bumpTexture;
+    }
+
+    public String getBumpTexturePath()
+    {
+        return bumpTexturePath;
+    }
+
+    public void setBumpTexturePath(String texturePath)
+    {
+        this.bumpTexturePath = texturePath;
     }
 
     public Ring getRing()
@@ -326,6 +356,16 @@ public class CelestialObject
     public void setRing(Ring ring)
     {
         this.ring = ring;
+    }
+
+    public DarkMatter getDarkMatter()
+    {
+        return darkMatter;
+    }
+
+    public void setDarkMatter(DarkMatter darkMatter)
+    {
+        this.darkMatter = darkMatter;
     }
 
     public Vector3 getCenter(Vector3 position)
@@ -347,28 +387,22 @@ public class CelestialObject
             {
                 Vector3 dist = celestialObject.getCenter(celestialObject.getPosition()).subtract(this.getCenter(position));
                 double r = dist.length();
-                double value = PhysicsConstants.G * celestialObject.getMass() / Math.pow(r, 3);
+                double value = PhysicsConstants.G * celestialObject.getTotalMass() / Math.pow(r, 3);
                 acceleration = acceleration.add(dist.multiply(value));
             }
         }
         return acceleration;
     }
 
-    private Vector3 calculateOrbitalVelocity(Vector3 position)
+    private double getDarkMatterMass()
     {
-        Vector3 acceleration = new Vector3();
-        for(int i = 0; i < Scene.simulation.getStarSystem().getDarkMatterHandler().getSize(); i++)
-        {
-            CelestialObject celestialObject = Scene.simulation.getStarSystem().getBodyHandler().get(i);
-            if(!celestialObject.equals(this) && celestialObject.isVisible())
-            {
-                Vector3 dist = celestialObject.getCenter(celestialObject.getPosition()).subtract(this.getCenter(position));
-                double r = dist.length();
-                double value = PhysicsConstants.G * celestialObject.getMass() / Math.pow(r, 3);
-                acceleration = acceleration.add(dist.multiply(value));
-            }
-        }
-        return acceleration;
+        double volume = 4.0 / 3 * Math.PI * dimensions.getX() * dimensions.getY() * dimensions.getZ();
+        return volume * darkMatter.getDensity() * 10e14 * PhysicsConstants.E_V_TO_KG;
+    }
+
+    public double getTotalMass()
+    {
+        return mass * (1 + getDarkMatterMass());
     }
 
     public void update(double deltaTime)
@@ -421,7 +455,7 @@ public class CelestialObject
         //double dt = Math.signum(deltaTime) * Math.min(Math.abs(deltaTime), PhysicsConstants.TIME_STEP.apply(1.0));
 
         // RK4
-        /*Vector3 k1a = getGravitationalAcceleration(position);
+        /*  Vector3 k1a = getGravitationalAcceleration(position);
         Vector3 k1v = velocity;
 
         Vector3 k2a = getGravitationalAcceleration(position.add(k1v.multiply(deltaTime * 0.5)));
@@ -440,14 +474,20 @@ public class CelestialObject
         position = position.add(dxdt);**/
 
         // Leapfrog
-        Vector3 acceleration = getGravitationalAcceleration(position);
+        /*Vector3 acceleration = getGravitationalAcceleration(position);
         Vector3 initialVelocity = velocity.add(acceleration.multiply(deltaTime / 2));
         position = position.add(initialVelocity.multiply(deltaTime));
 
         acceleration = getGravitationalAcceleration(position);
         velocity = initialVelocity.add(acceleration.multiply(deltaTime));
+        position = position.add(velocity.multiply(deltaTime));**/
+
+        Vector3 acceleration = getGravitationalAcceleration(position);
+        velocity = velocity.add(acceleration.multiply(deltaTime / 2));
         position = position.add(velocity.multiply(deltaTime));
 
+        acceleration = getGravitationalAcceleration(position);
+        velocity = velocity.add(acceleration.multiply(deltaTime / 2));
 
         if(name.equals("Mercury"))
         {

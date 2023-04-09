@@ -1,17 +1,22 @@
 package core.gui.core;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import core.assets.icons.Icons;
 import core.graphics.core.Scene;
-import core.gui.components.GUIComponent;
-import core.gui.components.PrimaryButton;
-import core.gui.grid.GridRow;
-import core.gui.listelements.ListElement;
-import core.gui.listelements.Table;
-import core.gui.tabbedpane.Tab;
-import core.gui.tabbedpane.TabbedPane;
+import core.gui.components.buttons.IconButton;
+import core.gui.components.core.GUIComponent;
+import core.gui.components.buttons.PrimaryButton;
+import core.gui.components.grid.GridRow;
+import core.gui.components.listelements.Table;
+import core.gui.components.tabbedpane.Tab;
+import core.gui.components.tabbedpane.TabbedPane;
 import core.math.vector.Vector3;
 import core.simulation.core.Simulation;
 import core.simulation.physics.PhysicsConstants;
 import core.simulation.physics.celestialobjects.CelestialObject;
+import core.simulation.starsystems.StarSystem;
+import core.util.TextureUtils;
 import core.util.Utils;
 
 import javax.swing.*;
@@ -19,12 +24,11 @@ import java.awt.*;
 
 public class SimulationMenu extends JFrame implements GUIComponent
 {
-    private final Simulation simulation;
+    private final Scene scene;
+    private Simulation simulation;
 
     private JSplitPane mainPanel;
-
     private TabbedPane tabbedPane;
-
     private Table table;
 
     private JButton addButton;
@@ -34,14 +38,20 @@ public class SimulationMenu extends JFrame implements GUIComponent
     private JButton pauseButton;
     private JSlider simulationSpeedSlider;
     private JSpinner simulationSpeedSpinner;
-    private JComboBox<String> celestialObjectsCombobox;
+    private JComboBox<String> cameraPositionCombobox;
+    private JComboBox<String> starSystemCombobox;
 
-    public SimulationMenu(int width, int height, Simulation simulation)
+    public SimulationMenu(int width, int height, Scene scene)
     {
-        this.simulation = simulation;
+        this.scene = scene;
+        this.simulation = scene.getSimulation();
         this.setSize(new Dimension(width, height));
         this.setTitle("Simulation Menu");
         this.setLayout(new BorderLayout());
+        this.setIconImage(TextureUtils.readImage(Icons.APPLICATION_ICON_PATH));
+
+        Timer timer = new Timer(1, e -> this.setTitle("Simulation Menu | FPS: " + Gdx.graphics.getFramesPerSecond()));
+        timer.start();
 
         createAndShowGUI();
     }
@@ -69,20 +79,47 @@ public class SimulationMenu extends JFrame implements GUIComponent
         tabbedPane = new TabbedPane(this);
 
         table = new Table(this);
-
-        for(int i = 0; i < simulation.getStarSystem().getBodyHandler().getSize(); i++)
-        {
-            CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(i);
-            table.addListElement(new ListElement(table, celestialObject));
-        }
+        table.initTable();
 
         //table.setBorder(new TitledBorder("Bodies"));
         mainPanel.setLeftComponent(table);
         mainPanel.setRightComponent(tabbedPane);
 
+        this.add(initButtonPanel(), BorderLayout.NORTH);
         this.add(mainPanel, BorderLayout.CENTER);
         this.add(initSimulationPanel(), BorderLayout.SOUTH);
         table.requestFocus();
+    }
+
+    private JComponent initButtonPanel()
+    {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+        JButton settingsButton = new IconButton(Icons.SETTINGS_ICON_PATH);
+        settingsButton.setBackground(null);
+        settingsButton.setToolTipText("Settings");
+        settingsButton.addActionListener(e -> new SettingsMenu(scene, this, this.getWidth() / 2, this.getHeight() / 2));
+
+        JButton helpButton = new IconButton(Icons.HELP_ICON_PATH);
+        helpButton.setBackground(null);
+        helpButton.setToolTipText("Help");
+        helpButton.addActionListener(e -> new HelpMenu(this, this.getWidth(), this.getHeight()));
+
+        JButton exitButton = new IconButton(Icons.SWITCH_ICON_PATH);
+        exitButton.setBackground(null);
+        exitButton.setToolTipText("Exit");
+        exitButton.addActionListener(e ->
+        {
+            Gdx.app.exit();
+            System.exit(0);
+        });
+
+        buttonPanel.add(settingsButton);
+        buttonPanel.add(helpButton);
+        buttonPanel.add(exitButton);
+
+        return buttonPanel;
     }
 
     private JComponent initSimulationPanel()
@@ -91,6 +128,22 @@ public class SimulationMenu extends JFrame implements GUIComponent
         simulationPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         //simulationPanel.setBorder(new TitledBorder("Simulation controls"));
+
+        String[] starSystemNames = StarSystem.getStarSystemNames();
+        starSystemCombobox = new JComboBox<>(starSystemNames);
+        GridRow starSystemComboboxRow = new GridRow(0, "Star system: ", "", "Star system.");
+        starSystemComboboxRow.createAndShowGUI(gbc, 0, simulationPanel, starSystemCombobox);
+
+        starSystemCombobox.setSelectedItem(simulation.getStarSystem().getName());
+        starSystemCombobox.addActionListener(e ->
+        {
+            simulation.setPaused(true);
+            StarSystem starSystem = StarSystem.STAR_SYSTEMS.get(starSystemCombobox.getSelectedIndex());
+            simulation.setStarSystem(starSystem);
+            table.initTable();
+            tabbedPane.removeAllTabs();
+            simulation.setPaused(false);
+        });
 
         simulationSpeedSpinner = new JSpinner(new SpinnerNumberModel(PhysicsConstants.DAYS, -365, 365, 0.1));
         simulationSpeedSlider = new JSlider(-3650, 3650, (int) (PhysicsConstants.DAYS * 10));
@@ -107,24 +160,27 @@ public class SimulationMenu extends JFrame implements GUIComponent
             simulationSpeedSlider.setValue((int) (PhysicsConstants.DAYS * 10));
         });
 
-        GridRow simulationSpeedRow = new GridRow(0, "Simulation speed: ", " days", "The speed of the simulation.");
+        GridRow simulationSpeedRow = new GridRow(1, "Simulation speed: ", " days", "The speed of the simulation.");
         simulationSpeedRow.createAndShowGUI(gbc, 0, simulationPanel, simulationSpeedSlider, simulationSpeedSpinner);
 
         String[] celestialObjectsNames = simulation.getStarSystem().getBodyHandler().getCelestialObjectsNames();
-        celestialObjectsCombobox = new JComboBox<>(celestialObjectsNames);
-        GridRow celestialObjectsComboboxRow = new GridRow(1, "Camera position: ", "", "Camera position.");
-        celestialObjectsComboboxRow.createAndShowGUI(gbc, 0, simulationPanel, celestialObjectsCombobox);
+        cameraPositionCombobox = new JComboBox<>(celestialObjectsNames);
+        GridRow celestialObjectsComboboxRow = new GridRow(2, "Camera position: ", "", "Camera position.");
+        celestialObjectsComboboxRow.createAndShowGUI(gbc, 0, simulationPanel, cameraPositionCombobox);
 
-        celestialObjectsCombobox.setSelectedIndex(Scene.SELECTED_BODY_INDEX);
-        celestialObjectsCombobox.addActionListener(e -> Scene.SELECTED_BODY_INDEX = celestialObjectsCombobox.getSelectedIndex());
+        cameraPositionCombobox.setSelectedIndex(Scene.SELECTED_BODY_INDEX);
+        cameraPositionCombobox.addActionListener(e -> Scene.SELECTED_BODY_INDEX = cameraPositionCombobox.getSelectedIndex());
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        resetButton = new JButton("Reset");
+        resetButton = new IconButton(Icons.RESET_ICON_PATH);
+        resetButton.setBackground(null);
+        resetButton.setToolTipText("Reset");
         resetButton.addActionListener(e -> reset());
         buttonPanel.add(resetButton);
 
-        pauseButton = new JButton("Pause");
+        pauseButton = new IconButton(Icons.PAUSE_ICON_PATH);
+        pauseButton.setBackground(null);
         pauseButton.addActionListener(e -> pause());
         buttonPanel.add(pauseButton);
 
@@ -136,7 +192,7 @@ public class SimulationMenu extends JFrame implements GUIComponent
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.gridwidth = 5;
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 4;
         gbc.insets = new Insets(0, 0, 0, 0);
         gbc.weightx = 1;
         gbc.weighty = 1;
@@ -153,11 +209,13 @@ public class SimulationMenu extends JFrame implements GUIComponent
     private void pause()
     {
         simulation.setPaused(!simulation.isPaused());
-        pauseButton.setText(simulation.isPaused() ? "Resume" : "Pause");
+        pauseButton.setToolTipText(simulation.isPaused() ? "Resume" : "Pause");
+        pauseButton.setIcon(simulation.isPaused() ? Icons.createIcon(Icons.PLAY_ICON_PATH) : Icons.createIcon(Icons.PAUSE_ICON_PATH));
     }
 
-    private void apply()
+    private synchronized void apply()
     {
+        simulation.setPaused(true);
         Tab tab = tabbedPane.getSelectedTab();
         CelestialObject celestialObject = tab.getCelestialObject();
         celestialObject.setName(tab.getNameField().getText());
@@ -184,7 +242,7 @@ public class SimulationMenu extends JFrame implements GUIComponent
         celestialObject.setVelocity(velocity.multiply(1000));
 
         // Rotation speed.
-        celestialObject.setRotationSpeed(Utils.parseDouble(celestialObject.getRotationSpeed(), tab.getRotationSpeedField().getText()));
+        celestialObject.setRotationSpeed(Utils.parseDouble(celestialObject.getRotationSpeed(), tab.getRotationSpeedField().getText()) / 3.6);
 
         // Obliquity.
         celestialObject.setObliquity(Utils.parseDouble(celestialObject.getObliquity(), tab.getObliquityField().getText()));
@@ -196,6 +254,14 @@ public class SimulationMenu extends JFrame implements GUIComponent
         celestialObject.setColor(tab.getSelectedColor());
 
         // Texture.
-        celestialObject.setTexture(tab.getSelectedTexture());
+        String texturePath = tab.getSelectedTexturePath();
+       // scene.getAssetManager().load(texturePath, Texture.class);
+        Texture texture = scene.getAssetManager().get(texturePath, Texture.class);
+       // texture.bind(2 + simulation.getStarSystem().getBodyHandler().indexOf(celestialObject));
+        celestialObject.setTexture(texture);
+
+        // Dark matter.
+        celestialObject.getDarkMatter().setDensity((Double) tab.getDarkMatterDensitySpinner().getValue());
+        simulation.setPaused(false);
     }
 }

@@ -1,5 +1,7 @@
 package core.simulation.thread;
 
+import core.graphics.core.Scene;
+import core.graphics.state.State;
 import core.simulation.core.Simulation;
 import core.simulation.physics.PhysicsConstants;
 import core.simulation.physics.celestialobjects.CelestialObject;

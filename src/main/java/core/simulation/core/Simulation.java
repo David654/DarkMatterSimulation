@@ -1,6 +1,7 @@
 package core.simulation.core;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import core.graphics.core.Scene;
 import core.simulation.input.core.MouseInput;
 import core.simulation.physics.PhysicsConstants;
 import core.simulation.starsystems.*;
@@ -9,26 +10,38 @@ import java.awt.*;
 
 public class Simulation
 {
-    private final StarSystem starSystem;
+    private StarSystem starSystem;
     private float scale = 0.5f;
-    private boolean paused = false;
+    private boolean isPaused = false;
+    private boolean isDarkMatterVisible = false;
 
-    private final double initialValue;
+    private double initialValue;
     private double time = 0;
 
-    public Simulation()
+    public Simulation(StarSystem starSystem)
     {
-        starSystem = new SolarSystem();
+        this.starSystem = starSystem;
+        createThreads(1);
+        init();
+    }
+
+    public void init()
+    {
         initCelestialObjects();
         initDarkMatter();
-        createThreads(1);
-
+        Scene.SELECTED_BODY_INDEX = 0;
         initialValue = starSystem.getBodyHandler().getTotalEnergy();
     }
 
     public StarSystem getStarSystem()
     {
         return starSystem;
+    }
+
+    public void setStarSystem(StarSystem starSystem)
+    {
+        this.starSystem = starSystem;
+        init();
     }
 
     public float getScale()
@@ -44,12 +57,22 @@ public class Simulation
 
     public boolean isPaused()
     {
-        return paused;
+        return isPaused;
     }
 
     public void setPaused(boolean paused)
     {
-        this.paused = paused;
+        this.isPaused = paused;
+    }
+
+    public boolean isDarkMatterVisible()
+    {
+        return isDarkMatterVisible;
+    }
+
+    public void setDarkMatterVisible(boolean darkMatterVisible)
+    {
+        isDarkMatterVisible = darkMatterVisible;
     }
 
     private void initCelestialObjects()
@@ -82,7 +105,7 @@ public class Simulation
     public void distributeBodiesRandomly()
     {
        // starSystem.getBodyHandler().update(PhysicsConstants.TIME_STEP.apply(PhysicsConstants.DAYS + Math.random() * 100));
-        starSystem.getBodyHandler().distributeCelestialObjectsRandomly();
+        //starSystem.getBodyHandler().distributeCelestialObjectsRandomly();
     }
 
     public void update()

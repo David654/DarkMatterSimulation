@@ -1,7 +1,6 @@
 package core.simulation.input.actions;
 
 import core.graphics.core.Scene;
-import core.settings.InputSettings;
 
 public class ScrollAction implements InputAction
 {
@@ -38,8 +37,8 @@ public class ScrollAction implements InputAction
     {
         //InputSettings.MOUSE_SENSITIVITY_X -= amountX / 400;
       //  InputSettings.MOUSE_SENSITIVITY_Y -= amountY / 400;
-        double dy = Math.signum(amountY) * Math.pow(Math.abs(amountY), 2);
-        scene.setZoom(scene.getZoom() - 10 / dy);
+        double dy = amountY * Math.max(1, Math.abs((scene.getZoom()) / 10));
+        scene.setZoom(scene.getZoom() - amountY);
         //scene.setZoom(scene.getZoom() - amountY);
     }
 }

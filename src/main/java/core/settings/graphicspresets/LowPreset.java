@@ -1,6 +1,6 @@
 package core.settings.graphicspresets;
 
-import core.util.TextureUtils;
+import core.assets.textures.TextureQuality;
 
 public class LowPreset extends Preset
 {
@@ -8,9 +8,9 @@ public class LowPreset extends Preset
     {
         vsync = true;
         fps = 60;
-        maxDist = 1000;
+        maxDist = 1024;
         maxSteps = 256;
         fov = 60;
-        textureQuality = TextureUtils.LOW_QUALITY;
+        textureQuality = TextureQuality.LOW;
     }
 }

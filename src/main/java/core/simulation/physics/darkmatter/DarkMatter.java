@@ -1,6 +1,9 @@
 package core.simulation.physics.darkmatter;
 
+import core.simulation.handler.DarkMatterHandler;
 import core.simulation.physics.PhysicsConstants;
+
+import java.awt.*;
 
 public class DarkMatter
 {
@@ -55,5 +58,10 @@ public class DarkMatter
     private void setMass(double mass)
     {
         this.mass = mass * PhysicsConstants.E_V_TO_KG;
+    }
+
+    public Color getColor()
+    {
+        return new Color(DarkMatterHandler.GRADIENT.getRGB((int) (density / 1000 * (DarkMatterHandler.GRADIENT.getWidth() - 1)), 0));
     }
 }

@@ -12,7 +12,8 @@ public class JupiterAndMoonsSystem extends StarSystem
 
     public void setRadiusScale()
     {
-        radiusScale = r -> Math.pow(r, 1 / (3.0)) / 20;
+        //radiusScale = r -> Math.pow(r, 1 / (3.0)) / 20;
+        radiusScale = r -> r / 3445098.7;
     }
 
     public void setPositionScale()

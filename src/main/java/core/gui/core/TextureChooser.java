@@ -1,11 +1,12 @@
 package core.gui.core;
 
-import com.badlogic.gdx.graphics.Texture;
-import core.gui.components.GUIComponent;
-import core.gui.components.PrimaryButton;
-import core.gui.grid.TextureGridElement;
+import core.assets.icons.Icons;
+import core.gui.components.core.GUIComponent;
+import core.gui.components.buttons.PrimaryButton;
+import core.gui.components.grid.TextureGridElement;
 import core.simulation.core.BasicCelestialObjects;
 import core.simulation.physics.celestialobjects.CelestialObject;
+import core.util.TextureUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +30,8 @@ public class TextureChooser extends JDialog implements GUIComponent
         this.setLocationRelativeTo(component);
         this.setTitle("Texture Chooser");
         this.setLayout(new BorderLayout());
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.setIconImage(TextureUtils.readImage(Icons.APPLICATION_ICON_PATH));
 
         createAndShowGUI();
 
@@ -78,13 +81,13 @@ public class TextureChooser extends JDialog implements GUIComponent
         this.dispose();
     }
 
-    public static Texture showDialog(Component component, int width, int height, int columns, BufferedImage[] images)
+    public static String showDialog(Component component, int width, int height, int columns, BufferedImage[] images)
     {
         new TextureChooser(component, width, height, columns, images);
 
         if(isSelectButtonPressed)
         {
-            return BasicCelestialObjects.TEXTURES.get(selectedIndex);
+            return BasicCelestialObjects.TEXTURE_PATHS.get(selectedIndex);
         }
 
         return null;

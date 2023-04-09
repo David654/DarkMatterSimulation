@@ -1,14 +1,15 @@
 package core.gui.core;
 
-import core.gui.components.GUIComponent;
-import core.gui.components.PrimaryButton;
+import core.assets.icons.Icons;
+import core.gui.components.core.GUIComponent;
+import core.gui.components.buttons.PrimaryButton;
+import core.util.TextureUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 public class ColorChooser extends JDialog implements GUIComponent
 {
@@ -46,6 +47,7 @@ public class ColorChooser extends JDialog implements GUIComponent
         this.setLocationRelativeTo(component);
         this.getContentPane().setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.setIconImage(TextureUtils.readImage(Icons.APPLICATION_ICON_PATH));
 
         createAndShowGUI();
 

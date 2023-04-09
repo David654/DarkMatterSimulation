@@ -8,9 +8,9 @@ public class SimulationMenuAction implements InputAction
 {
     private final SimulationMenu simulationMenu;
 
-    public SimulationMenuAction(int windowWidth, int windowHeight, Simulation simulation)
+    public SimulationMenuAction(int windowWidth, int windowHeight, Scene scene)
     {
-        simulationMenu = new SimulationMenu(windowWidth, windowHeight, simulation);
+        simulationMenu = new SimulationMenu(windowWidth, windowHeight, scene);
     }
 
     public void perform()

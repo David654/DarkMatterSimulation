@@ -36,6 +36,11 @@ public abstract class Handler<T>
         list.remove(index);
     }
 
+    public void clear()
+    {
+        list.clear();
+    }
+
     public T get(int index)
     {
         return list.get(index);

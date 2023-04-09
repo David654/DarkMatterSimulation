@@ -1,16 +1,16 @@
 package core.settings.graphicspresets;
 
-import core.util.TextureUtils;
+import core.assets.textures.TextureQuality;
 
 public class HighPreset extends Preset
 {
     protected void setPreset()
     {
-        vsync = true;
+        vsync = false;
         fps = 60;
-        maxDist = 10000;
+        maxDist = 8192;
         maxSteps = 256;
         fov = 60;
-        textureQuality = TextureUtils.HIGH_QUALITY;
+        textureQuality = TextureQuality.HIGH;
     }
 }

@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import core.graphics.core.Scene;
 import core.math.vector.Vector2;
-import core.settings.InputSettings;
+import core.settings.core.InputSettings;
 import core.simulation.input.actions.*;
 import core.util.MathUtils;
 
@@ -35,7 +35,7 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor
         gridShowingAction = new GridShowingAction(scene);
         pauseAction = new PauseAction(scene);
         scrollAction = new ScrollAction(scene);
-        simulationMenuAction = new SimulationMenuAction((int) (Gdx.graphics.getWidth() / 2.5), (int) (Gdx.graphics.getHeight() / 2.5), scene.getSimulation());
+        simulationMenuAction = new SimulationMenuAction((int) (Gdx.graphics.getWidth() / 2.5), (int) (Gdx.graphics.getHeight() / 2.5), scene);
         timeStepAction = new TimeStepAction();
         movementAction = new MovementAction(scene);
         bodySelectionAction = new BodySelectionAction(scene);
@@ -159,8 +159,9 @@ public class InputProcessor implements com.badlogic.gdx.InputProcessor
         int dx = (int) (screenX - mousePosition.getX());
         int dy = (int) (screenY - mousePosition.getY());
 
-        dx *= Math.pow(Math.abs(scene.getZoom()), 1d / 3) * InputSettings.MOUSE_SENSITIVITY_X;
-        dy *= Math.pow(Math.abs(scene.getZoom()), 1d / 3) * InputSettings.MOUSE_SENSITIVITY_Y;
+        double zoom = Math.max(Math.abs(scene.getZoom()), 100);
+        dx *= Math.pow(zoom, 1d / 3) * InputSettings.MOUSE_SENSITIVITY_X;
+        dy *= Math.pow(zoom, 1d / 3) * InputSettings.MOUSE_SENSITIVITY_Y;
 
         mouseDragX += dx; // yaw
         mouseDragY += dy; // pitch

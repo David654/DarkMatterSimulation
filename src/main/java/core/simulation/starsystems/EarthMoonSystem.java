@@ -12,7 +12,7 @@ public class EarthMoonSystem extends StarSystem
 
     public void setRadiusScale()
     {
-        radiusScale = r -> r / 50000;
+        radiusScale = r -> r / 100000;
     }
 
     public void setPositionScale()

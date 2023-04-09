@@ -1,6 +1,7 @@
 package core.simulation.input.actions;
 
 import core.graphics.core.Scene;
+import core.graphics.state.State;
 
 public class PauseAction implements InputAction
 {

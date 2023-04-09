@@ -15,17 +15,18 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import core.assets.core.AssetManager;
+import core.assets.textures.Textures;
 import core.graphics.hud.core.HUD;
 import core.graphics.hud.core.Parameter;
-import core.graphics.shaders.Shader;
+import core.graphics.state.State;
 import core.simulation.core.BasicCelestialObjects;
-import core.simulation.handler.CelestialObjectHandler;
+import core.simulation.starsystems.EarthMoonSystem;
 import core.util.FontUtils;
-import core.util.TextureUtils;
 import core.util.MathUtils;
 import core.math.vector.Vector2;
 import core.math.vector.Vector3;
-import core.settings.InputSettings;
+import core.settings.core.InputSettings;
 import core.settings.graphicspresets.HighPreset;
 import core.settings.graphicspresets.Preset;
 import core.simulation.core.Simulation;
@@ -84,13 +85,8 @@ public final class Scene extends ScreenAdapter implements Runnable
     private FrameBuffer frameBuffer;
     private HUD hud;
     private Preset preset;
-    private TextureUtils textureUtils;
 
-    /**
-     * Shader.
-     * @see Shader
-     **/
-    private Shader shader;
+
     private ShaderProgram shaderProgram;
     private Sprite sprite;
     private Sprite sprite2;
@@ -103,6 +99,9 @@ public final class Scene extends ScreenAdapter implements Runnable
     private LocalDateTime dateTime = LocalDateTime.now();
 
     private Skin skin;
+    private AssetManager assetManager;
+
+    public static State state = State.LOADING;
 
 
     /**
@@ -119,6 +118,8 @@ public final class Scene extends ScreenAdapter implements Runnable
         createSimulation();
         initInputProcessor();
         loadShaders();
+        assetManager.loadTextures();
+        assetManager.setTextures();
         loadTextures();
         start();
         calendar.setTime(new Date());
@@ -171,12 +172,27 @@ public final class Scene extends ScreenAdapter implements Runnable
         this.enableLighting = enableLighting;
     }
 
+    public Preset getPreset()
+    {
+        return preset;
+    }
+
+    public void setPreset(Preset preset)
+    {
+        this.preset = preset;
+    }
+
+    public AssetManager getAssetManager()
+    {
+        return assetManager;
+    }
+
     /**
      * Creates a simulation.
      */
     private void createSimulation()
     {
-        simulation = new Simulation();
+        simulation = new Simulation(new EarthMoonSystem());
         simulation.distributeBodiesRandomly();
         hud = new HUD();
         initHUD();
@@ -217,69 +233,10 @@ public final class Scene extends ScreenAdapter implements Runnable
         frameBuffer = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         preset = new HighPreset();
-        textureUtils = new TextureUtils(preset);
+        assetManager = new AssetManager();
 
-        Gdx.graphics.setVSync(preset.isVSYNCEnabled());
+        Gdx.graphics.setVSync(preset.isVSyncEnabled());
         Gdx.graphics.setForegroundFPS(1000);
-
-
-        float[] verts = new float[30];
-        int i = 0;
-        float x,y; // Mesh location in the world
-        float width,height; // Mesh width and height
-
-        x = y = 50f;
-        width = height = 300f;
-
-        //Top Left Vertex Triangle 1
-        verts[i++] = x;   //X
-        verts[i++] = y + height; //Y
-        verts[i++] = 0;    //Z
-        verts[i++] = 0f;   //U
-        verts[i++] = 0f;   //V
-
-        //Top Right Vertex Triangle 1
-        verts[i++] = x + width;
-        verts[i++] = y + height;
-        verts[i++] = 0;
-        verts[i++] = 1f;
-        verts[i++] = 0f;
-
-        //Bottom Left Vertex Triangle 1
-        verts[i++] = x;
-        verts[i++] = y;
-        verts[i++] = 0;
-        verts[i++] = 0f;
-        verts[i++] = 1f;
-
-        //Top Right Vertex Triangle 2
-        verts[i++] = x + width;
-        verts[i++] = y + height;
-        verts[i++] = 0;
-        verts[i++] = 1f;
-        verts[i++] = 0f;
-
-        //Bottom Right Vertex Triangle 2
-        verts[i++] = x + width;
-        verts[i++] = y;
-        verts[i++] = 0;
-        verts[i++] = 1f;
-        verts[i++] = 1f;
-
-        //Bottom Left Vertex Triangle 2
-        verts[i++] = x;
-        verts[i++] = y;
-        verts[i++] = 0;
-        verts[i++] = 0f;
-        verts[i] = 1f;
-
-        // Create a mesh out of two triangles rendered clockwise without indices
-        mesh = new Mesh( true, 6, 0,
-                new VertexAttribute( VertexAttributes.Usage.Position, 3, ShaderProgram.POSITION_ATTRIBUTE ),
-                new VertexAttribute( VertexAttributes.Usage.TextureCoordinates, 2, ShaderProgram.TEXCOORD_ATTRIBUTE+"0" ) );
-
-        mesh.setVertices(verts);
-
         //skin = new Skin(new FileHandle("src\\main\\java\\core\\gui\\font\\skins\\skin.json"));
         //Label label = new Label("Hello", skin, "default");
     }
@@ -290,19 +247,7 @@ public final class Scene extends ScreenAdapter implements Runnable
      */
     private void loadShaders()
     {
-        Logger.getLog("Loading shaders...");
-        String[] vertexShaderFilePaths = new String[] {"vertex.glsl"};
-        String[] fragmentShaderFilePaths = new String[] {"uniforms.glsl", "sdf.glsl", "util.glsl", "texturing.glsl", "darkmatter.glsl", "bodies.glsl", "map.glsl", "lighting.glsl", "raymarching.glsl" , "fragment.glsl"};
-
-        shader = new Shader(vertexShaderFilePaths, fragmentShaderFilePaths);
-        String vertexShader = shader.getVertexShader();
-        String fragmentShader = shader.getFragmentShader();
-
-        ShaderProgram.pedantic = false;
-        shaderProgram = new ShaderProgram(vertexShader, fragmentShader);
-        if(!shaderProgram.isCompiled()) System.err.println(shaderProgram.getLog());
-
-        Logger.getLog("Shaders loaded within " + Logger.getTimeAfterLastLog() / 10e9 + " seconds.");
+        shaderProgram = assetManager.loadShaders();
     }
 
     /**
@@ -310,12 +255,12 @@ public final class Scene extends ScreenAdapter implements Runnable
      */
     public synchronized void loadTextures()
     {
-        Logger.getLog("Loading textures...");
-        canvasTexture = new Texture(TextureUtils.MILKY_WAY_TEXTURE_PATH);
+        canvasTexture = new Texture(Textures.MILKY_WAY_TEXTURE_PATH);
         sprite.setTexture(canvasTexture);
         sprite2.setTexture(canvasTexture);
+        backgroundTexture = new Texture(Textures.MILKY_WAY_TEXTURE_PATH);
 
-        backgroundTexture = new Texture(TextureUtils.MILKY_WAY_TEXTURE_PATH);
+        canvasTexture.bind(0);
         backgroundTexture.bind(1);
 
         int index = 0;
@@ -324,51 +269,28 @@ public final class Scene extends ScreenAdapter implements Runnable
         {
             CelestialObject celestialObject = BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.get(i);
             Texture texture = celestialObject.getTexture();
-            BasicCelestialObjects.TEXTURES.add(texture);
             texture.bind(i + 2);
         }
 
-        /*for(int i = 0; i < simulation.getStarSystem().getBodyHandler().getSize(); i++)
+        for(int i = 0; i < BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.size(); i++)
         {
-            CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(i);
-            Texture texture = celestialObject.getTexture();
-            texture.bind(i + 2 + index);
-
+            CelestialObject celestialObject = BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.get(i);
             Ring ring = celestialObject.getRing();
             if(ring != null)
             {
-                index++;
                 Texture ringTexture = ring.getTexture();
-                ringTexture.bind(i + 2 + index);
+                ringTexture.bind(2 + BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.size() + index);
+                index++;
             }
 
             if(celestialObject.getBumpTexture() != null)
             {
+                celestialObject.getBumpTexture().bind(2 + BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.size() + index);
                 index++;
-                celestialObject.getBumpTexture().bind(i + 2 + index);
-            }
-        }**/
-
-        for(int i = 0; i < simulation.getStarSystem().getBodyHandler().getSize(); i++)
-        {
-            CelestialObject celestialObject = simulation.getStarSystem().getBodyHandler().get(i);
-
-            Ring ring = celestialObject.getRing();
-            if(ring != null)
-            {
-                index++;
-                Texture ringTexture = ring.getTexture();
-                ringTexture.bind(i + 2 + BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.size() + index);
-            }
-
-            if(celestialObject.getBumpTexture() != null)
-            {
-                index++;
-                celestialObject.getBumpTexture().bind(i + 2 + BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.size() + index);
             }
         }
 
-        canvasTexture.bind(0);
+       // canvasTexture.bind(0);
         //canvasTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         Logger.getLog("Textures loaded within " + Logger.getTimeAfterLastLog() / 10e9 + " seconds.");
@@ -448,10 +370,11 @@ public final class Scene extends ScreenAdapter implements Runnable
         shaderProgram.setUniformf("uTime", (float) time);
         shaderProgram.setUniformf("uPos", (float) cameraPosition.getX(), (float) cameraPosition.getY(), (float) cameraPosition.getZ());
         shaderProgram.setUniformf("uOffset", (float) offset.getX(), (float) offset.getY(), (float) offset.getZ());
-        shaderProgram.setUniformf("uSelectedBodyIndex", SELECTED_BODY_INDEX + 1);
+        shaderProgram.setUniformf("uSelectedBodyIndex", SELECTED_BODY_INDEX);
         shaderProgram.setUniformMatrix("uView", MathUtils.toFloatMatrix(camera.getView()));
         shaderProgram.setUniformi("uEnableLighting", enableLighting ? 1 : 0);
         shaderProgram.setUniformi("uShowGrid", showGrid ? 1 : 0);
+        shaderProgram.setUniformi("uEnableDarkMatter", simulation.isDarkMatterVisible() ? 1 : 0);
         shaderProgram.setUniformi("uBackgroundTexture", 1);
         shaderProgram.setUniformi("uBodyNum", simulation.getStarSystem().getBodyHandler().getSize());
         shaderProgram.setUniformi("uLightSourcesNum", Math.max(1, simulation.getStarSystem().getBodyHandler().getNumStars()));
@@ -460,6 +383,8 @@ public final class Scene extends ScreenAdapter implements Runnable
         //double radiusScale = 0.0000001;
         Vector3 maxPos = simulation.getStarSystem().getBodyHandler().getMaxPos();
         Vector3 minPos = simulation.getStarSystem().getBodyHandler().getMinPos();
+
+        //System.out.println("FPS: " + Gdx.graphics.getFramesPerSecond());
 
         for(int i = 0; i < simulation.getStarSystem().getBodyHandler().getSize(); i++)
         {
@@ -498,16 +423,16 @@ public final class Scene extends ScreenAdapter implements Runnable
 
             if(celestialObject.getRing() != null)
             {
+                shaderProgram.setUniformi("uRingTextures[" + i + "]", 2 + BasicCelestialObjects.TEXTURES.indexOf(celestialObject.getRing().getTexture()));
                 index++;
-                shaderProgram.setUniformi("uRingTextures[" + i + "]", i + 2 + BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.size() + index);
             }
 
             shaderProgram.setUniformf("uBump[" + i + "]", celestialObject.getBumpTexture() == null ? 0 : 1);
 
             if(celestialObject.getBumpTexture() != null)
             {
+                shaderProgram.setUniformi("uBumpTextures[" + i + "]", 2 + BasicCelestialObjects.TEXTURES.indexOf(celestialObject.getBumpTexture()));
                 index++;
-                shaderProgram.setUniformi("uBumpTextures[" + i + "]", i + 2 + BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.size() + index);
             }
 
             shaderProgram.setUniformi("uRings[" + i + "]", celestialObject.getRing() == null ? 0 : 1);
@@ -525,14 +450,18 @@ public final class Scene extends ScreenAdapter implements Runnable
         for(int i = 0; i < simulation.getStarSystem().getDarkMatterHandler().getSize(); i++)
         {
             DarkMatter darkMatter = simulation.getStarSystem().getDarkMatterHandler().get(i);
-            double radius1 = darkMatter.getRadius1();
-            double radius2 = darkMatter.getRadius2();
+            double density = darkMatter.getDensity() / 1000;
+            Color color = darkMatter.getColor();
             //System.out.println(radius1 + ", " + radius2);
 
-            shaderProgram.setUniformf("uDarkMatterRadiuses1[" + i + "]", (float) radius1);
-            shaderProgram.setUniformf("uDarkMatterRadiuses2[" + i + "]", (float) radius2);
-            shaderProgram.setUniformf("uDarkMatterDensities[" + i + "]", (float) darkMatter.getDensity());
+            shaderProgram.setUniformf("uDarkMatterDensities[" + i + "]", (float) density);
+            shaderProgram.setUniformf("uDarkMatterColors[" + i + "]", color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
         }
+    }
+
+    public void show()
+    {
+        Scene.state = State.RUNNING;
     }
 
     private void update()
@@ -573,6 +502,13 @@ public final class Scene extends ScreenAdapter implements Runnable
         Gdx.gl20.glEnable(GL20.GL_BLEND);
         Gdx.gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
+        if(state == State.LOADING)
+        {
+            spriteBatch.begin();
+            spriteBatch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            spriteBatch.end();
+        }
+
         /*if(time < 5)
         {
             spriteBatch.begin();
@@ -603,16 +539,19 @@ public final class Scene extends ScreenAdapter implements Runnable
 
 
 
-        spriteBatch.setShader(shaderProgram);
-        shaderProgram.bind();
-        spriteBatch.begin();
-        spriteBatch.draw(sprite, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        spriteBatch.end();
+        if(state == State.RUNNING)
+        {
+            spriteBatch.setShader(shaderProgram);
+            shaderProgram.bind();
+            spriteBatch.begin();
+            spriteBatch.draw(sprite, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            spriteBatch.end();
 
-        //spriteBatch.setShader(null);
-        spriteBatch.begin();
-        hud.render(spriteBatch, basicFont);
-        spriteBatch.end();
+            //spriteBatch.setShader(null);
+            spriteBatch.begin();
+            hud.render(spriteBatch, basicFont);
+            spriteBatch.end();
+        }
 
        // mesh.render(shaderProgram, GL20.GL_TRIANGLES);
 

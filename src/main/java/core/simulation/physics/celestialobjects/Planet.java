@@ -30,4 +30,19 @@ public class Planet extends CelestialObject
     {
         super(initialPosition, new Vector3(radius), mass, velocity, rotationSpeed, axialTilt, orbitalInclination, name);
     }
+
+    public Planet(Planet planet)
+    {
+        this(planet.getInitialPositionAU(), planet.getDimensions().multiply(0.002), planet.getMass(), planet.getVelocity().multiply(0.001), planet.getRotationSpeed(), planet.getObliquity(), planet.getOrbitalInclination(), planet.getName());
+        this.setColor(planet.getColor());
+        this.setTexture(planet.getTexture());
+        this.setTexturePath(planet.getTexturePath());
+        this.setRing(planet.getRing());
+        if(this.getRing() != null)
+        {
+            this.getRing().setTexture(planet.getRing().getTexture());
+        }
+        this.setBumpTexture(planet.getBumpTexture());
+        this.setBumpTexturePath(planet.getBumpTexturePath());
+    }
 }

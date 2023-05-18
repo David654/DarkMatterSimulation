@@ -25,7 +25,8 @@ public final class BasicCelestialObjects
     public static CelestialObject SUN = new Star(new Vector3(0, 0, 0),  696_340, 1.989e30, new Vector3(0, 0, 0), 0, 7.25, 4.83, "Sun");
     public static CelestialObject STEPHENSON_2_18 = new Star(new Vector3(0, 0, 0),  1.497131e9, 3.1824e31, new Vector3(0, 0, 0), 0, 0, 1.73, "Stephenson 2-18");
     public static CelestialObject BETELGEUSE = new Star(new Vector3(0, 0, 0),  621_483_450, 3.53e31, new Vector3(0, 0, 0), 0, 0, 0.58, "Betelgeuse");
-    public static CelestialObject QUASAR_3C_273 = new Star(new Vector3(0, 0, 0),  270_916.869, 3.53e31, new Vector3(0, 0, 0), 0, 0, 12.9, "3C 273");
+    public static CelestialObject UY_SCUTI = new Star(new Vector3(0, 0, 0),  1.18935e9, 1.69065e31, new Vector3(0, 0, 0), 0, 0, 10.56, "UY Scuti");
+    public static CelestialObject PROXIMA_CENTAURI = new Star(new Vector3(0, 0, 0),  107_375.628, 2.4286e29, new Vector3(0, 0, 0), 0, 0, 0.0116, "Proxima Centauri");
 
     /**
      * Planets.
@@ -111,11 +112,14 @@ public final class BasicCelestialObjects
         SUN.setColor(Textures.SUN_THUMBNAIL_PATH);
         STEPHENSON_2_18.setColor(Textures.SUN_THUMBNAIL_PATH);
         BETELGEUSE.setColor(Textures.SUN_THUMBNAIL_PATH);
-        QUASAR_3C_273.setColor(Textures.SUN_THUMBNAIL_PATH);
+        UY_SCUTI.setColor(Textures.SUN_THUMBNAIL_PATH);
+        PROXIMA_CENTAURI.setColor(Textures.SUN_THUMBNAIL_PATH);
 
         SUN.setColor(new Color(229, 79, 0));
         STEPHENSON_2_18.setColor(new Color(243, 36, 13));
         BETELGEUSE.setColor(new Color(220, 90, 1));
+        UY_SCUTI.setColor(new Color(254, 74, 23));
+        PROXIMA_CENTAURI.setColor(new Color(225, 43, 0));
 
         // Planets.
         MERCURY.setColor(Textures.MERCURY_THUMBNAIL_PATH);
@@ -189,7 +193,8 @@ public final class BasicCelestialObjects
         SUN.setTexturePath(Textures.STAR_TEXTURE_PATH);
         STEPHENSON_2_18.setTexturePath(Textures.STAR_TEXTURE_PATH);
         BETELGEUSE.setTexturePath(Textures.STAR_TEXTURE_PATH);
-        QUASAR_3C_273.setTexturePath(Textures.STAR_TEXTURE_PATH);
+        UY_SCUTI.setTexturePath(Textures.STAR_TEXTURE_PATH);
+        PROXIMA_CENTAURI.setTexturePath(Textures.STAR_TEXTURE_PATH);
 
         // Planets.
         MERCURY.setTexturePath(Textures.MERCURY_TEXTURE_PATH);

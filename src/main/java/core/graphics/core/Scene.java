@@ -22,6 +22,7 @@ import core.graphics.hud.core.Parameter;
 import core.graphics.state.State;
 import core.simulation.core.BasicCelestialObjects;
 import core.simulation.starsystems.EarthMoonSystem;
+import core.simulation.starsystems.SolarSystem;
 import core.util.FontUtils;
 import core.util.MathUtils;
 import core.math.vector.Vector2;
@@ -366,6 +367,8 @@ public final class Scene extends ScreenAdapter implements Runnable
         shaderProgram.setUniformf("uMaxDist", preset.getMaxDist());
         shaderProgram.setUniformf("uMaxSteps", preset.getMaxSteps());
         shaderProgram.setUniformf("uFov", 1f / preset.getFOV() * 100f);
+        shaderProgram.setUniformi("uAntialiasing", preset.isAntialiasingEnabled() ? 1 : 0);
+
         shaderProgram.setUniformf("uMousePos", (float) mousePos.getX(), (float) (mousePos.getY()));
         shaderProgram.setUniformf("uTime", (float) time);
         shaderProgram.setUniformf("uPos", (float) cameraPosition.getX(), (float) cameraPosition.getY(), (float) cameraPosition.getZ());

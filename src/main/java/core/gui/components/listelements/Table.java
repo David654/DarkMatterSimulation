@@ -232,6 +232,7 @@ public class Table extends JPanel implements GUIComponent
 
         JPanel darkMatterPanel = new JPanel();
         darkMatterPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        darkMatterPanel.setToolTipText("Dark matter visualisation. May cause a significant FPS loss especially when used with large amount of objects.");
         showDarkMatterCheckBox = new JCheckBox();
         showDarkMatterCheckBox.setSelected(simulationMenu.getSimulation().isDarkMatterVisible());
         showDarkMatterCheckBox.addItemListener(l -> simulationMenu.getSimulation().setDarkMatterVisible(!simulationMenu.getSimulation().isDarkMatterVisible()));
@@ -244,25 +245,5 @@ public class Table extends JPanel implements GUIComponent
         panel.add(darkMatterPanel, BorderLayout.SOUTH);
 
         this.add(panel, BorderLayout.SOUTH);
-    }
-
-    public void hierarchyChanged(HierarchyEvent e) {
-
-    }
-
-    public void componentResized(ComponentEvent e) {
-
-    }
-
-    public void componentMoved(ComponentEvent e) {
-
-    }
-
-    public void componentShown(ComponentEvent e) {
-
-    }
-
-    public void componentHidden(ComponentEvent e) {
-
     }
 }

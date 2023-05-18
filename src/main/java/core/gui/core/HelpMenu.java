@@ -24,7 +24,7 @@ public class HelpMenu extends JDialog implements GUIComponent
         this.setTitle("Help");
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        this.setIconImage(TextureUtils.readImage(Icons.APPLICATION_ICON_PATH));
+        this.setIconImage(Icons.createIcon(Icons.APPLICATION_ICON_PATH).getImage());
 
         this.setVisible(true);
         createAndShowGUI();

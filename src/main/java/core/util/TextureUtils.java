@@ -13,8 +13,8 @@ public final class TextureUtils
 {
     public static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight)
     {
-        Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_DEFAULT);
-        BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
+        Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_SMOOTH);
+        BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
         outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
         return outputImage;
     }

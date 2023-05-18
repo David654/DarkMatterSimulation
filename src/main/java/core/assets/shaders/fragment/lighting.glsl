@@ -11,7 +11,7 @@ float getSoftShadow(vec3 p, vec3 lightPos)
     float dist = EPSILON;
     float lightSize = 0.03;
 
-    for(int i = 0; i < 100; i++)
+    for(int i = 0; i < uMaxSteps; i++)
     {
         vec2 hit = map(p + lightPos * dist);
 
@@ -94,8 +94,9 @@ vec3 getLight(vec3 p, vec3 rd, float id, vec3 lightPos[BODY_NUM_LIMIT], vec3 bgC
 
 vec3 getGlow(vec3 glowColor, float nearest, float value)
 {
-    float glowValue = abs(0.3 * 4.83 / value); // smaller - bigger
-    float glowSize = 0.55; // smaller - bigger
+    value = abs(value);
+    float glowValue = 0.3 * 4.83 / value; // smaller - bigger
+    float glowSize = 0.55 * sqrt(4.83 / value); // smaller - bigger
     float glow = pow(nearest + glowValue, -glowSize);
     return glow * glowColor;
 }

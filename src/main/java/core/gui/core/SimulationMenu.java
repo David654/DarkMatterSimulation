@@ -16,7 +16,6 @@ import core.simulation.core.Simulation;
 import core.simulation.physics.PhysicsConstants;
 import core.simulation.physics.celestialobjects.CelestialObject;
 import core.simulation.starsystems.StarSystem;
-import core.util.TextureUtils;
 import core.util.Utils;
 
 import javax.swing.*;
@@ -48,7 +47,7 @@ public class SimulationMenu extends JFrame implements GUIComponent
         this.setSize(new Dimension(width, height));
         this.setTitle("Simulation Menu");
         this.setLayout(new BorderLayout());
-        this.setIconImage(TextureUtils.readImage(Icons.APPLICATION_ICON_PATH));
+        this.setIconImage(Icons.createIcon(Icons.APPLICATION_ICON_PATH).getImage());
 
         Timer timer = new Timer(1, e -> this.setTitle("Simulation Menu | FPS: " + Gdx.graphics.getFramesPerSecond()));
         timer.start();
@@ -138,6 +137,7 @@ public class SimulationMenu extends JFrame implements GUIComponent
         starSystemCombobox.addActionListener(e ->
         {
             simulation.setPaused(true);
+            scene.setZoom(0);
             StarSystem starSystem = StarSystem.STAR_SYSTEMS.get(starSystemCombobox.getSelectedIndex());
             simulation.setStarSystem(starSystem);
             table.initTable();
@@ -185,7 +185,13 @@ public class SimulationMenu extends JFrame implements GUIComponent
         buttonPanel.add(pauseButton);
 
         applyButton = new PrimaryButton("Apply");
-        applyButton.addActionListener(e -> apply());
+        applyButton.addActionListener(e ->
+        {
+            if(tabbedPane.getTabCount() > 0)
+            {
+                apply();
+            }
+        });
         buttonPanel.add(applyButton);
 
         gbc.fill = GridBagConstraints.HORIZONTAL;

@@ -76,6 +76,7 @@ vec4[4] rayMarch(vec3 ro, inout vec3 rd, vec3[BODY_NUM_LIMIT] lightPos, vec3 sky
                 vec3 col1 = cloudColor * k;
 
                 darkMatterColor += col1;
+
                 steps++;
             }
 
@@ -147,19 +148,22 @@ vec4[4] rayMarch(vec3 ro, inout vec3 rd, vec3[BODY_NUM_LIMIT] lightPos, vec3 sky
         }
 
         // Antialiasing.
-        float th2 = px * object.x * 2.0;
-        if(T <= EPSILON && ((hit.x < th2) && (hit.x > oh.x)))
+        if(uAntialiasing == 1)
         {
-            float lalp = 1.0 - (hit.x - th1) / (th2 - th1);
-            vec3 lcol = getLight(p, rd, object.y, lightPos, sky) + getGlow(uColors[index], nearest.x, uApparentMagnitudes[index]) + darkMatterColor;
-            tmp.xyz += (1.0 - tmp.w) * lalp * lcol;
-            tmp.w += (1.0 - tmp.w) * lalp;
-            if(tmp.w > 0.99)
+            float th2 = px * object.x * 2.0;
+            if((hit.x < th2 && hit.x > oh.x))
             {
-                break;
+                float lalp = 1.0 - (hit.x - th1) / (th2 - th1);
+                vec3 lcol = getLight(p, rd, object.y, lightPos, sky) + getGlow(uColors[index], nearest.x, uApparentMagnitudes[index]) + darkMatterColor;
+                tmp.xyz += (1.0 - tmp.w) * lalp * lcol;
+                tmp.w += (1.0 - tmp.w) * lalp;
+                if(tmp.w > 0.99)
+                {
+                    break;
+                }
             }
+            oh = hit;
         }
-        oh = hit;
     }
 
     glowColor = getGlow(uColors[int(nearest.y)], nearest.x, uApparentMagnitudes[int(nearest.y)]);

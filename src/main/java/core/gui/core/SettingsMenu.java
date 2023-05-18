@@ -21,11 +21,11 @@ public class SettingsMenu extends JDialog implements GUIComponent
     private final Scene scene;
 
     private JComboBox<String> presetCombobox;
-    private JComboBox<String> vsyncCombobox;
     private JComboBox<Integer> maxDistanceCombobox;
     private JComboBox<Integer> maxStepsCombobox;
     private JSlider fovSlider;
     private JLabel fovLabel;
+    private JComboBox<String> antialiasingCombobox;
     private JComboBox<String> textureQualityCombobox;
 
     private Preset preset;
@@ -41,7 +41,7 @@ public class SettingsMenu extends JDialog implements GUIComponent
         this.setTitle("Graphics Settings");
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        this.setIconImage(TextureUtils.readImage(Icons.APPLICATION_ICON_PATH));
+        this.setIconImage(Icons.createIcon(Icons.APPLICATION_ICON_PATH).getImage());
 
         this.setVisible(true);
         createAndShowGUI();
@@ -59,10 +59,6 @@ public class SettingsMenu extends JDialog implements GUIComponent
         presetCombobox = new JComboBox<>(presetValues);
         //presetCombobox.addActionListener(e -> setPreset(presetCombobox.getSelectedItem()));
 
-        String[] vsyncValues = new String[] {"On", "50%", "Off"};
-        vsyncCombobox = new JComboBox<>(vsyncValues);
-        vsyncCombobox.addActionListener(e -> setVSync());
-
         Integer[] maxDistanceValues = new Integer[] {1024, 2048, 4096, 8192};
         maxDistanceCombobox = new JComboBox<>(maxDistanceValues);
         maxDistanceCombobox.addActionListener(e -> setRenderDistance());
@@ -75,6 +71,10 @@ public class SettingsMenu extends JDialog implements GUIComponent
         fovLabel = new JLabel(String.valueOf(fovSlider.getValue()));
         fovSlider.addChangeListener(e -> setFOV());
 
+        String[] antiAliasingValues = new String[] {"On", "Off"};
+        antialiasingCombobox = new JComboBox<>(antiAliasingValues);
+        antialiasingCombobox.addActionListener(e -> setAntialiasing());
+
         String[] textureQualityValues = new String[] {"Low", "High"};
         textureQualityCombobox = new JComboBox<>(textureQualityValues);
         textureQualityCombobox.addActionListener(e -> setTextureQuality());
@@ -83,7 +83,7 @@ public class SettingsMenu extends JDialog implements GUIComponent
         presetRow.createAndShowGUI(gbc, 0, settingsPanel, presetCombobox);
 
         GridRow vsyncRow = new GridRow(1, "VSync: ", "VSync.");
-        vsyncRow.createAndShowGUI(gbc, 0, settingsPanel, vsyncCombobox);
+        vsyncRow.createAndShowGUI(gbc, 0, settingsPanel, antialiasingCombobox);
 
         GridRow maxDistanceRow = new GridRow(2, "Render distance: ", "Render distance.");
         maxDistanceRow.createAndShowGUI(gbc, 0, settingsPanel, maxDistanceCombobox);
@@ -94,7 +94,10 @@ public class SettingsMenu extends JDialog implements GUIComponent
         GridRow fovRow = new GridRow(4, "FOV: ", "degrees",  "Field of view.");
         fovRow.createAndShowGUI(gbc, 0, settingsPanel, fovSlider, fovLabel);
 
-        GridRow textureQualityRow = new GridRow(5, "Texture quality: ", "Texture quality.");
+        GridRow antialiasingRow = new GridRow(5, "Antialiasing: ", "Antialiasing.");
+        antialiasingRow.createAndShowGUI(gbc, 0, settingsPanel, antialiasingCombobox);
+
+        GridRow textureQualityRow = new GridRow(6, "Texture quality: ", "Texture quality.");
         textureQualityRow.createAndShowGUI(gbc, 0, settingsPanel, textureQualityCombobox);
 
         //setPreset(scene.getPreset().equals(new LowPreset()) ? "Low" : "High");
@@ -103,7 +106,7 @@ public class SettingsMenu extends JDialog implements GUIComponent
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.gridwidth = 5;
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 7;
         gbc.insets = new Insets(0, 0, 0, 0);
         gbc.weightx = 1;
         gbc.weighty = 1;
@@ -141,7 +144,7 @@ public class SettingsMenu extends JDialog implements GUIComponent
         int fov = (int) this.preset.getFOV();
         TextureQuality textureQuality = this.preset.getTextureQuality();
 
-        vsyncCombobox.setSelectedItem(vsync ? "On" : "Off");
+        antialiasingCombobox.setSelectedItem(vsync ? "On" : "Off");
         maxDistanceCombobox.setSelectedItem(maxDistance);
         maxStepsCombobox.setSelectedItem(maxSteps);
         fovSlider.setValue(fov);
@@ -150,7 +153,7 @@ public class SettingsMenu extends JDialog implements GUIComponent
 
     private void setVSync()
     {
-        String vsync = (String) vsyncCombobox.getSelectedItem();
+        String vsync = (String) antialiasingCombobox.getSelectedItem();
         assert vsync != null;
 
         switch(vsync)
@@ -173,6 +176,20 @@ public class SettingsMenu extends JDialog implements GUIComponent
                 preset.setVSync(false);
                 Gdx.graphics.setForegroundFPS(display.refreshRate / 2);
             }
+        }
+
+        comparePresets();
+    }
+
+    private void setAntialiasing()
+    {
+        String antialiasing = (String) antialiasingCombobox.getSelectedItem();
+        assert antialiasing != null;
+
+        switch(antialiasing)
+        {
+            case "On" -> preset.setAntialiasing(true);
+            case "Off" -> preset.setAntialiasing(false);
         }
 
         comparePresets();

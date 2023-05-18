@@ -11,6 +11,7 @@ public class LowPreset extends Preset
         maxDist = 1024;
         maxSteps = 256;
         fov = 60;
+        antialiasing = false;
         textureQuality = TextureQuality.LOW;
     }
 }

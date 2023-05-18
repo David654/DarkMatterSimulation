@@ -7,11 +7,15 @@ import core.simulation.core.BasicCelestialObjects;
 import core.simulation.physics.celestialobjects.CelestialObject;
 import core.simulation.physics.celestialobjects.Ring;
 
+import java.util.HashMap;
+
 public class AssetManager extends com.badlogic.gdx.assets.AssetManager
 {
+    private HashMap<String, Texture> textures;
+
     public AssetManager()
     {
-
+        textures = new HashMap<>();
     }
 
     public ShaderProgram loadShaders()

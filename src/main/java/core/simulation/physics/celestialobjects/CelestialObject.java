@@ -15,6 +15,9 @@ import core.util.Utils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class CelestialObject
@@ -40,6 +43,8 @@ public class CelestialObject
      * The mass of the celestial object in kilograms.
      */
     private double mass;
+
+    private Vector3 initialVelocity;
 
     /**
      * The velocity of the celestial object in kilometers per second.
@@ -104,6 +109,13 @@ public class CelestialObject
 
     private DarkMatter darkMatter;
 
+    private boolean clockwise;
+    private double lastAngle = 0;
+    private ArrayList<Vector3> positions;
+    public static int INDEX = 1;
+
+    private double time = 0;
+
     /**
      * Constructor.
      * @param initialPosition the initial position of the celestial object
@@ -124,13 +136,18 @@ public class CelestialObject
         this.dimensions = dimensions.multiply(1000);
         this.mass = mass;
         this.velocity = velocity.multiply(1000);
+        initialVelocity = this.velocity;
         this.rotationSpeed = rotationSpeed;
         this.obliquity = obliquity;
         this.orbitalInclination = orbitalInclination;
         this.name = name;
 
+        clockwise = velocity.getZ() >= 0;
+
         texturePath = Textures.DEFAULT_PLANET_TEXTURE_PATH;
         isVisible = true;
+
+        positions = new ArrayList<>();
 
         BasicCelestialObjects.BASIC_CELESTIAL_OBJECTS.add(this);
 
@@ -402,12 +419,50 @@ public class CelestialObject
 
     public double getTotalMass()
     {
-        return mass * (1 + getDarkMatterMass());
+        //System.out.println(getDarkMatterMass());
+        return mass * (1 + darkMatter.getDensity());
+    }
+
+    public double getEccentricity()
+    {
+        double angle = Math.toDegrees(initialPosition.getAngleBetween360(position));
+        if(!clockwise)
+        {
+            angle = 360 - angle;
+        }
+        positions.add(position.multiply(0.001));
+
+        if(angle < lastAngle)
+        {
+            double aphelion = Collections.max(positions, Comparator.comparingDouble(Vector3::length)).length();
+            double perihelion = Collections.min(positions, Comparator.comparingDouble(Vector3::length)).length();
+
+            double eccentricity = (aphelion - perihelion) / (aphelion + perihelion);
+            //System.out.println(name + ":\nAphelion: " + aphelion + "\nPerihelion: " + perihelion + "\nEccentricity: " + eccentricity);
+            //System.out.println("Velocity: " + velocity.length() / 1000 + " km/s");
+            //System.out.println(Scene.simulation.getStarSystem().getBodyHandler().get(0).getDarkMatter().getDensity() + " " + (Scene.simulation.getStarSystem().getBodyHandler().get(0).getTotalMass() / 1e30) + " " + (velocity.length() / 1000) + " " + eccentricity);
+
+            if(eccentricity == 0)
+            {
+                System.out.println(name);
+                System.out.println("\n\n");
+                INDEX++;
+                Scene.simulation.getStarSystem().getBodyHandler().get(0).getDarkMatter().setDensity(0);
+            }
+
+            velocity = new Vector3(initialVelocity);
+            Scene.simulation.getStarSystem().getBodyHandler().get(0).getDarkMatter().setDensity(Scene.simulation.getStarSystem().getBodyHandler().get(0).getDarkMatter().getDensity() + 0.1);
+
+            positions.clear();
+        }
+        lastAngle = angle;
+        return angle;
     }
 
     public void update(double deltaTime)
     {
         //dt += time;
+        time += deltaTime;
 
         //velocity = velocity.add(initialAcceleration.add(acceleration).multiply(dt));
         //acceleration = getAcceleration(p);
@@ -489,10 +544,18 @@ public class CelestialObject
         acceleration = getGravitationalAcceleration(position);
         velocity = velocity.add(acceleration.multiply(deltaTime / 2));
 
-        if(name.equals("Mercury"))
+        //
+
+
+
+        /*if(name.equals("Earth"))
         {
-            //System.out.println(velocity);
-        }
+            double e = getEccentricity();
+            if(time % (PhysicsConstants.TIME_STEP.apply(182.5) * 60) == 0)
+            {
+                System.out.println(time / 3600 / 24 + " " + velocity.multiply(0.001).length());
+            }
+        }**/
 
        // tmpVelocity = tmpVelocity.subtract(velocity.subtract(lastVelocity));
       //  tmpPosition = tmpPosition.subtract(position.subtract(lastPosition));

@@ -11,7 +11,7 @@ public final class Icons
     /**
      * Application icon.
      */
-    public static final String APPLICATION_ICON_PATH = "src\\main\\resources\\logo\\logo 4.png";
+    public static final String APPLICATION_ICON_PATH = "src\\main\\resources\\logo\\logo 5.png";
 
     /**
      * Button icons.

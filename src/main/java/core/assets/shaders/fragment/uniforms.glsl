@@ -15,6 +15,8 @@ uniform vec3 uCameraPos;
 uniform float uMaxDist;
 uniform float uMaxSteps;
 uniform float uFov;
+uniform int uAntialiasing;
+
 uniform vec2 uMousePos;
 uniform float uTime;
 uniform vec3 uPos;

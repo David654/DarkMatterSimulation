@@ -11,6 +11,7 @@ public class HighPreset extends Preset
         maxDist = 8192;
         maxSteps = 256;
         fov = 60;
+        antialiasing = true;
         textureQuality = TextureQuality.HIGH;
     }
 }

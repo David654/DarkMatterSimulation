@@ -7,6 +7,7 @@ import core.gui.components.grid.GridRow;
 import core.math.vector.Vector3;
 import core.simulation.core.BasicCelestialObjects;
 import core.simulation.physics.celestialobjects.CelestialObject;
+import core.simulation.physics.celestialobjects.Ring;
 import core.simulation.physics.celestialobjects.Star;
 import core.util.Utils;
 
@@ -299,7 +300,7 @@ public final class Tab extends JPanel implements GUIComponent
         });
 
         // Rings.
-        GridRow ringRow = new GridRow(12, "Rings: ", "", "The rings of the celestial object.");
+        GridRow ringRow = new GridRow(12 + gridYIncrement, "Rings: ", "km", "The rings of the celestial object.");
         ringRow.createAndShowGUI(gbc, 0, parameters, ringCheckBox, innerRingRadiusField, outerRingRadiusField);
 
         // Dark matter.
@@ -322,12 +323,12 @@ public final class Tab extends JPanel implements GUIComponent
             totalMassLabel.setText(String.valueOf(celestialObject.getTotalMass()));
         });
 
-        GridRow darkMatterDensityRow = new GridRow(13, "Dark matter density: ", "GeV / cm³", "Dark matter density of energy.");
+        GridRow darkMatterDensityRow = new GridRow(13 + gridYIncrement, "Dark matter density: ", "GeV / cm³", "Dark matter density of energy.");
         darkMatterDensityRow.createAndShowGUI(gbc, 0, parameters, darkMatterDensitySlider, darkMatterDensitySpinner, new JLabel());
 
         // Total mass.
         totalMassLabel = new JLabel("                  ");
-        GridRow totalMassRow = new GridRow(14, "Total mass: ", "kg", "Total mass of the celestial object which includes its own mass and dark matter mass.");
+        GridRow totalMassRow = new GridRow(14 + gridYIncrement, "Total mass: ", "kg", "Total mass of the celestial object which includes its own mass and dark matter mass.");
         totalMassRow.createAndShowGUI(gbc, 0, parameters, totalMassLabel);
 
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -391,6 +392,10 @@ public final class Tab extends JPanel implements GUIComponent
         // Texture.
         selectedTextureLabel.setText(celestialObject.getName());
         selectedTexturePath = celestialObject.getTexturePath();
+
+        Ring ring = celestialObject.getRing();
+        innerRingRadiusField.setText(String.valueOf(ring == null ? 0 : ring.getRadius1() / 1000));
+        outerRingRadiusField.setText(String.valueOf(ring == null ? 0 : ring.getRadius2() / 1000));
 
         // Dark matter.
         double density = celestialObject.getDarkMatter() == null ? this.celestialObject.getDarkMatter().getDensity() : celestialObject.getDarkMatter().getDensity();

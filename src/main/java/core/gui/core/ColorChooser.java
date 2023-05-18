@@ -1,6 +1,7 @@
 package core.gui.core;
 
 import core.assets.icons.Icons;
+import core.assets.textures.Textures;
 import core.gui.components.core.GUIComponent;
 import core.gui.components.buttons.PrimaryButton;
 import core.util.TextureUtils;
@@ -47,7 +48,7 @@ public class ColorChooser extends JDialog implements GUIComponent
         this.setLocationRelativeTo(component);
         this.getContentPane().setLayout(new FlowLayout(FlowLayout.LEFT));
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        this.setIconImage(TextureUtils.readImage(Icons.APPLICATION_ICON_PATH));
+        this.setIconImage(Icons.createIcon(Icons.APPLICATION_ICON_PATH).getImage());
 
         createAndShowGUI();
 
@@ -317,9 +318,9 @@ public class ColorChooser extends JDialog implements GUIComponent
     {
         private final int width;
         private final int height;
-        private final int margin = 20;
+        private final int margin = 10;
         private final int radius;
-        private final BufferedImage colorWheel;
+        private BufferedImage colorWheel;
 
         private ColorWheelPanel(int width, int height)
         {
@@ -331,7 +332,9 @@ public class ColorChooser extends JDialog implements GUIComponent
             this.addMouseMotionListener(this);
 
             radius = (Math.min(width, height) - 2 * margin) / 2;
-            colorWheel = createColorWheel();
+            //colorWheel = createColorWheel();
+            colorWheel = TextureUtils.readImage(Textures.COLOR_WHEEL_IMAGE_PATH);
+            colorWheel = TextureUtils.resizeImage(colorWheel, width, height);
 
             Timer timer = new Timer(1, e -> this.repaint());
             timer.start();
@@ -390,7 +393,7 @@ public class ColorChooser extends JDialog implements GUIComponent
             this.requestFocus();
             int x = e.getX() - cursorSize / 2;
             int y = e.getY() - cursorSize / 2;
-            double dist = Math.sqrt(Math.pow(x - width / 2d + cursorSize / 2d, 2) + Math.pow(y - height / 2d + cursorSize / 2d, 2));
+            double dist = Math.sqrt(Math.pow(x - width / 2d, 2) + Math.pow(y - height / 2d, 2));
             if(dist < radius)
             {
                 wheelCursorX = x;

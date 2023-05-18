@@ -112,8 +112,11 @@ vec3 render(in vec2 uv)
 
     col += object[3].rgb;
 
-    vec4 tmp = object[2];
-    col = mix(col, tmp.xyz / (0.001 + tmp.w), tmp.w);
+    if(uAntialiasing == 1)
+    {
+        vec4 tmp = object[2];
+        col = mix(col, tmp.xyz / (0.001 + tmp.w), tmp.w);
+    }
 
     //col = vec3(2 * object[0].z / 64, 0, 0);
 

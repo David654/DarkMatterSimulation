@@ -31,7 +31,7 @@ public class TextureChooser extends JDialog implements GUIComponent
         this.setTitle("Texture Chooser");
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        this.setIconImage(TextureUtils.readImage(Icons.APPLICATION_ICON_PATH));
+        this.setIconImage(Icons.createIcon(Icons.APPLICATION_ICON_PATH).getImage());
 
         createAndShowGUI();
 

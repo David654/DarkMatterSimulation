@@ -9,6 +9,7 @@ public abstract class Preset
     protected float maxDist;
     protected int maxSteps;
     protected float fov;
+    protected boolean antialiasing;
     protected TextureQuality textureQuality;
 
     public Preset()
@@ -43,6 +44,11 @@ public abstract class Preset
         return fov;
     }
 
+    public boolean isAntialiasingEnabled()
+    {
+        return antialiasing;
+    }
+
     public TextureQuality getTextureQuality()
     {
         return textureQuality;
@@ -71,6 +77,11 @@ public abstract class Preset
     public void setFOV(float fov)
     {
         this.fov = fov;
+    }
+
+    public void setAntialiasing(boolean antialiasing)
+    {
+        this.antialiasing = antialiasing;
     }
 
     public void setTextureQuality(TextureQuality textureQuality)

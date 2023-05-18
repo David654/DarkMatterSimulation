@@ -25,6 +25,13 @@ public class Vector3 implements IVector<Vector3>
         this.z = z;
     }
 
+    public Vector3(Vector3 vector)
+    {
+        this.x = vector.getX();
+        this.y = vector.getY();
+        this.z = vector.getZ();
+    }
+
     public double getX()
     {
         return x;
@@ -179,5 +186,25 @@ public class Vector3 implements IVector<Vector3>
     public Vector3 lerp(Vector3 vector, double amount)
     {
         return vector.subtract(this).multiply(amount).add(this);
+    }
+
+    public double getAngleBetween(Vector3 vector)
+    {
+        return Math.acos(this.dot(vector) / (this.length() * vector.length()));
+    }
+
+    public double getAngleBetween360(Vector3 vector)
+    {
+        if(this.length() == 0 || vector.length() == 0)
+        {
+            return 0;
+        }
+        double angle = Math.acos(this.normalize().dot(vector.normalize()));
+        Vector3 cross = this.cross(vector);
+        if(new Vector3(0, 1, 0).dot(cross) < 0)
+        {
+            angle = Math.PI * 2 - angle;
+        }
+        return angle;
     }
 }

@@ -4,6 +4,11 @@ import core.settings.graphicspresets.Preset;
 
 public final class Textures
 {
+    public static final String IMAGES_DIRECTORY = "src\\main\\resources\\images\\";
+    public static final String GRADIENT_IMAGE_PATH = IMAGES_DIRECTORY + "gradient.jpg";
+    public static final String COLOR_WHEEL_IMAGE_PATH = IMAGES_DIRECTORY + "color_wheel.png";
+
+
     /**
      * Directories.
      */

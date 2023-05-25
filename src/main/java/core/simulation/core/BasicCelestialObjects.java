@@ -46,11 +46,11 @@ public final class BasicCelestialObjects
     public static CelestialObject MOON = new Planet(new Vector3(-0.00257, 0, 0), 1738.1, 1736.0, 7.348e22, new Vector3(0, 0, 1.022), 16.7 / 3.6, 6.7, 5.1, "Moon");
     public static CelestialObject PHOBOS = new Planet(new Vector3(-0.000040107, 0, 0), new Vector3(27, 22, 18), 1.0659e16, new Vector3(0, 0, 2.138), 9.16 / 3.6, 0, 26.04, "Phobos");
     public static CelestialObject DEIMOS = new Planet(new Vector3(-0.00015682, 0, 0), new Vector3(15, 12.2, 11), 1.4762e15, new Vector3(0, 0, 1.3513), 1.32 / 3.6, 0, 27.58, "Deimos");
+    public static CelestialObject AMALTHEA = new Planet(new Vector3(-0.0012124, 0, 0), new Vector3(250, 146, 128), 7.17e18, new Vector3(0, 0, 26.57), 46.16 / 3.6, 0, 0.4, "Amalthea");
     public static CelestialObject IO = new Planet(new Vector3(-0.002819, 0, 0), new Vector3(3660.0, 3637.4, 3630.6), 8.931938e22, new Vector3(0, 0, 17.334), 271 / 3.6, 0, 2.213, "Io");
     public static CelestialObject EUROPA = new Planet(new Vector3(-0.00448469, 0, 0), 1560.8, 4.799844e22, new Vector3(0, 0, 13.74336), 116.7 / 3.6, 0.1, 1.791, "Europa");
     public static CelestialObject GANYMEDE = new Planet(new Vector3(-0.0071552, 0, 0), 2634.1, 1.4819e23, new Vector3(0, 0, 10.880), 96.3 / 3.6, 0.33, 2.214, "Ganymede");
     public static CelestialObject CALLISTO = new Planet(new Vector3(-0.0125851, 0, 0), 2410.3, 1.075938e23, new Vector3(0, 0, 8.204), 37.12 / 3.6, 0, 2.017, "Callisto");
-    public static CelestialObject AMALTHEA = new Planet(new Vector3(-0.0012124, 0, 0), new Vector3(250, 146, 128), 7.17e18, new Vector3(0, 0, 26.57), 46.16 / 3.6, 0, 0.4, "Amalthea");
     public static CelestialObject DIONE = new Planet(new Vector3(-0.00252274, 0, 0), new Vector3(1128.8, 1122.6, 1119.2), 1.095452e21, new Vector3(0, 0, 16.72), 217.84 / 3.6, 0, 4.58, "Dione");
     public static CelestialObject ENCELADUS = new Planet(new Vector3(-0.00159058, 0, 0), new Vector3(513.2, 502.8, 496.6), 1.08022e20, new Vector3(0, 0, 12.64), 48.15 / 3.6, 0, 0.02, "Enceladus");
     public static CelestialObject HYPERION = new Planet(new Vector3(-0.00159058, 0, 0), new Vector3(360.2, 266.0, 205.4), 1.77e19, new Vector3(0, 0, 5.07), 174.17 / 3.6, 0, 0.02, "Hyperion");
